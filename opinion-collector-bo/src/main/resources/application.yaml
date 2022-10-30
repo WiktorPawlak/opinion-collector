@@ -1,0 +1,13 @@
+server:
+    port: 8080
+spring:
+    datasource:
+        url: jdbc:mysql://localhost:3306/OPINION_COLLECTOR_DB?useSSL=false
+        username: root
+        password: root
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        hibernate:
+            ddl-auto: create
