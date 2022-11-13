@@ -23,7 +23,8 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator' //exposes endpoint in "Services" tab
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.boot:spring-boot-starter-security' swagger is not working without security filter chain
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.7.5'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.liquibase:liquibase-core' liquibase must be configured in classpath/db
