@@ -1,5 +1,6 @@
 package pl.io.opinioncollector.application.controllers;
 
+import org.springframework.http.ResponseEntity;
 import pl.io.opinioncollector.application.dto.OpinionDto;
 import pl.io.opinioncollector.domain.opinion.OpinionFacade;
 
@@ -9,6 +10,6 @@ public class OpinionEndpoint {
     public ResponseEntity addOpinion(OpinionDto opinionDto) {
         opinionFacade.add(opinionDto.toDomain());
 
-        return ResponseEntity.ok();
+        return ResponseEntity.ok().build();
     }
 }
