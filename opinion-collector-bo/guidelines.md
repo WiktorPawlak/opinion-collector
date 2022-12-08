@@ -1,5 +1,20 @@
 # Getting Started
 
+###Swagger authorization
+
+1. Send request to ```/login``` with body (admin credentials can be replaced with other user credentials):
+```
+{
+  "username": "admin",
+  "password": "admin"
+}
+```
+2. Copy token from ``authorization:`` header (without white characters)
+3. Click button ``Authorize`` from the top of the page, paste token into input field and click ``Authorize``
+4. Now all endpoints are available (in future it will be automated)
+
+
+
 ### Reference Documentation
 
 For further reference, please consider the following sections:
