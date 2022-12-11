@@ -23,7 +23,8 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator' //exposes endpoint in "Services" tab
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.boot:spring-boot-starter-security' swagger is not working without security filter chain
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.7.5'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.liquibase:liquibase-core' liquibase must be configured in classpath/db
@@ -40,3 +41,26 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 targetCompatibility = JavaVersion.VERSION_17
+
+/*task insertProducts() {
+    doLast {
+        def productService = new ProductFacade() // assuming this is a service class that handles inserting products
+
+        for (int i = 0; i < 100; i++) {
+            Product product = new Product()
+            product.setTitle("Product " + i)
+            product.setCategoryId(1) // set some default category
+            product.setImage(new byte[0])
+            product.setOrigin(ProductOrigin.LOCAL)
+            product.setVisibility(true)
+            product.setEan("1234567890")
+
+            productService.insertProduct(product)
+        }
+    }
+}*/
+
+
+
+
+

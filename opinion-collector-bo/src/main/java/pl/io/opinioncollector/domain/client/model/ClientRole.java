@@ -1,5 +1,5 @@
 package pl.io.opinioncollector.domain.client.model;
 
-public enum ClientType {
+public enum ClientRole {
     STANDARD, ADMIN
 }
