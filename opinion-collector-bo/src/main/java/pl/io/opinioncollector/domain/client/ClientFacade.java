@@ -9,12 +9,16 @@ import pl.io.opinioncollector.domain.client.model.ClientId;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ClientFacade {
     ClientId register(RegistrationDto registrationForm);
     ClientDetails signIn(SignInDto singInForm);
     String generateJwtToken(ClientDetails clientDetails);
-    void changeEmail(ClientId clientId, ClientEmail email);
+    void changeEmail(String clientId, String email);
     void changePass(ClientId clientId, String hashedPass);
+
+    Client getClient(ClientId clientId);
+    List<Client> getAllCLients();
 
 }

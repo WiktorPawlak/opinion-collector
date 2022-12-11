@@ -1,5 +1,6 @@
 package pl.io.opinioncollector.application.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +16,24 @@ import pl.io.opinioncollector.domain.client.model.ClientEmail;
 import pl.io.opinioncollector.domain.client.model.ClientId;
 import pl.io.opinioncollector.domain.client.model.ClientRole;
 
+import java.util.UUID;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("client")
 public class ClientController {
 
-    private ClientFacade clientFacade;
+    private final ClientFacade clientFacade;
     @GetMapping("get")
     public Client getClient() {
 
         return new Client("Mati", "mati", "mati@mati.pl");
     }
 
-//    @PostMapping("changeEmail")
-//    public void changeEmail(ClientId clientId, ClientEmail email) {
-//        clientFacade.changeEmail(clientId, email);
-//    }
+    @PostMapping("changeEmail")
+    public void changeEmail(String clientId, String email) {
+
+        clientFacade.changeEmail(clientId, email);
+    }
 
 }

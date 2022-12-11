@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.UUID;
-
 @Data
 @Embeddable
 @AllArgsConstructor
@@ -15,4 +14,8 @@ import java.util.UUID;
 public class ClientId implements Serializable {
 
     private UUID uuid = UUID.randomUUID();
+
+    public ClientId(String uuid) {
+        this.uuid = UUID.fromString(uuid);
+    }
 }
