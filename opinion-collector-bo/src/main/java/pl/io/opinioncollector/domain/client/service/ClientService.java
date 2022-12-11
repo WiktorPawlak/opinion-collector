@@ -22,6 +22,7 @@ import pl.io.opinioncollector.infrastracture.ClientRepository;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class ClientService implements ClientFacade {
 
     @Override
     public ClientId register(RegistrationDto registrationForm) {
-        boolean isValidEmail = registrationForm.validateEmail(registrationForm.getEmail());
+        boolean isValidEmail = registrationForm.patternMatches(registrationForm.getEmail());
         boolean isValidLogin = registrationForm.validateUsername(registrationForm.getLogin());
 //        boolean isValidPassword = registrationForm.validatePassword(registrationForm.getHashedPass());
 
@@ -89,15 +90,13 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public void changeEmail(ClientId clientId, ClientEmail email) {
-//        Optional<Client> client = clientRepository.findById(clientId);
-//        if (client.isEmpty()) {
-//            throw new IllegalStateException("CLient does not exist");
-//        }
-//        else {
-//        if() check email validation
-//            clientRepository.findById(clientId).orElseThrow().setEmail(email);
-//        }
+    public void changeEmail(String clientId, String email) {
+
+        if(RegistrationDto.patternMatches(email)) //check email validation
+        {
+            clientRepository.findById(new ClientId(clientId)).orElseThrow(IllegalStateException::new).setEmail(new ClientEmail(email));
+        }
+
     }
 
     @Override
@@ -105,5 +104,13 @@ public class ClientService implements ClientFacade {
 
     }
 
+    @Override
+    public Client getClient(ClientId clientId) {
+        return null;
+    }
 
+    @Override
+    public List<Client> getAllCLients() {
+        return null;
+    }
 }
