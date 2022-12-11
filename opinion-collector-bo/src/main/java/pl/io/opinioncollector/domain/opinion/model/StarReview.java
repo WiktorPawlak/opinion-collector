@@ -1,5 +1,15 @@
 package pl.io.opinioncollector.domain.opinion.model;
 
 public enum StarReview {
-    ONE, TWO, THREE, FOUR, FIVE
+    ONE("1"), TWO("2"), THREE("3"), FOUR("4"), FIVE("5");
+
+    private final String star;
+
+    StarReview(String star) {
+        this.star = star;
+    }
+
+    public String getStar() {
+        return star;
+    }
 }

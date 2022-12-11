@@ -1,15 +1,23 @@
 package pl.io.opinioncollector.application.dto;
 
-import pl.io.opinioncollector.domain.product.model.Product;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
+@AllArgsConstructor
 public class ProductDto {
-    public String id;
-    public String categoryId;
-    public String title;
-    public String picUrl;
-    public String description;
+    /*private long id;
+    private long categoryId;
+    private String title;
+    private byte[] image;
+    private ProductOrigin origin;
+    private boolean visibility;
+    private String ean;
 
     public Product toDomain() {
-        return null;
-    }
+        return new Product(
+            id, categoryId, title, image, origin, visibility, ean
+        );*/
 }
