@@ -18,14 +18,7 @@ public class RegistrationDto {
     public String hashedPass;
 
     public boolean validateUsername(String login){
-        boolean correctLoging = true;
-        if(login.length() >= 3 && login.length() <= 40){
-            for(int i = 0; i< login.length(); i++)
-                 if(Character.isWhitespace(login.charAt(i))){
-                     correctLoging = false;
-                 }
-        }
-        return correctLoging;
+        return login.length() >= 3 && login.length() <= 40 && !login.contains(" ");
     }
 
 //    public boolean validatePassword(String password){

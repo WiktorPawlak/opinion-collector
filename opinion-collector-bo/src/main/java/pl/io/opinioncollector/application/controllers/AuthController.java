@@ -14,8 +14,6 @@ import pl.io.opinioncollector.domain.client.model.ClientId;
 import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
 
-import javax.management.BadAttributeValueExpException;
-
 @RestController
 @RequiredArgsConstructor
 
