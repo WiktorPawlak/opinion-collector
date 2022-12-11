@@ -15,12 +15,15 @@ import pl.io.opinioncollector.domain.client.model.Client;
 import pl.io.opinioncollector.domain.client.model.ClientDetails;
 import pl.io.opinioncollector.domain.client.model.ClientEmail;
 import pl.io.opinioncollector.domain.client.model.ClientId;
+import pl.io.opinioncollector.domain.client.model.ClientPassword;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,10 +38,10 @@ public class ClientService implements ClientFacade {
     private long expirationTime;
 
     @Override
+    @Transactional
     public ClientId register(RegistrationDto registrationForm) {
-        boolean isValidEmail = registrationForm.validateEmail(registrationForm.getEmail());
+        boolean isValidEmail = RegistrationDto.validateEmail(registrationForm.getEmail());
         boolean isValidLogin = registrationForm.validateUsername(registrationForm.getLogin());
-//        boolean isValidPassword = registrationForm.validatePassword(registrationForm.getHashedPass());
 
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
@@ -48,16 +51,20 @@ public class ClientService implements ClientFacade {
             throw new IllegalStateException("login not valid");
         }
 
-//        if (!isValidPassword) {
-//            throw new IllegalStateException("password not valid");
-//        }
-
         if (clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).isPresent()) {
             throw new IllegalStateException("clientExist");
         }
 
+        if (clientRepository.findByEmail(new ClientEmail(registrationForm.getEmail())).isPresent()) {
+            throw new IllegalStateException("Email is taken by another user.");
+        }
 
-        return clientRepository.save(new Client(registrationForm.getLogin(), registrationForm.getHashedPass(), registrationForm.getEmail())).getId();
+
+        return clientRepository.save(
+            new Client(registrationForm.getLogin(),
+                registrationForm.getHashedPass(),
+                registrationForm.getEmail())
+        ).getId();
     }
 
     @Override
@@ -89,17 +96,26 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public void changeEmail(String clientId, String email) {
-
-        if (RegistrationDto.validateEmail(email)) {
-            clientRepository.findById(new ClientId(clientId)).orElseThrow(IllegalStateException::new).setEmail(new ClientEmail(email));
+    @Transactional
+    public void changeEmail(String userName, String email) {
+        if (RegistrationDto.validateEmail(email) && clientRepository.findByEmail(new ClientEmail(email)).isEmpty()) {
+            Client client = clientRepository.findByUsername(new ClientUsername(userName)).orElseThrow(IllegalStateException::new);
+            client.setEmail(new ClientEmail(email));
+            client.setModifiedAt(LocalDateTime.now());
+            clientRepository.save(client);
+        } else {
+            throw new IllegalStateException("Wrong email.");
         }
-
     }
 
     @Override
-    public void changePass(ClientId clientId, String hashedPass) {
-
+    @Transactional
+    public void changePass(String userName, String hashedPass) {
+        Client client = clientRepository.findByUsername(new ClientUsername(userName))
+            .orElseThrow(IllegalStateException::new);
+        client.setPassword(new ClientPassword(hashedPass));
+        client.setModifiedAt(LocalDateTime.now());
+        clientRepository.save(client);
     }
 
     @Override
@@ -110,6 +126,6 @@ public class ClientService implements ClientFacade {
 
     @Override
     public List<Client> getAllClients() {
-        return null;
+        return clientRepository.findAll();
     }
 }

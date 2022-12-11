@@ -46,7 +46,7 @@ public class AuthController {
     public ResponseEntity<Object> register(@RequestBody RegistrationDto request) {
         try{
             ClientId id = clientFacade.register(request);
-            return ResponseEntity.ok()
+            return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.LOCATION, id.toString())
                 .build();
         }catch (IllegalStateException ex) {
