@@ -1,5 +1,6 @@
 package pl.io.opinioncollector.domain.client.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Client {
     @Embedded
     private ClientUsername username;
     @Embedded
+    @JsonIgnore
     private ClientPassword password;
     @Embedded
     private ClientEmail email;
@@ -42,6 +44,7 @@ public class Client {
 
     public Client(String username, String password, String email) {
         this.id = new ClientId(UUID.randomUUID());
+        this.createdAt = LocalDateTime.now();
         this.password = new ClientPassword(password);
         this.username = new ClientUsername(username);
         this.email = new ClientEmail(email);

@@ -18,6 +18,6 @@ public interface ClientFacade {
     void changeEmail(String clientId, String email);
     void changePass(ClientId clientId, String hashedPass);
 
-    Client getClient(ClientId clientId);
+    Client getClient(String username);
     List<Client> getAllClients();
 }

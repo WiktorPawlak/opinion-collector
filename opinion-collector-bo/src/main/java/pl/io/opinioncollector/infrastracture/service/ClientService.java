@@ -21,8 +21,8 @@ import pl.io.opinioncollector.domain.dto.SignInDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
 
 import java.time.Instant;
-import java.util.stream.Collectors;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,10 +52,9 @@ public class ClientService implements ClientFacade {
 //            throw new IllegalStateException("password not valid");
 //        }
 
-        if (clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).isPresent()){
+        if (clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).isPresent()) {
             throw new IllegalStateException("clientExist");
         }
-
 
 
         return clientRepository.save(new Client(registrationForm.getLogin(), registrationForm.getHashedPass(), registrationForm.getEmail())).getId();
@@ -67,7 +66,7 @@ public class ClientService implements ClientFacade {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(singInForm.getUsername(), singInForm.getPassword()));
 
-       return  (ClientDetails) authentication.getPrincipal();
+        return (ClientDetails) authentication.getPrincipal();
     }
 
     @Override
@@ -75,8 +74,8 @@ public class ClientService implements ClientFacade {
         Instant now = Instant.now();
         long expiry = expirationTime;
 
-            String roles = clientDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
+        String roles = clientDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
 
         JwtClaimsSet claims =
             JwtClaimsSet.builder()
@@ -92,8 +91,7 @@ public class ClientService implements ClientFacade {
     @Override
     public void changeEmail(String clientId, String email) {
 
-        if(RegistrationDto.validateEmail(email))
-        {
+        if (RegistrationDto.validateEmail(email)) {
             clientRepository.findById(new ClientId(clientId)).orElseThrow(IllegalStateException::new).setEmail(new ClientEmail(email));
         }
 
@@ -105,8 +103,9 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public Client getClient(ClientId clientId) {
-        return null;
+    public Client getClient(String username) {
+        return clientRepository.findByUsername(new ClientUsername(username))
+            .orElseThrow(() -> new IllegalStateException("Client does not exist"));
     }
 
     @Override
