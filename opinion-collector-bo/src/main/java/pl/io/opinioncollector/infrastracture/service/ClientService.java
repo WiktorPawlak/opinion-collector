@@ -20,7 +20,9 @@ import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
 
+import java.security.Principal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +38,7 @@ public class ClientService implements ClientFacade {
 
     @Override
     public ClientId register(RegistrationDto registrationForm) {
-        boolean isValidEmail = registrationForm.validateEmail(registrationForm.getEmail());
+        boolean isValidEmail = RegistrationDto.validateEmail(registrationForm.getEmail());
         boolean isValidLogin = registrationForm.validateUsername(registrationForm.getLogin());
 //        boolean isValidPassword = registrationForm.validatePassword(registrationForm.getHashedPass());
 
@@ -54,6 +56,10 @@ public class ClientService implements ClientFacade {
 
         if (clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).isPresent()) {
             throw new IllegalStateException("clientExist");
+        }
+
+        if (clientRepository.findByEmail(new ClientEmail(registrationForm.getEmail())).isPresent()) {
+            throw new IllegalStateException("Email is taken by another user.");
         }
 
 
@@ -89,12 +95,16 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public void changeEmail(String clientId, String email) {
-
-        if (RegistrationDto.validateEmail(email)) {
-            clientRepository.findById(new ClientId(clientId)).orElseThrow(IllegalStateException::new).setEmail(new ClientEmail(email));
+    public void changeEmail(String userName, String email) {
+        if (RegistrationDto.validateEmail(email) && clientRepository.findByEmail(new ClientEmail(email)).isEmpty()) {
+            Client client = clientRepository.findByUsername(new ClientUsername(userName)).orElseThrow(IllegalStateException::new);
+            client.setEmail(new ClientEmail(email));
+            client.setModifiedAt(LocalDateTime.now());
+            clientRepository.save(client);
         }
-
+        else {
+            throw new IllegalStateException("Wrong email.");
+        }
     }
 
     @Override
@@ -110,6 +120,6 @@ public class ClientService implements ClientFacade {
 
     @Override
     public List<Client> getAllClients() {
-        return null;
+        return (List<Client>) clientRepository.findAll();
     }
 }
