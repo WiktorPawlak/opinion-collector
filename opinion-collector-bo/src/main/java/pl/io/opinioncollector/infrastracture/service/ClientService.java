@@ -20,6 +20,8 @@ import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
+
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,10 +38,10 @@ public class ClientService implements ClientFacade {
     private long expirationTime;
 
     @Override
+    @Transactional
     public ClientId register(RegistrationDto registrationForm) {
         boolean isValidEmail = RegistrationDto.validateEmail(registrationForm.getEmail());
         boolean isValidLogin = registrationForm.validateUsername(registrationForm.getLogin());
-//        boolean isValidPassword = registrationForm.validatePassword(registrationForm.getHashedPass());
 
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
@@ -48,10 +50,6 @@ public class ClientService implements ClientFacade {
         if (!isValidLogin) {
             throw new IllegalStateException("login not valid");
         }
-
-//        if (!isValidPassword) {
-//            throw new IllegalStateException("password not valid");
-//        }
 
         if (clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).isPresent()) {
             throw new IllegalStateException("clientExist");
@@ -62,7 +60,11 @@ public class ClientService implements ClientFacade {
         }
 
 
-        return clientRepository.save(new Client(registrationForm.getLogin(), registrationForm.getHashedPass(), registrationForm.getEmail())).getId();
+        return clientRepository.save(
+            new Client(registrationForm.getLogin(),
+                registrationForm.getHashedPass(),
+                registrationForm.getEmail())
+        ).getId();
     }
 
     @Override
@@ -94,24 +96,26 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
+    @Transactional
     public void changeEmail(String userName, String email) {
         if (RegistrationDto.validateEmail(email) && clientRepository.findByEmail(new ClientEmail(email)).isEmpty()) {
             Client client = clientRepository.findByUsername(new ClientUsername(userName)).orElseThrow(IllegalStateException::new);
             client.setEmail(new ClientEmail(email));
             client.setModifiedAt(LocalDateTime.now());
             clientRepository.save(client);
-        }
-        else {
+        } else {
             throw new IllegalStateException("Wrong email.");
         }
     }
 
     @Override
+    @Transactional
     public void changePass(String userName, String hashedPass) {
-            Client client = clientRepository.findByUsername(new ClientUsername(userName)).orElseThrow(IllegalStateException::new);
-            client.setPassword(new ClientPassword(hashedPass));
-            client.setModifiedAt(LocalDateTime.now());
-            clientRepository.save(client);
+        Client client = clientRepository.findByUsername(new ClientUsername(userName))
+            .orElseThrow(IllegalStateException::new);
+        client.setPassword(new ClientPassword(hashedPass));
+        client.setModifiedAt(LocalDateTime.now());
+        clientRepository.save(client);
     }
 
     @Override
@@ -122,6 +126,6 @@ public class ClientService implements ClientFacade {
 
     @Override
     public List<Client> getAllClients() {
-        return (List<Client>) clientRepository.findAll();
+        return clientRepository.findAll();
     }
 }

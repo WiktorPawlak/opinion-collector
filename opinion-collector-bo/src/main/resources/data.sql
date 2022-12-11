@@ -5,4 +5,11 @@ values ('00000000-0000-0000-0000-000000000000',
         true,
         '$2a$12$AmP1WWgXV0OCuMIq2RAaAOob.y1ZKX1juQpsbYzeTGpHvuFEFxLkW',
         'ADMIN',
-        'admin');
+        'admin'),
+       ('00000000-0000-0000-0000-000000000001',
+        '2022-11-13 11:58:20',
+        'user@user.com',
+        true,
+        '$2a$12$T.AIU1Abab3LXtso/QG4semql6GyqOQFKXBbXMLNkosq9AtFLej0O',
+        'STANDARD',
+        'user');
