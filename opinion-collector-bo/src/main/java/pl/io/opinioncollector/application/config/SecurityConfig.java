@@ -83,7 +83,7 @@ public class SecurityConfig {
             .permitAll()
             .antMatchers("/v3/api-docs/**")
             .permitAll()
-            .antMatchers("/login/**")
+            .antMatchers("/login/**", "/register/**", "/changeEmail/**")
             .permitAll()
             .antMatchers(format("%s/**", swaggerPath))
             .permitAll()

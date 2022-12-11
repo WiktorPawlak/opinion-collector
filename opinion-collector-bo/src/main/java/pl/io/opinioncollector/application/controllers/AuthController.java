@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.io.opinioncollector.domain.client.ClientFacade;
 import pl.io.opinioncollector.domain.client.model.ClientDetails;
+import pl.io.opinioncollector.domain.client.model.ClientId;
+import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
+
+import javax.management.BadAttributeValueExpException;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,8 +45,16 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<ClientDetails> register(@RequestBody SignInDto request) {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Object> register(@RequestBody RegistrationDto request) {
+        try{
+            ClientId id = clientFacade.register(request);
+            return ResponseEntity.ok()
+                .header(HttpHeaders.LOCATION, id.toString())
+                .build();
+        }catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .body(ex.getMessage());
+        }
     }
 
 }

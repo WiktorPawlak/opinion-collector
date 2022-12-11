@@ -32,7 +32,7 @@ public class Client {
     @Embedded
     private ClientEmail email;
     @Enumerated(EnumType.STRING)
-    private ClientRole role;
+    private ClientRole role = ClientRole.STANDARD;
     private boolean isEnabled = true;
 
     @CreatedDate
@@ -40,12 +40,11 @@ public class Client {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    public Client(String username, String password, String email, ClientRole clientRole) {
+    public Client(String username, String password, String email) {
         this.id = new ClientId(UUID.randomUUID());
         this.password = new ClientPassword(password);
         this.username = new ClientUsername(username);
         this.email = new ClientEmail(email);
-        this.role = clientRole;
     }
 
     public void changeMail() {

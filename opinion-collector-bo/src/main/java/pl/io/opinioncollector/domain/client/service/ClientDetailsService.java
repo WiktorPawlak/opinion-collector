@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.io.opinioncollector.domain.client.model.Client;
 import pl.io.opinioncollector.domain.client.model.ClientDetails;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
+import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
 
 import java.util.Optional;
