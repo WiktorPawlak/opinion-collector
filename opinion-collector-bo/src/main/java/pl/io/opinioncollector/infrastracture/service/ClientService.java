@@ -15,12 +15,11 @@ import pl.io.opinioncollector.domain.client.model.Client;
 import pl.io.opinioncollector.domain.client.model.ClientDetails;
 import pl.io.opinioncollector.domain.client.model.ClientEmail;
 import pl.io.opinioncollector.domain.client.model.ClientId;
+import pl.io.opinioncollector.domain.client.model.ClientPassword;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
-
-import java.security.Principal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -108,8 +107,11 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public void changePass(ClientId clientId, String hashedPass) {
-
+    public void changePass(String userName, String hashedPass) {
+            Client client = clientRepository.findByUsername(new ClientUsername(userName)).orElseThrow(IllegalStateException::new);
+            client.setPassword(new ClientPassword(hashedPass));
+            client.setModifiedAt(LocalDateTime.now());
+            clientRepository.save(client);
     }
 
     @Override

@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.io.opinioncollector.domain.client.ClientFacade;
-import pl.io.opinioncollector.domain.client.model.Client;
-import pl.io.opinioncollector.domain.client.model.ClientDetails;
-import pl.io.opinioncollector.domain.client.model.ClientId;
 
 import java.security.Principal;
 
@@ -39,6 +36,16 @@ public class ClientController {
         try{
             clientFacade.changeEmail(principal.getName(), email);
             return ResponseEntity.ok("Email changed");
+        }catch (IllegalStateException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<Object> changePass(Principal principal, String hashedPass) {
+        try{
+            clientFacade.changePass(principal.getName(), hashedPass);
+            return ResponseEntity.ok("Password changed");
         }catch (IllegalStateException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
