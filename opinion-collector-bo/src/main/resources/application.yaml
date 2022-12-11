@@ -11,3 +11,23 @@ spring:
                 dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         hibernate:
             ddl-auto: create
+        defer-datasource-initialization: true
+    sql:
+      init:
+          mode: always
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher
+
+jwt:
+    private:
+        key: classpath:rsa.private.key
+    public:
+        key: classpath:rsa.public.key
+    expiration:
+        seconds: 3600
+
+swagger:
+    path: /swagger-ui
+
+

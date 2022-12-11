@@ -1,7 +1,9 @@
 package pl.io.opinioncollector.domain.dto;
 
+import lombok.Data;
+
+@Data
 public class SignInDto {
-    public String email; //nullable
-    public String login; //nullable
-    public String hashedPass;
+    public String username;
+    public String password;
 }
