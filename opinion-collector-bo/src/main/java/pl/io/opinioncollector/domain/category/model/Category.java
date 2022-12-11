@@ -27,4 +27,6 @@ public class Category {
     private String categoryName = null;
     @ElementCollection
     private List<String> children = new ArrayList<String>();
+
+
 }

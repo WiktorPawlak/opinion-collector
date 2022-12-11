@@ -24,20 +24,24 @@ public class CategoryController {
         return categoryFacade.findAll();
     }
 
+
     @GetMapping("/{id}")
     public Category getCategory(@PathVariable long id) {
         return categoryFacade.get(id);
     }
+
 
     @PostMapping
     public Category addCategory(@RequestBody Category category) {
         return categoryFacade.add(category);
     }
 
+
     @PutMapping
     public void editCategory(@RequestBody Category category) {
         categoryFacade.edit(category);
     }
+
 
     @PostMapping("/delete")
     public void deleteCategory(@PathVariable long id) {
