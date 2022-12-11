@@ -27,12 +27,7 @@ public class CategoryFacadeImpl implements CategoryFacade {
     @Override
     @Transactional
     public Category add(Category category) {
-        if(categoryRepository.findById(category.getCategoryId()).isPresent()) {
-            return categoryRepository.save(category);
-        }
-        else {
-            return null;
-        }
+        return categoryRepository.save(category);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package pl.io.opinioncollector.domain.category.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -23,10 +25,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "categoryId", nullable = false)
     private long categoryId;
-    private String parent = null;
-    private String categoryName = null;
-    @ElementCollection
-    private List<String> children = new ArrayList<String>();
+    private String parent;
+    private String categoryName;
+    //@ElementCollection
+    //private List<String> children = new ArrayList<String>();
 
 
 }

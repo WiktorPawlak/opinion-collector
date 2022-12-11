@@ -3,21 +3,15 @@ package pl.io.opinioncollector.application.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import pl.io.opinioncollector.domain.category.model.Category;
+import pl.io.opinioncollector.domain.product.ProductFacade;
+import pl.io.opinioncollector.domain.product.model.Product;
+import pl.io.opinioncollector.domain.product.model.ProductOrigin;
 
 @Getter
 @Builder
 @AllArgsConstructor
 public class ProductDto {
-    /*private long id;
-    private long categoryId;
-    private String title;
-    private byte[] image;
-    private ProductOrigin origin;
-    private boolean visibility;
-    private String ean;
-
-    public Product toDomain() {
-        return new Product(
-            id, categoryId, title, image, origin, visibility, ean
-        );*/
+    private Product product;
+    private Category category;
 }
