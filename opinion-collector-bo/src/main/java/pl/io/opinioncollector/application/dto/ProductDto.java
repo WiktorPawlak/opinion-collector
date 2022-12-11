@@ -11,7 +11,7 @@ public class ProductDto {
     /*private long id;
     private long categoryId;
     private String title;
-    private byte[] image;
+    private String image;
     private ProductOrigin origin;
     private boolean visibility;
     private String ean;

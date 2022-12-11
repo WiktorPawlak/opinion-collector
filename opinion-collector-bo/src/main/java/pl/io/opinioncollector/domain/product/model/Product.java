@@ -30,7 +30,7 @@ public class Product {
     private String title;
 
     @Lob
-    private byte[] image;
+    private String image;
 
     @Enumerated(EnumType.STRING)
     private ProductOrigin origin;

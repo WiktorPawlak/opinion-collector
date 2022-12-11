@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PutMapping("/hide")
-    public void hideProduct(@RequestParam(required = true) long id) {
+    public void hideProduct(@RequestParam long id) {
         productFacade.hide(id);
     }
 
@@ -51,12 +51,12 @@ public class ProductController {
     }
 
     @GetMapping("/opinions")
-    public List<Opinion> getOpinionsForProductId(@RequestParam() long id) {
+    public List<Opinion> getOpinionsForProductId(@RequestParam long id) {
         return opinionFacade.getFor(id);
     }
 
     @GetMapping("/starAverage")
-    public double starAverage(@RequestParam(required = true) long id) {
+    public double starAverage(@RequestParam long id) {
         return opinionFacade.starAverage(id);
     }
 }
