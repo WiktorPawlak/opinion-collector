@@ -13,7 +13,6 @@ public interface ClientFacade {
     String generateJwtToken(ClientDetails clientDetails);
     void changeEmail(String userName, String email);
     void changePass(String userName, String hashedPass);
-
     Client getClient(String username);
     List<Client> getAllClients();
 }
