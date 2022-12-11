@@ -2,8 +2,11 @@ package pl.io.opinioncollector.infrastracture.product.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.io.opinioncollector.application.dto.ProductDto;
+import pl.io.opinioncollector.domain.category.model.Category;
 import pl.io.opinioncollector.domain.product.ProductFacade;
 import pl.io.opinioncollector.domain.product.model.Product;
+import pl.io.opinioncollector.infrastracture.category.repository.CategoryRepository;
 import pl.io.opinioncollector.infrastracture.product.repository.ProductRepository;
 
 import javax.transaction.Transactional;
@@ -14,6 +17,7 @@ import java.util.List;
 public class ProductFacadeImpl implements ProductFacade {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -21,8 +25,13 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public Product getProduct(long id) {
-        return productRepository.findById(id).orElseThrow();
+    public ProductDto getProduct(long id) {
+        Product product = productRepository.findById(id).orElseThrow();
+        Category category = categoryRepository.findById(product.getCategoryId()).orElseThrow();
+        return ProductDto.builder()
+            .product(product)
+            .category(category)
+            .build();
     }
 
     @Override

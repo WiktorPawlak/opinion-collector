@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.io.opinioncollector.application.dto.ProductDto;
 import pl.io.opinioncollector.domain.opinion.OpinionFacade;
 import pl.io.opinioncollector.domain.opinion.model.Opinion;
 import pl.io.opinioncollector.domain.product.ProductFacade;
@@ -31,7 +32,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable long id) {
+    public ProductDto getProduct(@PathVariable long id) {
         return productFacade.getProduct(id);
     }
 
