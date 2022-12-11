@@ -1,4 +1,4 @@
-package pl.io.opinioncollector.domain.client.service;
+package pl.io.opinioncollector.infrastracture.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
