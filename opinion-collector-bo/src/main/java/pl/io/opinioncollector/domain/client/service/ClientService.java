@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -20,7 +21,7 @@ import pl.io.opinioncollector.domain.dto.SignInDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
 
 import java.time.Instant;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,17 +74,15 @@ public class ClientService implements ClientFacade {
         Instant now = Instant.now();
         long expiry = expirationTime;
 
-//            String scope =
-//                authentication.getAuthorities().stream()
-//                    .map(GrantedAuthority::getAuthority)
-//                    .collect(joining(" "));
+            String roles = clientDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
 
         JwtClaimsSet claims =
             JwtClaimsSet.builder()
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiry))
                 .subject(clientDetails.getUsername())
-//                    .claim("roles", scope)
+                .claim("scp", roles)
                 .build();
 
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

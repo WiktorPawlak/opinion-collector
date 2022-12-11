@@ -3,6 +3,8 @@ package pl.io.opinioncollector.application.controllers;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,7 +22,9 @@ import pl.io.opinioncollector.domain.client.model.ClientRole;
 public class ClientController {
 
     private ClientFacade clientFacade;
+
     @GetMapping("get")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public Client getClient() {
 
         return new Client("Mati", "mati", "mati@mati.pl");

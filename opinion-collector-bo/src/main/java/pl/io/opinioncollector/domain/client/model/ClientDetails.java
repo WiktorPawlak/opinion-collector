@@ -10,10 +10,11 @@ import java.util.Collection;
 public class ClientDetails implements UserDetails {
 
     private final Client client;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
