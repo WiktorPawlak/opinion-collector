@@ -36,7 +36,7 @@ public class ClientService implements ClientFacade {
 
     @Override
     public ClientId register(RegistrationDto registrationForm) {
-        boolean isValidEmail = registrationForm.patternMatches(registrationForm.getEmail());
+        boolean isValidEmail = registrationForm.validateEmail(registrationForm.getEmail());
         boolean isValidLogin = registrationForm.validateUsername(registrationForm.getLogin());
 //        boolean isValidPassword = registrationForm.validatePassword(registrationForm.getHashedPass());
 
@@ -92,7 +92,7 @@ public class ClientService implements ClientFacade {
     @Override
     public void changeEmail(String clientId, String email) {
 
-        if(RegistrationDto.patternMatches(email)) //check email validation
+        if(RegistrationDto.validateEmail(email))
         {
             clientRepository.findById(new ClientId(clientId)).orElseThrow(IllegalStateException::new).setEmail(new ClientEmail(email));
         }
@@ -110,7 +110,7 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public List<Client> getAllCLients() {
+    public List<Client> getAllClients() {
         return null;
     }
 }

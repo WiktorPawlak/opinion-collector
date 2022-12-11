@@ -46,23 +46,8 @@ public class RegistrationDto {
 //        return correctPassword;
 //    }
 
-    public boolean validateEmail(String email){
-        boolean correctEmail = false;
-        boolean whitespace = false;
-        for(int i = 0; i< email.length(); i++){
-            if (email.charAt(i) == '@') {
-                correctEmail = true;}
-            if(Character.isWhitespace(email.charAt(i))){
-                whitespace = true;
-            }
-        }
-        if (whitespace) {
-            correctEmail = false;
-        }
-        return correctEmail;
-    }
 
-    public static boolean patternMatches(String emailAddress) {
+    public static boolean validateEmail(String emailAddress) {
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         return Pattern.compile(regexPattern)

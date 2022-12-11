@@ -46,11 +46,4 @@ public class Client {
         this.username = new ClientUsername(username);
         this.email = new ClientEmail(email);
     }
-
-    public void changeMail() {
-    }
-
-    public void changePass() {
-    }
-
 }

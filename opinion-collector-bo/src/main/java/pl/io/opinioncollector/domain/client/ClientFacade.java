@@ -19,6 +19,5 @@ public interface ClientFacade {
     void changePass(ClientId clientId, String hashedPass);
 
     Client getClient(ClientId clientId);
-    List<Client> getAllCLients();
-
+    List<Client> getAllClients();
 }
