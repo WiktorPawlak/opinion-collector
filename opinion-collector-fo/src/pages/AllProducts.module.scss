@@ -1,0 +1,30 @@
+.products {
+  min-height: 100vh;
+  background-color: #726da8;
+}
+
+.searchForm {
+  min-height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchBar {
+  width: 50%;
+  border: none;
+  padding: 10px;
+}
+
+.searchButton {
+  background: white;
+  border: none;
+  padding: 10px 20px;
+  color: #726da8;
+}
+
+.products {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
