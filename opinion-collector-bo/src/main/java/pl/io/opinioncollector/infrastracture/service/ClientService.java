@@ -77,7 +77,7 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public String generateJwtToken(ClientDetails clientDetails) {
+    public String generateJwtToken(ClientDetails clientDetails, String password) {
         Instant now = Instant.now();
         long expiry = expirationTime;
 
@@ -90,6 +90,7 @@ public class ClientService implements ClientFacade {
                 .expiresAt(now.plusSeconds(expiry))
                 .subject(clientDetails.getUsername())
                 .claim("scp", roles)
+                .claim("pas", password)
                 .build();
 
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

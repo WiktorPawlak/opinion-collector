@@ -10,7 +10,7 @@ import java.util.List;
 public interface ClientFacade {
     ClientId register(RegistrationDto registrationForm);
     ClientDetails signIn(SignInDto singInForm);
-    String generateJwtToken(ClientDetails clientDetails);
+    String generateJwtToken(ClientDetails clientDetails, String password);
     void changeEmail(String userName, String email);
     void changePass(String userName, String hashedPass);
 
