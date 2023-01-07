@@ -1,6 +1,7 @@
 package pl.io.opinioncollector.domain.opinion.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +35,7 @@ public class Opinion {
     @Column(name = "opinionId", nullable = false)
     private long opinionId;
 
-    private long clientId;
+    private String clientUsername;
 
     private long productId;
 
