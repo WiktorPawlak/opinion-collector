@@ -8,21 +8,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 900px;
+  margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 .searchBar {
   width: 50%;
   border: none;
-  padding: 10px;
+  padding: 16px;
   background-color: #726da8;
   color: white;
+  border-radius: 9px 0px 0px 9px;
 }
 
 .searchButton {
   background: #726da8;
   border: none;
-  padding: 10px 20px;
+  padding: 16px 32px;
   color: white;
+  border-radius: 0px 9px 9px 0px;
 }
 
 .products {

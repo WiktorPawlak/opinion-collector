@@ -1,5 +1,5 @@
-.sign-up {
-  background: url("../common/images/Bg.png") center center/cover no-repeat;
+.signUp {
+  background: url("../../common/images/Bg.png") center center/cover no-repeat;
   height: 90vh;
   align-items: center;
   justify-content: center;
@@ -9,19 +9,19 @@
   display: block;
 }
 
-.form-container {
+.formContainer {
   border-radius: 2%;
   padding: 10px;
   padding-top: 20px;
   background-color: #edf2f8;
   width: 35vw;
-  height: 35vh;
+  height: 46vh;
   color: #02111b;
   margin-left: 140px;
   margin-top: 20px;
 }
 
-.sign-up-form {
+.signUpForm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +29,7 @@
   min-width: 380px;
 }
 
-.sign-up-form > input {
+.signUpForm > input {
   margin: 15px;
   background-color: #726da8;
   color: white;
@@ -39,7 +39,7 @@
   min-width: 300px;
 }
 
-.sign-up-form > input:hover,
+.signUpForm > input:hover,
 input:focus,
 input:active {
   border: none;
@@ -48,11 +48,11 @@ input:active {
   border-style: none;
   outline: none;
 }
-.sign-up-form > label {
+.signUpForm > label {
   font-size: 13px;
 }
 
-.sign-up-form > .search-btn {
+.signUpForm > .search-btn {
   margin-top: 15px;
   margin-bottom: 15px;
 }
