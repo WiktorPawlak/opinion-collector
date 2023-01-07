@@ -1,23 +1,27 @@
 package pl.io.opinioncollector.domain.suggestion;
 
+import java.util.List;
+
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
+import pl.io.opinioncollector.domain.product.model.Product;
 import pl.io.opinioncollector.domain.suggestion.model.Suggestion;
 import pl.io.opinioncollector.domain.suggestion.model.SuggestionProduct;
 import pl.io.opinioncollector.domain.suggestion.model.SuggestionState;
 
-import java.util.List;
-
 public interface SuggestionFacade {
-    public List<Suggestion> getAll();
 
-    public Suggestion getById(Long id);
+    Product getProductForSuggestion(long id);
 
-    public Suggestion createSuggestion(ClientUsername clientUsername, long productId, SuggestionProduct product);
+    List<Suggestion> getAll();
 
-    public Suggestion edit(Suggestion editedSuggestion);
+    Suggestion getById(Long id);
 
-    public void delete(Long id);
+    Suggestion createSuggestion(ClientUsername clientUsername, long productId, SuggestionProduct product);
 
-    public void acceptOrReject(Long id, SuggestionState state);
+    Suggestion edit(Suggestion editedSuggestion);
+
+    void delete(Long id);
+
+    void acceptOrReject(Long id, SuggestionState state);
 
 }
