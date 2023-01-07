@@ -37,7 +37,7 @@ public class ClientController {
         return ResponseEntity.ok(clientFacade.getAllClients());
     }
 
-    @PutMapping("/self-change-email")
+    @PutMapping("/self/change-email")
     public ResponseEntity<Object> changeEmail(Principal principal, String email) {
         try {
             clientFacade.changeEmail(principal.getName(), email);
@@ -47,7 +47,7 @@ public class ClientController {
         }
     }
 
-    @PutMapping("/self-change-password")
+    @PutMapping("/self/change-password")
     public ResponseEntity<Object> changePass(Principal principal, String hashedPass) {
         try {
             clientFacade.changePass(principal.getName(), hashedPass);
@@ -57,7 +57,7 @@ public class ClientController {
         }
     }
 
-    @PutMapping("/self-profile-deletion")
+    @PutMapping("/self/profile-deletion")
     public ResponseEntity<Object> archive(Principal principal) {
         try {
             clientFacade.archive(principal.getName());
@@ -68,6 +68,7 @@ public class ClientController {
     }
 
     @PutMapping("/change-role")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> changeRole(String userName, ClientRole role) {
         try {
             clientFacade.changeRole(userName, role);
@@ -77,7 +78,7 @@ public class ClientController {
         }
     }
 
-    @GetMapping("/all-archived-clients")
+    @GetMapping("/archived-clients")
     public ResponseEntity<Object> getAllArchivedClients() {
         try {
             return ResponseEntity.ok(clientFacade.getAllArchivedClients());
@@ -87,13 +88,12 @@ public class ClientController {
 
     }
 
-    @GetMapping("/all-active-clients")
+    @GetMapping("/active-clients")
     public ResponseEntity<Object> getAllActiveClients() {
         try {
             return ResponseEntity.ok(clientFacade.getAllActiveClients());
         } catch (IllegalStateException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
-
     }
 }
