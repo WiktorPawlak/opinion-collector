@@ -2,6 +2,9 @@ package pl.io.opinioncollector.application.controllers;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,7 @@ import pl.io.opinioncollector.domain.opinion.OpinionFacade;
 import pl.io.opinioncollector.domain.opinion.model.Opinion;
 
 import java.util.List;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,24 +35,46 @@ public class OpinionController {
         return opinionFacade.get(id);
     }
 
+    @GetMapping("client/{username}")
+    public ResponseEntity<Object> getAllUserOpinions(@PathVariable String username, Principal principal) {
+        try {
+            return ResponseEntity.ok(opinionFacade.getForUser(username, principal));
+        } catch(IllegalAccessException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        }
+    }
+
     @PostMapping
     public Opinion addOpinion(@RequestBody Opinion opinion) {
         return opinionFacade.add(opinion);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_STANDARD')")
     @PutMapping
-    public void editOpinion(@RequestBody Opinion opinion) {
-        opinionFacade.edit(opinion);
+    public ResponseEntity<Object> editOpinion(@RequestBody Opinion opinion, Principal principal) {
+        try {
+            opinionFacade.edit(opinion, principal);
+            return ResponseEntity.ok("Opinion edited successfully");
+        } catch(IllegalAccessException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        }
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_STANDARD')")
     @DeleteMapping("/{id}")
-    public void deleteOpinion(@PathVariable long id) {
-        opinionFacade.delete(id);
+    public ResponseEntity<Object> deleteOpinion(@PathVariable long id, Principal principal){
+        try{
+            opinionFacade.delete(id, principal);
+            return ResponseEntity.ok("Opinion deleted successfully");
+        } catch(IllegalAccessException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        }
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PutMapping("/{id}")
-    public void hideOpinion(@PathVariable long id) {
-        opinionFacade.changeHidden(id);
+    public void hideOpinion(@PathVariable long id, Principal principal) throws IllegalAccessException {
+        opinionFacade.changeHidden(id, principal);
     }
 
 }
