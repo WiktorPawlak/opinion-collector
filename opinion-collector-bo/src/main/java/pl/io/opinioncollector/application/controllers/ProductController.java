@@ -2,6 +2,7 @@ package pl.io.opinioncollector.application.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,26 +27,40 @@ public class ProductController {
     private final ProductFacade productFacade;
     private final OpinionFacade opinionFacade;
 
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @GetMapping
     public List<Product> getAllProducts() {
         return productFacade.getAllProducts();
     }
 
+    @GetMapping ("/visible")
+    public List<Product> getAllVisibleProducts() {return productFacade.getAllVisibleProducts();}
+
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable long id) {
         return productFacade.getProduct(id);
     }
 
+    @GetMapping("/visible/{id}")
+    public ProductDto getVisibleProduct(@PathVariable long id) {return productFacade.getVisibleProduct(id);}
+
+    @GetMapping("/category/{id}")
+    public List<Product> getAllProductsByCategoryId(@PathVariable long id) {return productFacade.getAllProductsByCategoryId(id);}
+
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PostMapping
     public Product addProduct(@RequestBody Product product) {
         return productFacade.add(product);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PutMapping("/hide")
     public void hideProduct(@RequestParam long id) {
         productFacade.hide(id);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PutMapping
     public Product editProduct(@RequestBody Product product) {
         return productFacade.edit(product);

@@ -15,4 +15,10 @@ public interface ProductFacade {
     void hide(long id);
 
     Product edit(Product product);
+
+    List<Product> getAllVisibleProducts();
+
+    ProductDto getVisibleProduct(long id);
+
+    List<Product> getAllProductsByCategoryId(long id);
 }
