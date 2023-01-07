@@ -15,13 +15,18 @@ import pl.io.opinioncollector.domain.client.model.Client;
 import pl.io.opinioncollector.domain.client.model.ClientDetails;
 import pl.io.opinioncollector.domain.client.model.ClientEmail;
 import pl.io.opinioncollector.domain.client.model.ClientId;
+import pl.io.opinioncollector.domain.client.model.ClientPassword;
+import pl.io.opinioncollector.domain.client.model.ClientRole;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
 import pl.io.opinioncollector.infrastracture.ClientRepository;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,11 +40,12 @@ public class ClientService implements ClientFacade {
     private long expirationTime;
 
     @Override
+    @Transactional
     public ClientId register(RegistrationDto registrationForm) {
-        boolean isValidEmail = registrationForm.validateEmail(registrationForm.getEmail());
+        boolean isValidEmail = RegistrationDto.validateEmail(registrationForm.getEmail());
         boolean isValidLogin = registrationForm.validateUsername(registrationForm.getLogin());
-//        boolean isValidPassword = registrationForm.validatePassword(registrationForm.getHashedPass());
-
+        boolean checkEmail = clientRepository.findByEmail(new ClientEmail(registrationForm.getEmail())).isPresent();
+        boolean checkLogin = clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).isPresent();
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
@@ -48,16 +54,33 @@ public class ClientService implements ClientFacade {
             throw new IllegalStateException("login not valid");
         }
 
-//        if (!isValidPassword) {
-//            throw new IllegalStateException("password not valid");
-//        }
+        if(checkLogin && checkEmail) {
+           if(!clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).get().isEnabled()){
+               Client client = clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin()))
+                   .orElseThrow(IllegalStateException::new);
+               client.setEnabled(true);
+               client.setModifiedAt(LocalDateTime.now());
+               clientRepository.save(client);
+               return  clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).get().getId();
+           }
+           else{
+               if (checkLogin) {
+                   throw new IllegalStateException("clientExist");
+               }
 
-        if (clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).isPresent()) {
-            throw new IllegalStateException("clientExist");
+               if (checkEmail) {
+                   throw new IllegalStateException("Email is taken by another user.");
+               }
+           }
+
         }
 
 
-        return clientRepository.save(new Client(registrationForm.getLogin(), registrationForm.getHashedPass(), registrationForm.getEmail())).getId();
+        return clientRepository.save(
+            new Client(registrationForm.getLogin(),
+                registrationForm.getHashedPass(),
+                registrationForm.getEmail())
+        ).getId();
     }
 
     @Override
@@ -70,7 +93,7 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
-    public String generateJwtToken(ClientDetails clientDetails) {
+    public String generateJwtToken(ClientDetails clientDetails, String password) {
         Instant now = Instant.now();
         long expiry = expirationTime;
 
@@ -83,23 +106,33 @@ public class ClientService implements ClientFacade {
                 .expiresAt(now.plusSeconds(expiry))
                 .subject(clientDetails.getUsername())
                 .claim("scp", roles)
+                .claim("pas", password)
                 .build();
 
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
     @Override
-    public void changeEmail(String clientId, String email) {
-
-        if (RegistrationDto.validateEmail(email)) {
-            clientRepository.findById(new ClientId(clientId)).orElseThrow(IllegalStateException::new).setEmail(new ClientEmail(email));
+    @Transactional
+    public void changeEmail(String userName, String email) {
+        if (RegistrationDto.validateEmail(email) && clientRepository.findByEmail(new ClientEmail(email)).isEmpty()) {
+            Client client = clientRepository.findByUsername(new ClientUsername(userName)).orElseThrow(IllegalStateException::new);
+            client.setEmail(new ClientEmail(email));
+            client.setModifiedAt(LocalDateTime.now());
+            clientRepository.save(client);
+        } else {
+            throw new IllegalStateException("Wrong email.");
         }
-
     }
 
     @Override
-    public void changePass(ClientId clientId, String hashedPass) {
-
+    @Transactional
+    public void changePass(String userName, String hashedPass) {
+        Client client = clientRepository.findByUsername(new ClientUsername(userName))
+            .orElseThrow(IllegalStateException::new);
+        client.setPassword(new ClientPassword(hashedPass));
+        client.setModifiedAt(LocalDateTime.now());
+        clientRepository.save(client);
     }
 
     @Override
@@ -110,6 +143,35 @@ public class ClientService implements ClientFacade {
 
     @Override
     public List<Client> getAllClients() {
-        return null;
+        return clientRepository.findAll();
     }
+
+    @Override
+    public void archive(String userName) {
+        Client client = clientRepository.findByUsername(new ClientUsername(userName))
+            .orElseThrow(IllegalStateException::new);
+        client.setEnabled(false);
+        client.setModifiedAt(LocalDateTime.now());
+        clientRepository.save(client);
+    }
+
+    @Override
+    public void changeRole(String userName, ClientRole role) {
+        Client client = clientRepository.findByUsername(new ClientUsername(userName))
+            .orElseThrow(IllegalStateException::new);
+        client.setRole(role);
+        client.setModifiedAt(LocalDateTime.now());
+        clientRepository.save(client);
+    }
+
+    @Override
+    public List<Client> getAllArchivedClients() {
+        return clientRepository.findByIsEnabled(false);
+    }
+
+    @Override
+    public List<Client> getAllActiveClients() {
+        return clientRepository.findByIsEnabled(true);
+    }
+
 }

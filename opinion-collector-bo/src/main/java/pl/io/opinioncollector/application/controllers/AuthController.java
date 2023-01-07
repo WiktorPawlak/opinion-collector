@@ -14,25 +14,27 @@ import pl.io.opinioncollector.domain.client.model.ClientId;
 import pl.io.opinioncollector.domain.dto.RegistrationDto;
 import pl.io.opinioncollector.domain.dto.SignInDto;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequiredArgsConstructor
-
 public class AuthController {
 
     private final ClientFacade clientFacade;
 
     @PostMapping("login")
-    public ResponseEntity<ClientDetails> login(@RequestBody SignInDto request) {
+    public ResponseEntity<Object> login(@RequestBody SignInDto request, HttpServletResponse response) {
         try {
             ClientDetails user = clientFacade.signIn(request);
-            String token = clientFacade.generateJwtToken(user);
+            String token = clientFacade.generateJwtToken(user, request.password);
 
-//            Cookie cookie = new Cookie("opinionCollector", token);
-//            cookie.setMaxAge(86400);
-//            cookie.setSecure(false);
-//            cookie.setHttpOnly(true);
-//
-//            response.addCookie(cookie);
+            Cookie cookie = new Cookie("opinionCollector", token);
+            cookie.setMaxAge(86400);
+            cookie.setSecure(true);
+            cookie.setHttpOnly(true);
+
+            response.addCookie(cookie);
 
             return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, token)
@@ -46,7 +48,7 @@ public class AuthController {
     public ResponseEntity<Object> register(@RequestBody RegistrationDto request) {
         try{
             ClientId id = clientFacade.register(request);
-            return ResponseEntity.ok()
+            return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.LOCATION, id.toString())
                 .build();
         }catch (IllegalStateException ex) {
