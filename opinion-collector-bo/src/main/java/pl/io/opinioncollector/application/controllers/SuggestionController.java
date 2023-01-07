@@ -1,6 +1,8 @@
 package pl.io.opinioncollector.application.controllers;
 
-import lombok.RequiredArgsConstructor;
+import java.security.Principal;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
+import pl.io.opinioncollector.domain.product.model.Product;
 import pl.io.opinioncollector.domain.suggestion.SuggestionFacade;
 import pl.io.opinioncollector.domain.suggestion.model.Suggestion;
 import pl.io.opinioncollector.domain.suggestion.model.SuggestionProduct;
 import pl.io.opinioncollector.domain.suggestion.model.SuggestionState;
-
-import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +31,11 @@ public class SuggestionController {
     @GetMapping
     public List<Suggestion> getAllSuggestions() {
         return suggestionFacade.getAll();
+    }
+
+    @GetMapping("/product/{id}")
+    public Product getProductForSuggestion(@PathVariable long id) {
+        return suggestionFacade.getProductForSuggestion(id);
     }
 
     @GetMapping("/{id}")

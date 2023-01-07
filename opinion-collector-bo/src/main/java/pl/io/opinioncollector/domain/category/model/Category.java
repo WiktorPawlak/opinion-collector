@@ -1,23 +1,25 @@
 package pl.io.opinioncollector.domain.category.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Category")
 public class Category {
@@ -25,10 +27,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "categoryId", nullable = false)
     private long categoryId;
-    private String parent;
+
+    @ManyToOne
+    private Category parent;
     private String categoryName;
-    //@ElementCollection
-    //private List<String> children = new ArrayList<String>();
 
-
+    private boolean leaf;
 }

@@ -1,36 +1,45 @@
 package pl.io.opinioncollector.infrastracture.product.facade;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import pl.io.opinioncollector.application.dto.ProductDto;
-import pl.io.opinioncollector.domain.category.model.Category;
-import pl.io.opinioncollector.domain.product.ProductFacade;
-import pl.io.opinioncollector.domain.product.model.Product;
-import pl.io.opinioncollector.infrastracture.category.repository.CategoryRepository;
-import pl.io.opinioncollector.infrastracture.product.repository.ProductRepository;
+import java.util.List;
 
 import javax.transaction.Transactional;
-import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import pl.io.opinioncollector.application.dto.ProductDto;
+import pl.io.opinioncollector.domain.category.CategoryFacade;
+import pl.io.opinioncollector.domain.product.ProductFacade;
+import pl.io.opinioncollector.domain.product.model.Product;
+import pl.io.opinioncollector.infrastracture.product.repository.ProductRepository;
 
 @RequiredArgsConstructor
 @Service
 public class ProductFacadeImpl implements ProductFacade {
 
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
+    private final CategoryFacade categoryFacade;
 
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
+    //TODO
+    //public List<Product> getAllProductsByCategoryId()
+    //findALlByCategoryId
+
     @Override
     public ProductDto getProduct(long id) {
         Product product = productRepository.findById(id).orElseThrow();
-        Category category = categoryRepository.findById(product.getCategoryId()).orElseThrow();
         return ProductDto.builder()
-            .product(product)
-            .category(category)
+            .id(product.getId())
+            .title(product.getTitle())
+            .ean(product.getEan())
+            .image(product.getImage())
+            .origin(product.getOrigin())
+            .visibility(product.isVisibility())
+            .category(categoryFacade.getPath(product.getCategoryId()))
             .build();
     }
 

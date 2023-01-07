@@ -1,10 +1,13 @@
 package pl.io.opinioncollector.infrastracture.suggestion.facade;
 
+import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import pl.io.opinioncollector.domain.client.ClientFacade;
-import pl.io.opinioncollector.domain.client.model.Client;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.product.ProductFacade;
 import pl.io.opinioncollector.domain.product.model.Product;
@@ -12,10 +15,8 @@ import pl.io.opinioncollector.domain.suggestion.SuggestionFacade;
 import pl.io.opinioncollector.domain.suggestion.model.Suggestion;
 import pl.io.opinioncollector.domain.suggestion.model.SuggestionProduct;
 import pl.io.opinioncollector.domain.suggestion.model.SuggestionState;
+import pl.io.opinioncollector.infrastracture.product.repository.ProductRepository;
 import pl.io.opinioncollector.infrastracture.suggestion.repository.SuggestionRepository;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,12 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
 
     private final SuggestionRepository suggestionRepository;
     private final ProductFacade productFacade;
+    private final ProductRepository productRepository;
+
+    @Override
+    public Product getProductForSuggestion(long id) {
+        return productRepository.findById(id).orElseThrow();
+    }
 
     @Override
     public List<Suggestion> getAll() {
@@ -37,7 +44,7 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
 
     @Override
     public Suggestion createSuggestion(ClientUsername clientUsername, long productId, SuggestionProduct suggestionProduct) {
-        Product product = productFacade.getProduct(productId).getProduct();
+        Product product = getProductForSuggestion(productId);
         Suggestion suggestion = Suggestion.builder()
             .product(product)
             .suggestionProduct(suggestionProduct)
@@ -66,7 +73,7 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     public void acceptOrReject(Long id, SuggestionState state) {
         Suggestion suggestion = getById(id);
         if (state.equals(SuggestionState.ACCEPTED)) {
-            Product product = productFacade.getProduct(suggestion.getProduct().getId()).getProduct();
+            Product product = getProductForSuggestion(suggestion.getProduct().getId());
             applySuggestion(suggestion.getSuggestionProduct(), product);
             productFacade.edit(product);
             suggestion.setSuggestionState(SuggestionState.ACCEPTED);
