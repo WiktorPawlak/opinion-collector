@@ -3,6 +3,7 @@ package pl.io.opinioncollector.domain.dto;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.regex.Pattern;
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-
+@NoArgsConstructor
 public class RegistrationDto {
     public String email;
     public String login;

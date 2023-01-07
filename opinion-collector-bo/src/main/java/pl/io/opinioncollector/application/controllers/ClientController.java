@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.io.opinioncollector.domain.client.ClientFacade;
 import pl.io.opinioncollector.domain.client.model.Client;
+import pl.io.opinioncollector.domain.client.model.ClientRole;
 
 import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("client")
+@RequestMapping("clients")
 public class ClientController {
 
     private final ClientFacade clientFacade;
@@ -28,7 +29,6 @@ public class ClientController {
         } catch (IllegalStateException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
-
     }
 
     @GetMapping
@@ -37,7 +37,7 @@ public class ClientController {
         return ResponseEntity.ok(clientFacade.getAllClients());
     }
 
-    @PutMapping("/change-email")
+    @PutMapping("/self/change-email")
     public ResponseEntity<Object> changeEmail(Principal principal, String email) {
         try {
             clientFacade.changeEmail(principal.getName(), email);
@@ -47,7 +47,7 @@ public class ClientController {
         }
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/self/change-password")
     public ResponseEntity<Object> changePass(Principal principal, String hashedPass) {
         try {
             clientFacade.changePass(principal.getName(), hashedPass);
@@ -57,4 +57,43 @@ public class ClientController {
         }
     }
 
+    @PutMapping("/self/profile-deletion")
+    public ResponseEntity<Object> archive(Principal principal) {
+        try {
+            clientFacade.archive(principal.getName());
+            return ResponseEntity.ok("Profile deletion");
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+    }
+
+    @PutMapping("/change-role")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    public ResponseEntity<Object> changeRole(String userName, ClientRole role) {
+        try {
+            clientFacade.changeRole(userName, role);
+            return ResponseEntity.ok("Role changed");
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/archived-clients")
+    public ResponseEntity<Object> getAllArchivedClients() {
+        try {
+            return ResponseEntity.ok(clientFacade.getAllArchivedClients());
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+
+    }
+
+    @GetMapping("/active-clients")
+    public ResponseEntity<Object> getAllActiveClients() {
+        try {
+            return ResponseEntity.ok(clientFacade.getAllActiveClients());
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+    }
 }
