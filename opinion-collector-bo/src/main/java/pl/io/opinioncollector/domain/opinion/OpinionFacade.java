@@ -1,16 +1,24 @@
 package pl.io.opinioncollector.domain.opinion;
 
 import pl.io.opinioncollector.domain.opinion.model.Opinion;
-import pl.io.opinioncollector.domain.opinion.model.OpinionId;
-import pl.io.opinioncollector.domain.product.model.ProductId;
 
 import java.util.List;
 
 public interface OpinionFacade {
-    List<Opinion> getAllFor(ProductId productId);
-    Opinion get(OpinionId opinionId);
-    void add(Opinion opinion);
+    List<Opinion> getFor(long productId);
+
+    List<Opinion> findAll();
+
+    Opinion get(long opinionId);
+
+    Opinion add(Opinion opinion);
+
     void edit(Opinion opinion);
-    void delete(OpinionId opinionId);
-    Double starAverage(ProductId productId);
+
+    void delete(long opinionId);
+
+    double starAverage(long productId);
+
+    void changeHidden(long opinionId);
+
 }

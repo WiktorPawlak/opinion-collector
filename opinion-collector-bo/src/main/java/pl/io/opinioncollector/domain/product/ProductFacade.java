@@ -1,13 +1,18 @@
 package pl.io.opinioncollector.domain.product;
 
-import pl.io.opinioncollector.domain.category.model.CategoryId;
+import pl.io.opinioncollector.application.dto.ProductDto;
 import pl.io.opinioncollector.domain.product.model.Product;
-import pl.io.opinioncollector.domain.product.model.ProductId;
+
+import java.util.List;
 
 public interface ProductFacade {
-    Product getAll();
-    Product get(ProductId id);
-    void add(Product product);
-    void hide(CategoryId id);
-    void edit(CategoryId id);
+    List<Product> getAllProducts();
+
+    ProductDto getProduct(long id);
+
+    Product add(Product product);
+
+    void hide(long id);
+
+    Product edit(Product product);
 }
