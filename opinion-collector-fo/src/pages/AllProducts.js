@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Product from "../common/components/ProductTile/Product";
+import Footer from "../common/layouts/components/Footer/Footer";
 import css from "./AllProducts.module.scss";
 
 function AllProducts() {
@@ -57,6 +58,7 @@ function AllProducts() {
           />
         ))}
       </div>
+      <Footer />
     </div>
   );
 }

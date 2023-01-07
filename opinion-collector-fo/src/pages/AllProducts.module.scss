@@ -1,6 +1,6 @@
 .products {
   min-height: 100vh;
-  background-color: #726da8;
+  background-color: #edf2f8;
 }
 
 .searchForm {
@@ -14,13 +14,15 @@
   width: 50%;
   border: none;
   padding: 10px;
+  background-color: #726da8;
+  color: white;
 }
 
 .searchButton {
-  background: white;
+  background: #726da8;
   border: none;
   padding: 10px 20px;
-  color: #726da8;
+  color: white;
 }
 
 .products {
