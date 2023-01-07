@@ -7,6 +7,7 @@ import pl.io.opinioncollector.domain.client.model.ClientEmail;
 import pl.io.opinioncollector.domain.client.model.ClientId;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,5 +16,7 @@ public interface ClientRepository extends JpaRepository<Client, ClientId> {
     Optional<Client> findByUsername(ClientUsername username);
 
     Optional<Client> findByEmail(ClientEmail email);
+
+    List<Client> findByIsEnabled(boolean enable);
 
 }

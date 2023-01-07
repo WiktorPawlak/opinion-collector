@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -56,9 +57,13 @@ public class SecurityConfig {
         HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
             .userDetailsService(clientDetailsService)
-            .passwordEncoder(bCryptPasswordEncoder)
             .and()
             .build();
+    }
+
+    @Bean
+    public AuthenticationFilter authenticationJwtTokenFilter() {
+        return new AuthenticationFilter();
     }
 
     @Bean
@@ -93,7 +98,8 @@ public class SecurityConfig {
             // Set up oauth2 resource server
             .and()
             .httpBasic(Customizer.withDefaults())
-            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .addFilterAfter(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -139,7 +145,7 @@ public class SecurityConfig {
         var source = new UrlBasedCorsConfigurationSource();
         var config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
