@@ -1,7 +1,9 @@
 package pl.io.opinioncollector.domain.suggestion;
 
+import java.security.Principal;
 import java.util.List;
 
+import pl.io.opinioncollector.application.dto.SuggestionDto;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.product.model.Product;
 import pl.io.opinioncollector.domain.suggestion.model.Suggestion;
@@ -18,10 +20,12 @@ public interface SuggestionFacade {
 
     Suggestion createSuggestion(ClientUsername clientUsername, long productId, SuggestionProduct product);
 
-    Suggestion edit(Suggestion editedSuggestion);
+    Suggestion edit(SuggestionDto editedSuggestion, Principal principal);
 
-    void delete(Long id);
+    void delete(Long id, Principal principal);
 
     void acceptOrReject(Long id, SuggestionState state);
+
+    public List<Suggestion> findUserSuggestions(String string, Principal principal);
 
 }

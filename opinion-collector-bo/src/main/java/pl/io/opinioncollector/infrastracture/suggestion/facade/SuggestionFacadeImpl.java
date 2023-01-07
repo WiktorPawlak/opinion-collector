@@ -1,13 +1,18 @@
 package pl.io.opinioncollector.infrastracture.suggestion.facade;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
+import javax.naming.AuthenticationException;
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import pl.io.opinioncollector.application.dto.SuggestionDto;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.product.ProductFacade;
 import pl.io.opinioncollector.domain.product.model.Product;
@@ -55,9 +60,16 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     }
 
     @Override
-    public Suggestion edit(Suggestion editedSuggestion) {
+    public Suggestion edit(SuggestionDto editedSuggestion, Principal principal) {
+        Suggestion suggestion = getById(editedSuggestion.getSuggestionId());
+        if(!principal.getName().equals(suggestion.getClient().getUsername())){
+            log.info("Access denied");
+            throw new AccessDeniedException("Access denied");
+        }
+        suggestion.setSuggestionState(SuggestionState.SUBMITTED);
+        suggestion.setSuggestionProduct(editedSuggestion.getSuggestionProduct());
         if (suggestionRepository.existsById(editedSuggestion.getSuggestionId())) {
-            return suggestionRepository.save(editedSuggestion);
+            return suggestionRepository.save(suggestion);
         } else {
             log.info("Entity with given id doesn't exist");
             throw new EntityNotFoundException("Entity with given id doesn't exist");
@@ -65,8 +77,16 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     }
 
     @Override
-    public void delete(Long id) {
-        suggestionRepository.delete(getById(id));
+    public void delete(Long id, Principal principal) {
+        Optional<Suggestion> suggestion = suggestionRepository.findById(id);
+        suggestion.ifPresentOrElse(s -> {
+            if(!s.getClient().equals(principal.getName())){
+                throw new AccessDeniedException("Access denied");
+            }
+        }, () -> {
+            throw new EntityNotFoundException("Entity with given id doesn't exist");
+        });
+        suggestionRepository.delete(suggestion.get());
     }
 
     @Override
@@ -80,11 +100,20 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
             log.info("Accepting suggestion with id {}", suggestion.getSuggestionId());
             suggestionRepository.delete(suggestion);
         } else if (state.equals(SuggestionState.REJECTED)) {
+            suggestion.setSuggestionState(SuggestionState.REJECTED);
+            suggestionRepository.save(suggestion);
             log.info("Rejecting suggestion with id {}", suggestion.getSuggestionId());
-            suggestionRepository.delete(suggestion);
         } else {
             throw new IllegalStateException("Invalid suggestion state provided");
         }
+    }
+
+    @Override
+    public List<Suggestion> findUserSuggestions(String clientUserName, Principal principal) {
+        if(!clientUserName.equals(principal.getName())){
+            throw new AccessDeniedException("Access denied");
+        }
+        return suggestionRepository.findAllByClientUsername(clientUserName);
     }
 
     private Product applySuggestion(SuggestionProduct suggestedChanges, Product product) {
