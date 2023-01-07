@@ -6,6 +6,7 @@ import AllProducts from "./pages/AllProducts";
 import Nav from "./common/layouts/components/Nav/Nav";
 import LogIn from "./pages/LogIn";
 import SingleProduct from "./pages/SingleProduct";
+import SignUp from "./pages/SignUp/SignUp";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<AllProducts />} />
         <Route path="/log-in" element={<LogIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/products-view/:id" element={<SingleProduct />} />
       </Routes>
     </Router>

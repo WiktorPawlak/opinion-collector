@@ -9,7 +9,7 @@ function Footer() {
       <hr />
       <div className={css.navbar}>
         <Link to="/" className={css.navbarLogo}>
-          <h4>OpinionCollector</h4>
+          <h4>OpinionCollector🍕</h4>
         </Link>
         <ul className={css.navMenu}>
           <li className={css.navItem}>
@@ -28,13 +28,9 @@ function Footer() {
             </Link>
           </li>
           <li className={css.navItem}>
-            <Button
-              className="nav-btn"
-              buttonStyle="btn--outline"
-              link="/log-in"
-            >
-              Log in
-            </Button>
+            <a href="/log-in">
+              <button className={css.footerButton}>Log in</button>
+            </a>
           </li>
         </ul>
       </div>
