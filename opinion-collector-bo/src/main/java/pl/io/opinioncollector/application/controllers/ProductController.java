@@ -1,7 +1,9 @@
 package pl.io.opinioncollector.application.controllers;
 
 
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
 import pl.io.opinioncollector.application.dto.ProductDto;
 import pl.io.opinioncollector.domain.opinion.OpinionFacade;
 import pl.io.opinioncollector.domain.opinion.model.Opinion;
 import pl.io.opinioncollector.domain.product.ProductFacade;
 import pl.io.opinioncollector.domain.product.model.Product;
-
-import java.util.List;
+import pl.io.opinioncollector.domain.product.model.ProductOrigin;
 
 @RequiredArgsConstructor
 @RestController
@@ -51,6 +54,11 @@ public class ProductController {
         @RequestParam(value = "pageSize", defaultValue = "${paging.defaultPageSize}", required = false) int pageSize
     ) {
         return productFacade.getAllVisibleProductsByCategoryPath(categoryPath, pageNo, pageSize);
+    }
+
+    @GetMapping("/origins")
+    public List<ProductOrigin> getAllProductOrigins() {
+        return Arrays.stream(ProductOrigin.POLAND.getDeclaringClass().getEnumConstants()).toList();
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

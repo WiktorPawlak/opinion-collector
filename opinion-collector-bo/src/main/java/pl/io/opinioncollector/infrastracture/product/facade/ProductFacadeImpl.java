@@ -18,12 +18,6 @@ import pl.io.opinioncollector.domain.product.ProductFacade;
 import pl.io.opinioncollector.domain.product.model.Product;
 import pl.io.opinioncollector.infrastracture.product.repository.ProductRepository;
 
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -40,9 +34,9 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public List<Product> getAllProductsByCategoryId(long id) {
-        if(!productRepository.findAllByCategoryId(id).isEmpty())
-        return productRepository.findAllByCategoryId(id);
-        else return null;
+        if (!productRepository.findAllByCategoryId(id).isEmpty())
+            return productRepository.findAllByCategoryId(id);
+        else return Collections.emptyList();
     }
 
     @Override
@@ -69,22 +63,22 @@ public class ProductFacadeImpl implements ProductFacade {
     @Transactional
     public void hide(long id) {
         Product productHide = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity with given id doesn't exist"));
-            productHide.setVisibility(!productHide.isVisibility());
-            productRepository.save(productHide);
-        }
+        productHide.setVisibility(!productHide.isVisibility());
+        productRepository.save(productHide);
+    }
 
     @Override
     @Transactional
     public Product edit(Product product) {
         Product productEdited = productRepository.findById(product.getId()).orElseThrow(() -> new EntityNotFoundException("Entity with given id doesn't exist"));
-            productEdited.setCategoryId(product.getCategoryId());
-            productEdited.setTitle(product.getTitle());
-            productEdited.setOrigin(product.getOrigin());
-            productEdited.setImage(product.getImage());
-            productEdited.setVisibility(product.isVisibility());
-            productEdited.setEan(product.getEan());
-            productRepository.save(productEdited);
-            return productEdited;
+        productEdited.setCategoryId(product.getCategoryId());
+        productEdited.setTitle(product.getTitle());
+        productEdited.setOrigin(product.getOrigin());
+        productEdited.setImage(product.getImage());
+        productEdited.setVisibility(product.isVisibility());
+        productEdited.setEan(product.getEan());
+        productRepository.save(productEdited);
+        return productEdited;
     }
 
     @Override
