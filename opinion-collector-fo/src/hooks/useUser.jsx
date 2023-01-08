@@ -15,7 +15,7 @@ export function useClient() {
       const response = await postLogin(credentials);
 
       if (response[1] === 200) {
-        response[0].then((user) => setClient(user));
+        setClient(response[0]);
         navigate('/products')
         window.location.reload(false);
         return true;
@@ -30,7 +30,7 @@ export function useClient() {
     const response = await apiGetSelf();
 
     if (response[1] === 200) {
-      response[0].then((user) => setClient(user));
+      setClient(response[0]);
     } else {
       navigate('/log-in')
     }
@@ -40,11 +40,19 @@ export function useClient() {
     const response = await apiGetClients();
 
     if (response[1] === 200) {
-      response[0].then((user) => setClients(user));
+      setClients(response[0]);
     } else {
       //toast?
     }
   }, []);
+
+  useEffect(() => {
+   getSelf()
+  }, [getSelf]);
+
+  useEffect(() => {
+    getClients();
+  }, [getClients]);
 
   useEffect(() => {
     if (client !== undefined) {

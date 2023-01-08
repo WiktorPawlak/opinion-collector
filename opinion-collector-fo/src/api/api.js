@@ -16,9 +16,9 @@ export async function get(stringUrl, params) {
   });
 
   if (response.ok) {
-    return [response.json(), response.status];
+    return [await response.json(), response.status];
   } else {
-    return [response.text(), response.status];
+    return [await response.text(), response.status];
   }
 }
 
@@ -34,8 +34,8 @@ export async function post(url, body) {
   })
 
   if (response.ok) {
-    return [response.json(), response.status];
+    return [await response.json(), response.status];
   } else {
-    return [response.text(), response.status];
+    return [await response.text(), response.status];
   }
 }
