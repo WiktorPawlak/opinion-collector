@@ -12,7 +12,7 @@ const Product = ({ title, description, image, id }) => {
           <p>Opis: {description}</p>
         </div>
         <div className={css.childDiv}>
-          <Link href={`/products-view/${id}`}>
+          <Link to={`/products/${id}`}>
             <button className={css.btn}>Rate</button>
           </Link>
         </div>
