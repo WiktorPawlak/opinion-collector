@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useState } from "react";
-import { apiGetClients, apiGetSelf, postLogin } from "../api/authApi";
+import { apiChangeEmail, apiGetClients, apiGetSelf, postLogin } from "../api/authApi";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -46,6 +46,16 @@ export function useClient() {
     }
   }, []);
 
+    const changeEmail = useCallback(async (email) => {
+    const response = await apiChangeEmail(email);
+
+    if (response[1] === 200) {
+      return "Email changed"
+    } else {
+      return response[0]
+    }
+  }, []);
+
   useEffect(() => {
    getSelf()
   }, [getSelf]);
@@ -60,5 +70,5 @@ export function useClient() {
     }
   }, [client]);
 
-  return { client, logInClient, getSelf, clientRole, getClients, clients };
+  return { client, logInClient, getSelf, clientRole, getClients, clients, changeEmail };
 }
