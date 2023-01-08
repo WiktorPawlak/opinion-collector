@@ -1,7 +1,5 @@
-import { useCallback } from "react";
-import { useState } from "react";
-import { apiGetClients, apiGetSelf, postLogin } from "../api/authApi";
-import { useEffect } from "react";
+import {useCallback, useEffect, useState} from "react";
+import {apiGetClients, apiGetSelf, postLogin} from "../api/authApi";
 import { useNavigate } from "react-router-dom";
 
 export function useClient() {

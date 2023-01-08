@@ -5,15 +5,6 @@ export function useCategory() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const response = apiGetCategories()
-    //         setCategories(response[0])
-    //         setLoading(false);
-    //     }
-    //     fetchData();
-    // }, []);
-
     const getCategories = useCallback(async () => {
         const response = await apiGetCategories();
 
@@ -27,5 +18,5 @@ export function useCategory() {
         getCategories()
     }, [getCategories]);
 
-    return {categories, loading}
+    return {categories, categoryLoading: loading}
 }
