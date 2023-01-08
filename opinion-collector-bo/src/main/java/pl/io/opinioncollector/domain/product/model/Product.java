@@ -1,8 +1,5 @@
 package pl.io.opinioncollector.domain.product.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Products")
@@ -35,7 +35,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductOrigin origin;
 
-    private boolean visibility;
+    private boolean visibility = true;
 
     private String ean;
 
