@@ -1,5 +1,5 @@
-import React from "react";
-import "./Client.css";
+import React from 'react';
+import './Client.css';
 
 export function Client(client) {
   return (

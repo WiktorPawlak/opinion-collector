@@ -1,10 +1,12 @@
-import {useCallback, useEffect, useState} from "react";
-import {apiGetClients, apiGetSelf, postLogin} from "../api/authApi";
-import { useCallback } from "react";
-import { useState } from "react";
-import { apiChangeEmail, apiGetClients, apiGetSelf, postLogin } from "../api/authApi";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from 'react';
+import {
+  apiChangeEmail,
+  apiChangePassword,
+  apiGetClients,
+  apiGetSelf,
+  postLogin
+} from '../api/authApi';
+import { useNavigate } from 'react-router-dom';
 
 export function useClient() {
   const [client, setClient] = useState();
@@ -51,13 +53,23 @@ export function useClient() {
     }
   }, []);
 
-    const changeEmail = useCallback(async (email) => {
+  const changeEmail = useCallback(async (email) => {
     const response = await apiChangeEmail(email);
 
     if (response[1] === 200) {
-      return "Email changed"
+      return 'Email changed';
     } else {
-      return response[0]
+      return response[0];
+    }
+  }, []);
+
+  const changePassword = useCallback(async (email) => {
+    const response = await apiChangePassword(email);
+
+    if (response[1] === 200) {
+      return 'Password changed';
+    } else {
+      return response[0];
     }
   }, []);
 
@@ -75,5 +87,14 @@ export function useClient() {
     }
   }, [client]);
 
-  return { client, logInClient, getSelf, clientRole, getClients, clients, changeEmail };
+  return {
+    client,
+    logInClient,
+    getSelf,
+    clientRole,
+    getClients,
+    clients,
+    changeEmail,
+    changePassword
+  };
 }

@@ -1,17 +1,21 @@
-import { useState } from "react";
-import { useClient } from "../hooks/useUser";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
-import { Client } from "./Client";
+import { useState } from 'react';
 import { useClient } from '../hooks/useUser';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { Client } from './Client';
 
 export function ClientPanel() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { client, clientRole, clients, changeEmail } = useClient();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { client, clientRole, clients, changeEmail, changePassword } = useClient();
 
   async function changeEmailButtonHandle() {
     const message = await changeEmail({ email: email });
+    toast(message);
+  }
+
+  async function changePasswordButtonHandle() {
+    const message = await changePassword({ password: password });
     toast(message);
   }
 
@@ -24,7 +28,7 @@ export function ClientPanel() {
               <b>Username:</b> {client.username.username}
             </label>
             <div>
-              {" "}
+              {' '}
               <label>
                 <b>E-mail:</b> {client.email.email}
               </label>
@@ -36,14 +40,12 @@ export function ClientPanel() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-              </span>{" "}
+              </span>{' '}
               <button onClick={changeEmailButtonHandle}>Change email</button>
             </div>
-
             <label>
               <b>Pssword:</b>
             </label>
-
             <div>
               <span>
                 <input
@@ -51,7 +53,7 @@ export function ClientPanel() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <button>Change password</button>
+                <button onClick={changePasswordButtonHandle} >Change password</button>
               </span>
             </div>
 
@@ -65,7 +67,7 @@ export function ClientPanel() {
       <div>
         <ul>
           {clients.map((client) => (
-            <li style={{ listStyleType: "none" }} key={client.id.id}>
+            <li style={{ listStyleType: 'none' }} key={client.id.id}>
               <Client client={client} />
             </li>
           ))}

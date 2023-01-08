@@ -52,9 +52,9 @@ export async function put(stringUrl, params) {
     //   "Content-Type": "application/json",
     //   Accept: "application/json",
     // },
-    credentials: "include",
-    method: "PUT",
+    credentials: 'include',
+    method: 'PUT'
   });
 
-  return  [await response.text(), response.status];
+  return [await response.text(), response.status];
 }

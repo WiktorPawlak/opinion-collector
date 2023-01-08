@@ -1,4 +1,4 @@
-import { get, post } from './api';
+import { get, post, put } from './api';
 
 export function postLogin(body) {
   return post('/login', body);
@@ -13,9 +13,9 @@ export function apiGetClients() {
 }
 
 export function apiChangePassword(params) {
-    return put("/clients/self/change-password", params)
+  return put('/clients/self/change-password', params);
 }
 
 export async function apiChangeEmail(params) {
-    return await put("/clients/self/change-email", params)
+  return await put('/clients/self/change-email', params);
 }
