@@ -41,21 +41,19 @@ export function ProductDetails() {
   }
 
   return (
-    <div className="container">
-      <div className="form-container">
-        <AddProductForm
-          handleSubmit={handleSubmit}
-          handleFileChange={handleFileChange}
-          isFilePicked={isFilePicked}
-          categories={categories}
-          origins={origins}
-          selectedFile={selectedFile}
-          setCategoryId={setCategoryId}
-          setEan={setEan}
-          setOrigin={setOrigin}
-          setTitle={setTitle}
-        />
-      </div>
+    <div className="container flex center-column">
+      <AddProductForm
+        handleSubmit={handleSubmit}
+        handleFileChange={handleFileChange}
+        isFilePicked={isFilePicked}
+        categories={categories}
+        origins={origins}
+        selectedFile={selectedFile}
+        setCategoryId={setCategoryId}
+        setEan={setEan}
+        setOrigin={setOrigin}
+        setTitle={setTitle}
+      />
     </div>
   );
 }

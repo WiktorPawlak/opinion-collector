@@ -1,5 +1,5 @@
 .sign-up {
-  background: url('../common/images/Bg.png') center center/cover no-repeat;
+  background: url("../common/images/Bg.png") center center/cover no-repeat;
   height: 90vh;
   align-items: center;
   justify-content: center;
@@ -9,16 +9,28 @@
   display: block;
 }
 
+.flex {
+  display: flex;
+}
+
+.center-column {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .form-container {
   border-radius: 2%;
-  padding: 10px;
-  padding-top: 20px;
+  padding: 20px 0;
   background-color: #edf2f8;
   width: 35vw;
-  height: 35vh;
   color: #02111b;
-  margin-left: 140px;
-  margin-top: 20px;
+  margin: 20px 0 0 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .sign-up-form {

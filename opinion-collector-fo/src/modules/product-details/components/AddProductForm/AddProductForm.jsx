@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Button, TextField } from '@mui/material';
 
 export const AddProductForm = ({
   handleSubmit,
@@ -12,7 +12,7 @@ export const AddProductForm = ({
   setTitle,
   handleFileChange
 }) => (
-  <form className="sign-up-form">
+  <form className="form-container">
     <label>Category</label>
     <Autocomplete
       isOptionEqualToValue={(option, value) =>
@@ -57,8 +57,13 @@ export const AddProductForm = ({
     <label>EAN</label>
     <TextField onChange={(e) => setEan(e.target.value)} />
 
-    <button onClick={handleSubmit} className="search-btn">
+    <Button
+      sx={{ width: '40' }}
+      variant="contained"
+      onClick={handleSubmit}
+      className="search-btn"
+    >
       Submit
-    </button>
+    </Button>
   </form>
 );

@@ -49,6 +49,10 @@ public class CategoryFacadeImpl implements CategoryFacade {
             return null;
         }
 
+        if (parent == null) {
+            return categoryName;
+        }
+
         List<Category> categoryList = getFamily(parent);
         return prepareCategoriesPath(categoryList, categoryName);
     }
