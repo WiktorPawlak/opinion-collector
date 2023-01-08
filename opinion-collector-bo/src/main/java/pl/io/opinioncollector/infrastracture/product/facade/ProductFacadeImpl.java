@@ -1,5 +1,6 @@
 package pl.io.opinioncollector.infrastracture.product.facade;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.io.opinioncollector.application.dto.ProductDto;
+import pl.io.opinioncollector.application.dto.ProductImageDto;
 import pl.io.opinioncollector.domain.category.CategoryFacade;
 import pl.io.opinioncollector.domain.category.model.Category;
 import pl.io.opinioncollector.domain.product.ProductFacade;
@@ -41,21 +43,19 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public ProductDto getProduct(long id) {
-
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity with given id doesn't exist"));
-        return ProductDto.builder()
-            .id(product.getId())
-            .title(product.getTitle())
-            .ean(product.getEan())
-            .image(product.getImage())
-            .origin(product.getOrigin())
-            .visibility(product.isVisibility())
-            .category(categoryFacade.getPath(product.getCategoryId()))
-            .build();
+        return toProduct(product);
     }
 
     @Override
-    public Product add(Product product) {
+    public Product add(ProductImageDto productDto) throws IOException {
+        var product = Product.builder()
+            .categoryId(productDto.getCategoryId())
+            .title(productDto.getTitle())
+            .origin(productDto.getOrigin())
+            .ean(productDto.getEan())
+            .image(productDto.getImage().getBytes())
+            .build();
         return productRepository.save(product);
     }
 
@@ -98,6 +98,10 @@ public class ProductFacadeImpl implements ProductFacade {
     @Override
     public ProductDto getVisibleProduct(long id) {
         Product product = productRepository.findProductByIdAndVisibilityIsTrue(id);
+        return toProduct(product);
+    }
+
+    private ProductDto toProduct(final Product product) {
         return ProductDto.builder()
             .id(product.getId())
             .title(product.getTitle())
