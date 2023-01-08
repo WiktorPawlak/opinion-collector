@@ -6,12 +6,14 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.io.opinioncollector.application.dto.ProductDto;
 import pl.io.opinioncollector.domain.category.CategoryFacade;
+import pl.io.opinioncollector.domain.category.model.Category;
 import pl.io.opinioncollector.domain.product.ProductFacade;
 import pl.io.opinioncollector.domain.product.model.Product;
 import pl.io.opinioncollector.infrastracture.product.repository.ProductRepository;
@@ -20,6 +22,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,10 +33,12 @@ public class ProductFacadeImpl implements ProductFacade {
     private final CategoryFacade categoryFacade;
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<Product> getAllProducts(int pageNo, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        return productRepository.findAll(pageRequest).getContent();
     }
 
+    @Override
     public List<Product> getAllProductsByCategoryId(long id) {
         if(!productRepository.findAllByCategoryId(id).isEmpty())
         return productRepository.findAllByCategoryId(id);
@@ -83,8 +88,17 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public List<Product> getAllVisibleProducts() {
-        return productRepository.findAllByVisibilityIsTrue();
+    public List<Product> getAllVisibleProducts(int pageNo, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        return productRepository.findAllByVisibilityIsTrue(pageRequest);
+    }
+
+    @Override
+    public List<Product> getAllVisibleProductsByCategoryPath(String categoryPath, int pageNo, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        List<Long> categoriesIds = categoryFacade.findByPath(categoryPath)
+            .stream().map(Category::getCategoryId).toList();
+        return productRepository.findAllByCategoryIdIn(categoriesIds, pageRequest);
     }
 
     @Override
