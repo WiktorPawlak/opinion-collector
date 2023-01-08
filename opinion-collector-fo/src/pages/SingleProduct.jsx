@@ -18,28 +18,24 @@ function SingleProduct() {
   useEffect(() => {
     fetchProductData();
   }, [fetchProductData]);
-
+  console.log(product);
   return (
     <div>
       {product && (
         <>
           <div className={css.containerImg}>
-            <h2>{product.title}</h2>
-            <div>Home / Products / Drink</div>
+            <div>{product.category}</div>
             <img src={Monster} alt="Potwór" />
+
             <div>
-              <h2>Ingredients</h2>
-              <p>A long list of trashy ingredients</p>
-            </div>
-            <div>
-              <h2>Opinions</h2>
-              <p>A long list of trashy ingredients</p>
+              <h2>EAN</h2>
+              <p>{product.ean}</p>
             </div>
           </div>
           <div className={css.containerDetails}>
-            <h2>Monster Energy</h2>
+            <h2>{product.title}</h2>
             <h4>
-              By <span>Monster Beverage Corporation</span>
+              From <span>{product.origin}</span>
             </h4>
             <p>Super cool description.</p>
             <button className={css.btn}>Rate</button>
