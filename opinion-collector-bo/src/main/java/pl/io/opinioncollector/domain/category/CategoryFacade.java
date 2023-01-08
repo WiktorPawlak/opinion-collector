@@ -11,7 +11,7 @@ public interface CategoryFacade {
     Category get(long categoryId);
     String getPath(long categoryId);
     Category add(CategoryDto categoryDto);
-    void edit(Category category);
+    void edit(CategoryDto categoryDto);
 
     void delete(long categoryId);
 }
