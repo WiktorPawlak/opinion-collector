@@ -38,7 +38,7 @@ public class SuggestionController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') ||" +
-        "hasAuthority('SCOPE_STANDARD')")
+        "hasAuthority('STANDARD')")
     public Suggestion getSuggestionById(@PathVariable Long id) {
         return suggestionFacade.getById(id);
     }
@@ -69,7 +69,7 @@ public class SuggestionController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') ||" +
-        "hasAuthority('SCOPE_STANDARD')")
+        "hasAuthority('STANDARD')")
     public void deleteSuggestion(Long id, Principal principal) {
         suggestionFacade.delete(id, principal);
     }

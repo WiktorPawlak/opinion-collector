@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.io.opinioncollector.application.dto.SuggestionDto;
+import pl.io.opinioncollector.domain.client.ClientFacade;
+import pl.io.opinioncollector.domain.client.model.Client;
+import pl.io.opinioncollector.domain.client.model.ClientRole;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.product.ProductFacade;
 import pl.io.opinioncollector.domain.product.model.Product;
@@ -31,6 +34,7 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     private final SuggestionRepository suggestionRepository;
     private final ProductFacade productFacade;
     private final ProductRepository productRepository;
+    private final ClientFacade clientFacade;
 
     @Override
     public Product getProductForSuggestion(long id) {
@@ -79,8 +83,9 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     @Override
     public void delete(Long id, Principal principal) {
         Optional<Suggestion> suggestion = suggestionRepository.findById(id);
+        Client client = clientFacade.getClient(principal.getName());
         suggestion.ifPresentOrElse(s -> {
-            if(!s.getClient().equals(principal.getName())){
+            if(!s.getClient().equals(principal.getName()) || !client.getRole().equals(ClientRole.ADMIN)){
                 throw new AccessDeniedException("Access denied");
             }
         }, () -> {
