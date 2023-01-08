@@ -13,7 +13,7 @@ export function useClient() {
       const response = await postLogin(credentials);
 
       if (response[1] === 200) {
-        response[0].then((user) => setClient(user));
+        setClient(response[0]);
         return true;
       } else {
         console.log("Wrong password or username");
@@ -26,7 +26,7 @@ export function useClient() {
     const response = await apiGetSelf();
 
     if (response[1] === 200) {
-      response[0].then((user) => setClient(user));
+      setClient(response[0]);
     } else {
       //przenieś na stronę logowania
     }
@@ -36,7 +36,7 @@ export function useClient() {
     const response = await apiGetClients();
 
     if (response[1] === 200) {
-      response[0].then((user) => setClients(user));
+      setClients(response[0]);
     } else {
       //toast?
     }
