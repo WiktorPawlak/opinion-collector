@@ -59,6 +59,10 @@ hr {
   height: 100%;
 }
 
+.navLinks:hover {
+  color: #594157;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -68,7 +72,7 @@ hr {
   top: 0;
 }
 
-.footerButton {
+.navButton {
   border-radius: 5px;
   background-color: #edf2f8;
   border: none;
