@@ -54,25 +54,22 @@ public class ClientService implements ClientFacade {
             throw new IllegalStateException("login not valid");
         }
 
-        if(checkLogin && checkEmail) {
-           if(!clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).get().isEnabled()){
-               Client client = clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin()))
-                   .orElseThrow(IllegalStateException::new);
-               client.setEnabled(true);
-               client.setModifiedAt(LocalDateTime.now());
-               clientRepository.save(client);
-               return  clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).get().getId();
-           }
-           else{
-               if (checkLogin) {
-                   throw new IllegalStateException("clientExist");
-               }
+        if(checkLogin && checkEmail && !clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).get().isEnabled()){
+            Client client = clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin()))
+                .orElseThrow(IllegalStateException::new);
+            client.setEnabled(true);
+            client.setModifiedAt(LocalDateTime.now());
+            clientRepository.save(client);
+            return  clientRepository.findByUsername(new ClientUsername(registrationForm.getLogin())).get().getId();
+        }
+        else{
+            if (checkLogin) {
+                throw new IllegalStateException("clientExist");
+            }
 
-               if (checkEmail) {
-                   throw new IllegalStateException("Email is taken by another user.");
-               }
-           }
-
+            if (checkEmail) {
+                throw new IllegalStateException("Email is taken by another user.");
+            }
         }
 
 
