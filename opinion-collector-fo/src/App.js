@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import AllProducts from "./pages/AllProducts";
-import Nav from "./common/layouts/components/Nav/Nav";
-import LogIn from "./pages/LogIn";
-import SingleProduct from "./pages/SingleProduct";
-import SignUp from "./pages/SignUp/SignUp";
-import { ClientPanel } from "./pages/ClientPanel";
-import {ProductDetails} from "./pages/ProductDetails";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import AllProducts from './pages/AllProducts';
+import Nav from './common/layouts/components/Nav/Nav';
+import LogIn from './pages/LogIn';
+import SingleProduct from './pages/SingleProduct';
+import SignUp from './pages/SignUp/SignUp';
+import { ClientPanel } from './pages/ClientPanel';
+import { ProductDetails } from './pages/ProductDetails';
 
 function App() {
   return (

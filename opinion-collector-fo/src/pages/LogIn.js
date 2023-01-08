@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import CopyrightFooter from "../common/layouts/components/CopyrightFooter/CopyrightFooter";
-import "./LogIn.css";
-import { useClient } from "../hooks/useUser";
+import React, { useState } from 'react';
+import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
+import './LogIn.css';
+import { useClient } from '../hooks/useUser';
 
 function LogIn() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const { logInClient } = useClient();
 
   function signInButtonHandle() {

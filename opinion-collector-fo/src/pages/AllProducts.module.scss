@@ -27,6 +27,10 @@
   color: white;
   border-radius: 9px;
   padding: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .searchBar {

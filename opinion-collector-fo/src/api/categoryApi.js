@@ -1,5 +1,5 @@
-import { get } from "./api"
+import { get } from './api';
 
 export function apiGetCategories() {
-    return get("/categories")
+  return get('/categories');
 }

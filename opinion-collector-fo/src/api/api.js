@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = 'http://localhost:8080';
 
 export async function get(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
@@ -8,11 +8,11 @@ export async function get(stringUrl, params) {
 
   const response = await fetch(url, {
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
     },
-    credentials: "include",
-    method: "GET",
+    credentials: 'include',
+    method: 'GET'
   });
 
   if (response.ok) {
@@ -25,13 +25,13 @@ export async function get(stringUrl, params) {
 export async function post(url, body) {
   const response = await fetch(`${BASE_URL}${url}`, {
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
     },
-    credentials: "include",
-    method: "POST",
-    body: JSON.stringify(body),
-  })
+    credentials: 'include',
+    method: 'POST',
+    body: JSON.stringify(body)
+  });
 
   if (response.ok) {
     return [await response.json(), response.status];

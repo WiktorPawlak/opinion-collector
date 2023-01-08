@@ -1,5 +1,5 @@
-import React from "react";
-import css from "./HeroCard.module.scss";
+import React from 'react';
+import css from './HeroCard.module.scss';
 
 function HeroCard() {
   return (
