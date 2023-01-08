@@ -23,14 +23,14 @@ export function ProductDetails() {
                             <option key={category.categoryId} value={category.categoryName} />
                         ))}
                     </datalist>
-                    <label>Title</label>
-                    <input type="text" onChange={(e) => setPassword(e.target.value)} />
-                    <label>Image</label>
-                    <input type="text" onChange={(e) => setUsername(e.target.value)} />
-                    <label>Origin</label>
-                    <input type="text" onChange={(e) => setPassword(e.target.value)} />
-                    <label>EAN</label>
-                    <input type="text" onChange={(e) => setUsername(e.target.value)} />
+                    {/*<label>Title</label>*/}
+                    {/*<input type="text" onChange={(e) => setPassword(e.target.value)} />*/}
+                    {/*<label>Image</label>*/}
+                    {/*<input type="text" onChange={(e) => setUsername(e.target.value)} />*/}
+                    {/*<label>Origin</label>*/}
+                    {/*<input type="text" onChange={(e) => setPassword(e.target.value)} />*/}
+                    {/*<label>EAN</label>*/}
+                    {/*<input type="text" onChange={(e) => setUsername(e.target.value)} />*/}
                 </form>
                 {/*<button className="signInButton" onClick={signInButtonHandle}>*/}
                 {/*    Sign In*/}
