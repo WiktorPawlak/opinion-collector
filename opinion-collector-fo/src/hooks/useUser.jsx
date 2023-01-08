@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export function useClient() {
   const [client, setClient] = useState();
   const [clients, setClients] = useState([]);
-  const [clientRole, setClientRole] = useState();
+  const [clientRole, setClientRole] = useState("");
 
   const logInClient = useCallback(async (credentials) => {
     if (credentials) {
@@ -41,6 +41,14 @@ export function useClient() {
       //toast?
     }
   }, []);
+
+  useEffect(() => {
+   getSelf()
+  }, [getSelf]);
+
+  useEffect(() => {
+    getClients();
+  }, [getClients]);
 
   useEffect(() => {
     if (client !== undefined) {
