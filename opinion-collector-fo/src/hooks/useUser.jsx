@@ -32,7 +32,7 @@ export function useClient() {
     if (response[1] === 200) {
       setClient(response[0]);
     } else {
-      navigate('/log-in')
+      //przenieś na stronę logowania
     }
   }, [navigate]);
 
