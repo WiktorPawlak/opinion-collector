@@ -12,7 +12,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByVisibilityIsTrue(PageRequest pageRequest);
 
-    List<Product> findAllByCategoryIdIn(List<Long> ids, PageRequest pageRequest);
+    List<Product> findAllByVisibilityIsTrueAndCategoryIdIn(List<Long> ids, PageRequest pageRequest);
 
     Product findProductByIdAndVisibilityIsTrue(long id);
 

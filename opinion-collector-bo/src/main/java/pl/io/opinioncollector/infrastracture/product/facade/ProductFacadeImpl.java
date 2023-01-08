@@ -92,7 +92,7 @@ public class ProductFacadeImpl implements ProductFacade {
         PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
         List<Long> categoriesIds = categoryFacade.findByPath(categoryPath)
             .stream().map(Category::getCategoryId).toList();
-        return productRepository.findAllByCategoryIdIn(categoriesIds, pageRequest);
+        return productRepository.findAllByVisibilityIsTrueAndCategoryIdIn(categoriesIds, pageRequest);
     }
 
     @Override

@@ -41,19 +41,17 @@ public class ProductController {
 
     @GetMapping("/visible")
     public List<Product> getAllVisibleProducts(
+        @RequestParam(value = "categoryPath", required = false) String categoryPath,
         @RequestParam(value = "pageNo", defaultValue = "${paging.defaultPageNo}", required = false) int pageNo,
         @RequestParam(value = "pageSize", defaultValue = "${paging.defaultPageSize}", required = false) int pageSize
     ) {
-        return productFacade.getAllVisibleProducts(pageNo, pageSize);
-    }
-
-    @GetMapping("/category/visible")
-    public List<Product> getAllVisibleProductsByCategoryPath(
-        @RequestParam(value = "categoryPath") String categoryPath,
-        @RequestParam(value = "pageNo", defaultValue = "${paging.defaultPageNo}", required = false) int pageNo,
-        @RequestParam(value = "pageSize", defaultValue = "${paging.defaultPageSize}", required = false) int pageSize
-    ) {
-        return productFacade.getAllVisibleProductsByCategoryPath(categoryPath, pageNo, pageSize);
+        List<Product> products;
+        if (categoryPath == null) {
+            products = productFacade.getAllVisibleProducts(pageNo, pageSize);
+        } else {
+            products = productFacade.getAllVisibleProductsByCategoryPath(categoryPath, pageNo, pageSize);
+        }
+        return products;
     }
 
     @GetMapping("/origins")
