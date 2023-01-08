@@ -26,6 +26,13 @@ public class CategoryFacadeImpl implements CategoryFacade {
     }
 
     @Override
+    public List<Category> findByPath(String path) {
+        // TODO: create repository method
+        //categoryRepository.findByCategoryPathStartsWith(path);
+        return null;
+    }
+
+    @Override
     public Category get(long categoryId) {
         return categoryRepository.findById(categoryId).orElse(null);
     }
