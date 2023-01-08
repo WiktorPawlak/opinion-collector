@@ -2,6 +2,7 @@ package pl.io.opinioncollector.application.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,12 +48,12 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
-    public void editCategory(@RequestBody Category category) {
-        categoryFacade.edit(category);
+    public void editCategory(@RequestBody CategoryDto categoryDto) {
+        categoryFacade.edit(categoryDto);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/delete")
+    @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable long id) {
         categoryFacade.delete(id);
     }
