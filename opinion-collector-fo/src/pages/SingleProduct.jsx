@@ -19,13 +19,14 @@ function SingleProduct() {
     fetchProductData();
   }, [fetchProductData]);
   console.log(product);
+
   return (
     <div>
       {product && (
         <>
           <div className={css.containerImg}>
             <div>{product.category}</div>
-            <img src={Monster} alt="Potwór" />
+            <img src={`data:image/jpeg;base64,${product.image}`} alt="Potwór" />
 
             <div>
               <h2>EAN</h2>
