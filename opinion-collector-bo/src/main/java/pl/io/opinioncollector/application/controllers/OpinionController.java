@@ -44,6 +44,7 @@ public class OpinionController {
         }
     }
 
+    @PreAuthorize("hasAuthority('STANDARD')")
     @PostMapping
     public Opinion addOpinion(@RequestBody Opinion opinion) {
         return opinionFacade.add(opinion);
