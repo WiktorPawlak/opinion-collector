@@ -34,7 +34,7 @@ export function useClient() {
     } else {
       //przenieś na stronę logowania
     }
-  }, [navigate]);
+  }, []);
 
   const getClients = useCallback(async () => {
     const response = await apiGetClients();
