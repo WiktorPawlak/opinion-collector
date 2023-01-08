@@ -31,6 +31,7 @@ public class Category {
     @ManyToOne
     private Category parent;
     private String categoryName;
+    private String categoryPath;
 
     private boolean leaf;
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CategoryFacade {
     List<Category> findAll();
+    List<Category> findByPath(String path);
     Category get(long categoryId);
     String getPath(long categoryId);
     Category add(CategoryDto categoryDto);

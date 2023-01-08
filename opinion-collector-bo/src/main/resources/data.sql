@@ -21,5 +21,8 @@ values ('00000000-0000-0000-0000-000000000000',
         'STANDARD',
         'user2');
 
-insert into category (category_id, category_name, leaf, parent_category_id) values (1, 'string', true, null);
-insert into products (product_id, category_id, ean, image, origin, title, visibility) values (1, 1, 'string', 1010,'USA', 'string', true);
+insert into category (category_id, category_name, leaf, parent_category_id, category_path) values (1, 'kategoria1', false, null, 'kategoria1');
+insert into category (category_id, category_name, leaf, parent_category_id, category_path) values (2, 'kategoria2', true, 1, 'kategoria1 > kategoria2');
+insert into products (product_id, category_id, ean, image, origin, title, visibility) values (1, 1, 'produkt1', 1010,'USA', 'string', true);
+insert into products (product_id, category_id, ean, image, origin, title, visibility) values (2, 2, 'produkt2', 1010,'USA', 'string', true);
+

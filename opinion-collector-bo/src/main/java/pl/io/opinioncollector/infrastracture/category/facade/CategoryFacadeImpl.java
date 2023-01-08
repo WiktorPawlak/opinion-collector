@@ -26,6 +26,11 @@ public class CategoryFacadeImpl implements CategoryFacade {
     }
 
     @Override
+    public List<Category> findByPath(String path) {
+        return categoryRepository.findByCategoryPathStartingWith(path);
+    }
+
+    @Override
     public Category get(long categoryId) {
         return categoryRepository.findById(categoryId).orElse(null);
     }
@@ -33,12 +38,19 @@ public class CategoryFacadeImpl implements CategoryFacade {
     @Override
     public String getPath(long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElse(null);
-        if (category == null) {
+        if (category != null) {
+            return category.getCategoryPath();
+        }
+        return null;
+    }
+
+    private String preparePath(String categoryName, Category parent) {
+        if (categoryName == null) {
             return null;
         }
 
-        List<Category> categoryList = getFamily(category);
-        return prepareCategoriesPath(categoryList);
+        List<Category> categoryList = getFamily(parent);
+        return prepareCategoriesPath(categoryList, categoryName);
     }
 
     private List<Category> getFamily(Category category) {
@@ -52,14 +64,13 @@ public class CategoryFacadeImpl implements CategoryFacade {
         return categoryList;
     }
 
-    private String prepareCategoriesPath(List<Category> categoryList) {
+    private String prepareCategoriesPath(List<Category> categoryList, String categoryName) {
         StringBuilder path = new StringBuilder();
-        for (int i = 0; i < categoryList.size(); i++) {
-            path.append(categoryList.get(i).getCategoryName());
-            if (i < categoryList.size() - 1)
-                path.append(" > ");
+        for (Category category : categoryList) {
+            path.append(category.getCategoryName());
+            path.append(" > ");
         }
-        return path.toString();
+        return path + categoryName;
     }
 
     @Override
@@ -69,7 +80,8 @@ public class CategoryFacadeImpl implements CategoryFacade {
         Category category = Category.builder()
             .categoryId(categoryDto.getCategoryId())
             .categoryName(categoryDto.getCategoryName())
-            .parent(get(categoryDto.getParentId()))
+            .categoryPath(preparePath(categoryDto.getCategoryName(), parent))
+            .parent(parent)
             .leaf(true)
             .build();
 

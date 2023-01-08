@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Product from "../common/components/ProductTile/Product";
 import Footer from "../common/layouts/components/Footer/Footer";
 import css from "./AllProducts.module.scss";
-import { getProducts } from "../api/protuctApi";
+import { getProducts } from "../api/productApi";
 import { useClient } from "../hooks/useUser";
 
 function AllProducts() {
