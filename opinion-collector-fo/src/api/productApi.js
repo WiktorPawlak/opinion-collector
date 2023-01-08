@@ -1,4 +1,4 @@
-import { get, post } from './api';
+import { get, postMultipart } from './api';
 
 export function getProducts() {
   return get('/products');
@@ -9,7 +9,5 @@ export function getProductOrigins(body) {
 }
 
 export async function postProduct(body) {
-  return post('/products', body, {
-    'Content-Type': 'multipart/form-data'
-  });
+  return postMultipart('/products', body, true);
 }

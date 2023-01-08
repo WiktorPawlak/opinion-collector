@@ -41,3 +41,17 @@ export async function post(url, body, headers = defaultHeaders) {
     return [await response.text(), response.status];
   }
 }
+
+export async function postMultipart(url, body) {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    credentials: 'include',
+    method: 'POST',
+    body
+  });
+
+  if (response.ok) {
+    return [await response.json(), response.status];
+  } else {
+    return [await response.text(), response.status];
+  }
+}
