@@ -1,0 +1,13 @@
+.client {
+    display: flex;
+    justify-content: space-between;
+    height: 5vh;
+    width: 50vw;
+    border: solid black 1px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.client:hover {
+   background-color: antiquewhite;
+}
