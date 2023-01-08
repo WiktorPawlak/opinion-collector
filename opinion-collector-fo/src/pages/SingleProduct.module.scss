@@ -1,0 +1,47 @@
+.containerImg {
+  background-color: #726da8;
+  color: white;
+  display: block;
+  min-height: 140vh;
+  float: left;
+  width: 50%;
+  overflow: hidden;
+}
+.containerImg > * {
+  margin-left: 100px;
+}
+.parentContainer {
+  overflow: hidden;
+  display: flex;
+}
+.containerDetails {
+  background-color: #726da8;
+  color: white;
+  display: block;
+  min-height: 140vh;
+  float: left;
+  width: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+img {
+  border-radius: 9px;
+}
+
+.bgAsset {
+  height: 600px;
+  position: absolute;
+  right: -50px;
+  width: auto;
+}
+
+.btn {
+  padding: 8px 20px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #918cc2;
+  color: white;
+}
