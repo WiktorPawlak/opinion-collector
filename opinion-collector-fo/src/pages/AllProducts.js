@@ -1,14 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Product from "../common/components/ProductTile/Product";
-import Footer from "../common/layouts/components/Footer/Footer";
-import css from "./AllProducts.module.scss";
-import { getProducts } from "../api/productApi";
-import { useClient } from "../hooks/useUser";
+import React, { useCallback, useEffect, useState } from 'react';
+import Product from '../common/components/ProductTile/Product';
+import Footer from '../common/layouts/components/Footer/Footer';
+import css from './AllProducts.module.scss';
+import { getProducts } from '../api/productApi';
+import { useClient } from '../hooks/useUser';
+import { Link } from 'react-router-dom';
 
 function AllProducts() {
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
-  const [query, setQuery] = useState("chicken");
+  const [search, setSearch] = useState('');
+  const [query, setQuery] = useState('chicken');
   const { clientRole } = useClient();
 
   const findProducts = useCallback(async () => {
@@ -18,7 +19,7 @@ function AllProducts() {
       setProducts(response[0]);
     } else {
       //toast ?
-      console.log("Ni ma produktów");
+      console.log('Ni ma produktów');
     }
   }, []);
 
@@ -33,17 +34,17 @@ function AllProducts() {
   const getSearch = (e) => {
     e.preventDefault();
     setQuery(search);
-    setSearch("");
+    setSearch('');
   };
 
   return (
     <div className="products">
       <div className={css.productsNavs}>
         <form onSubmit={getSearch} className={css.searchForm}>
-          {clientRole === "ADMIN" && (
-            <a style={{marginRight: "10vw"}} href="/products/add">
-              <button type="onSubmit" className={css.addProductButton}>Add product</button>
-            </a>
+          {clientRole === 'ADMIN' && (
+            <Link style={{ marginRight: '10vw' }} to="/products/add">
+              <button className={css.addProductButton}>Add product</button>
+            </Link>
           )}
           <input
             className={css.searchBar}

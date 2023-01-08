@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
-import CopyrightFooter from "../common/layouts/components/CopyrightFooter/CopyrightFooter";
-import css from "./SingleProduct.module.scss";
-import Monster from "../common/images/monster.jpg";
-import BgAsset from "../common/images/bg_asset.png";
+import React from 'react';
+import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
+import css from './SingleProduct.module.scss';
+import Monster from '../common/images/monster.jpg';
+import BgAsset from '../common/images/bg_asset.png';
+
 function SingleProduct() {
   return (
     <div>
       <div className={css.containerImg}>
         <div>Home / Products / Drink</div>
-        <img src={Monster} />
+        <img src={Monster} alt="Potwór" />
         <div>
           <h2>Ingredients</h2>
           <p>A long list of trashy ingredients</p>
@@ -25,7 +26,7 @@ function SingleProduct() {
         </h4>
         <p>Super cool description.</p>
         <button className={css.btn}>Rate</button>
-        <img src={BgAsset} className={css.bgAsset} />
+        <img src={BgAsset} className={css.bgAsset} alt="Fajne zdjęcie" />
       </div>
       <CopyrightFooter className={css.footer} />
     </div>

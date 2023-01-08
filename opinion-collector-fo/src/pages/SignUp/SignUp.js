@@ -1,6 +1,7 @@
-import React from "react";
-import CopyrightFooter from "../../common/layouts/components/CopyrightFooter/CopyrightFooter";
-import css from "./SignUp.module.scss";
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React from 'react';
+import CopyrightFooter from '../../common/layouts/components/CopyrightFooter/CopyrightFooter';
+import css from './SignUp.module.scss';
 
 function SignUp() {
   return (

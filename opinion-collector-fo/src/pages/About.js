@@ -1,6 +1,6 @@
-import React from "react";
-import CopyrightFooter from "../common/layouts/components/CopyrightFooter/CopyrightFooter";
-import css from "./About.module.scss";
+import React from 'react';
+import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
+import css from './About.module.scss';
 export default function About() {
   return (
     <div>

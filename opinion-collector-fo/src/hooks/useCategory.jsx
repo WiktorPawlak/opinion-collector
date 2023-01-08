@@ -1,22 +1,22 @@
-import {useState, useEffect, useCallback} from "react";
-import {apiGetCategories} from "../api/categoryApi";
+import { useState, useEffect, useCallback } from 'react';
+import { apiGetCategories } from '../api/categoryApi';
 
 export function useCategory() {
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const getCategories = useCallback(async () => {
-        const response = await apiGetCategories();
+  const getCategories = useCallback(async () => {
+    const response = await apiGetCategories();
 
-        if (response[1] === 200) {
-            setCategories(response[0]);
-            setLoading(false);
-        }
-    }, []);
+    if (response[1] === 200) {
+      setCategories(response[0]);
+      setLoading(false);
+    }
+  }, []);
 
-    useEffect(() => {
-        getCategories()
-    }, [getCategories]);
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
 
-    return {categories, categoryLoading: loading}
+  return { categories, categoryLoading: loading };
 }

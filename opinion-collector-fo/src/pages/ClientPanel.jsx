@@ -3,6 +3,7 @@ import { useClient } from "../hooks/useUser";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { Client } from "./Client";
+import { useClient } from '../hooks/useUser';
 
 export function ClientPanel() {
   const [email, setEmail] = useState("");

@@ -1,15 +1,15 @@
-import { get, post, put } from "./api"
+import { get, post } from './api';
 
 export function postLogin(body) {
-    return post("/login", body)
+  return post('/login', body);
 }
 
 export function apiGetSelf() {
-    return get("/clients/self")
+  return get('/clients/self');
 }
 
 export function apiGetClients() {
-    return get("/clients")
+  return get('/clients');
 }
 
 export function apiChangePassword(params) {

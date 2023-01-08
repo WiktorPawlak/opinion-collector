@@ -12,21 +12,24 @@ export function useClient() {
   const [clientRole, setClientRole] = useState();
   const navigate = useNavigate();
 
-  const logInClient = useCallback(async (credentials) => {
-    if (credentials) {
-      const response = await postLogin(credentials);
+  const logInClient = useCallback(
+    async (credentials) => {
+      if (credentials) {
+        const response = await postLogin(credentials);
 
-      if (response[1] === 200) {
-        setClient(response[0]);
-        navigate('/products')
-        window.location.reload(false);
-        return true;
-      } else {
-        console.log("Wrong password or username");
-        return false;
+        if (response[1] === 200) {
+          setClient(response[0]);
+          navigate('/products');
+          window.location.reload(false);
+          return true;
+        } else {
+          console.log('Wrong password or username');
+          return false;
+        }
       }
-    }
-  }, [navigate]);
+    },
+    [navigate]
+  );
 
   const getSelf = useCallback(async () => {
     const response = await apiGetSelf();
@@ -59,7 +62,7 @@ export function useClient() {
   }, []);
 
   useEffect(() => {
-   getSelf()
+    getSelf();
   }, [getSelf]);
 
   useEffect(() => {

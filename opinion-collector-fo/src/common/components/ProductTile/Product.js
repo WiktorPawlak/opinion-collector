@@ -1,5 +1,6 @@
-import React from "react";
-import css from "./Product.module.scss";
+import React from 'react';
+import css from './Product.module.scss';
+import { Link } from 'react-router-dom';
 
 const Product = ({ title, description, image, id }) => {
   return (
@@ -11,9 +12,9 @@ const Product = ({ title, description, image, id }) => {
           <p>Opis: {description}</p>
         </div>
         <div className={css.childDiv}>
-          <a href={`/products-view/${id}`}>
+          <Link href={`/products-view/${id}`}>
             <button className={css.btn}>Rate</button>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

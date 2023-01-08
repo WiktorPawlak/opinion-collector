@@ -1,5 +1,5 @@
-import React from "react";
-import css from "./CopyrightFooter.module.scss";
+import React from 'react';
+import css from './CopyrightFooter.module.scss';
 
 function CopyrightFooter() {
   return (

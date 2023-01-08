@@ -1,5 +1,5 @@
-import React from "react";
-import css from "./HeroSection.module.scss";
+import React from 'react';
+import css from './HeroSection.module.scss';
 
 function HeroSection() {
   return (

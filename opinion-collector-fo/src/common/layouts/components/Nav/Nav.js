@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "../../../components/Button/Button";
-import css from "./Nav.module.scss";
-import { useClient } from "../../../../hooks/useUser";
-import { useCallback } from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import css from './Nav.module.scss';
+import { useClient } from '../../../../hooks/useUser';
 
 function Navbar() {
   const { getSelf, client } = useClient();
 
-  window.onload = function() {
+  window.onload = function () {
     getSelf();
   };
 
