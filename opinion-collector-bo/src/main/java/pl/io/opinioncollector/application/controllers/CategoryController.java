@@ -39,19 +39,19 @@ public class CategoryController {
         return categoryFacade.getPath(id);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public Category addCategory(@RequestBody CategoryDto categoryDto) {
         return categoryFacade.add(categoryDto);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
     public void editCategory(@RequestBody Category category) {
         categoryFacade.edit(category);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/delete")
     public void deleteCategory(@PathVariable long id) {
         categoryFacade.delete(id);

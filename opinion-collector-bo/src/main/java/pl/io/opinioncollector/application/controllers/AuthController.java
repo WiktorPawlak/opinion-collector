@@ -24,7 +24,7 @@ public class AuthController {
     private final ClientFacade clientFacade;
 
     @PostMapping("login")
-    public ResponseEntity<Object> login(@RequestBody SignInDto request, HttpServletResponse response) {
+    public ResponseEntity<ClientDetails> login(@RequestBody SignInDto request, HttpServletResponse response) {
         try {
             ClientDetails user = clientFacade.signIn(request);
             String token = clientFacade.generateJwtToken(user, request.password);

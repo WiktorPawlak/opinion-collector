@@ -31,51 +31,51 @@ public class SuggestionController {
     private final SuggestionFacade suggestionFacade;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Suggestion> getAllSuggestions() {
         return suggestionFacade.getAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN') ||" +
+    @PreAuthorize("hasAuthority('ADMIN') ||" +
         "hasAuthority('SCOPE_STANDARD')")
     public Suggestion getSuggestionById(@PathVariable Long id) {
         return suggestionFacade.getById(id);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('SCOPE_STANDARD')")
+    @PreAuthorize("hasAuthority('STANDARD')")
     public Suggestion createSuggestion(Principal principal, @RequestParam long productId, @RequestBody SuggestionProduct suggestionProduct) {
         return suggestionFacade.createSuggestion(new ClientUsername(principal.getName()), productId, suggestionProduct);
     }
 
     @PostMapping("/{id}/accept")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void acceptSuggestion(@PathVariable Long id) {
         suggestionFacade.acceptOrReject(id, SuggestionState.ACCEPTED);
     }
 
     @PostMapping("/{id}/reject")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void rejectSuggestion(@PathVariable Long id) {
         suggestionFacade.acceptOrReject(id, SuggestionState.REJECTED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_STANDARD')")
+    @PreAuthorize("hasAuthority('STANDARD')")
     public Suggestion editSuggestion(@PathVariable long id, @RequestBody SuggestionDto editedSuggestion, Principal principal) {
         return suggestionFacade.edit(editedSuggestion, principal);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN') ||" +
+    @PreAuthorize("hasAuthority('ADMIN') ||" +
         "hasAuthority('SCOPE_STANDARD')")
     public void deleteSuggestion(Long id, Principal principal) {
         suggestionFacade.delete(id, principal);
     }
 
     @GetMapping("search")
-    @PreAuthorize("hasAuthority('SCOPE_STANDARD')")
+    @PreAuthorize("hasAuthority('STANDARD')")
     public List<Suggestion> getUserSuggestions(String username, Principal principal) {
         return suggestionFacade.findUserSuggestions(username, principal);
     }

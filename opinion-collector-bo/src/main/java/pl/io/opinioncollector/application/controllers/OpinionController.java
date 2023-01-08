@@ -49,7 +49,7 @@ public class OpinionController {
         return opinionFacade.add(opinion);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_STANDARD')")
+    @PreAuthorize("hasAuthority('STANDARD')")
     @PutMapping
     public ResponseEntity<Object> editOpinion(@RequestBody Opinion opinion, Principal principal) {
         try {
@@ -60,7 +60,7 @@ public class OpinionController {
         }
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_STANDARD')")
+    @PreAuthorize("hasAuthority('STANDARD')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteOpinion(@PathVariable long id, Principal principal){
         try{
@@ -71,7 +71,7 @@ public class OpinionController {
         }
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public void hideOpinion(@PathVariable long id, Principal principal) throws IllegalAccessException {
         opinionFacade.changeHidden(id, principal);

@@ -32,7 +32,7 @@ public class ClientController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<Client>> getClients() {
         return ResponseEntity.ok(clientFacade.getAllClients());
     }
@@ -68,7 +68,7 @@ public class ClientController {
     }
 
     @PutMapping("/change-role")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> changeRole(String userName, ClientRole role) {
         try {
             clientFacade.changeRole(userName, role);

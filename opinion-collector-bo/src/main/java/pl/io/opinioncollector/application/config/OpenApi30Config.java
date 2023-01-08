@@ -14,20 +14,8 @@ public class OpenApi30Config {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        final String securitySchemeName = "JWT auth";
         final String apiTitle = String.format("%s API", StringUtils.capitalize("Opinion collector"));
         return new OpenAPI()
-            .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-            .components(
-                new Components()
-                    .addSecuritySchemes(securitySchemeName,
-                        new SecurityScheme()
-                            .name(securitySchemeName)
-                            .type(SecurityScheme.Type.HTTP)
-                            .scheme("bearer")
-                            .bearerFormat("JWT")
-                    )
-            )
             .info(new Info().title(apiTitle).version("1.0"));
     }
 }
