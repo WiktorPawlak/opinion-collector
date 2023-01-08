@@ -41,8 +41,8 @@ function AllProducts() {
       <div className={css.productsNavs}>
         <form onSubmit={getSearch} className={css.searchForm}>
           {clientRole === "ADMIN" && (
-            <a href="/products/add">
-              <button style={{marginRight: "10vw"}} className={css.addProductButton}>Add product</button>
+            <a style={{marginRight: "10vw"}} href="/products/add">
+              <button type="onSubmit" className={css.addProductButton}>Add product</button>
             </a>
           )}
           <input
