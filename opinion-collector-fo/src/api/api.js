@@ -22,12 +22,14 @@ export async function get(stringUrl, params) {
   }
 }
 
-export async function post(url, body) {
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+  Accept: 'application/json'
+};
+
+export async function post(url, body, headers = defaultHeaders) {
   const response = await fetch(`${BASE_URL}${url}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    },
+    headers,
     credentials: 'include',
     method: 'POST',
     body: JSON.stringify(body)
@@ -57,4 +59,18 @@ export async function put(stringUrl, params) {
   });
 
   return [await response.text(), response.status];
+}
+
+export async function postMultipart(url, body) {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    credentials: 'include',
+    method: 'POST',
+    body
+  });
+
+  if (response.ok) {
+    return [await response.json(), response.status];
+  } else {
+    return [await response.text(), response.status];
+  }
 }

@@ -1,9 +1,17 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
-import CopyrightFooter from '../../common/layouts/components/CopyrightFooter/CopyrightFooter';
-import css from './SignUp.module.scss';
+import React, { useCallback, useState } from "react";
+import { postRegister } from "../../api/authApi";
+import CopyrightFooter from "../../common/layouts/components/CopyrightFooter/CopyrightFooter";
+import css from "./SignUp.module.scss";
 
 function SignUp() {
+  const [email, setEmail]=useState("");
+  const [login, setLogin]=useState("");
+  const [hashedPass, setHashedPass]=useState("");
+
+  const handleRegister = async () => {
+    await postRegister({email, login, hashedPass});
+  };
+
   return (
     <div className={css.container}>
       <div className={css.signUp}>
@@ -13,15 +21,16 @@ function SignUp() {
         <div className={css.formContainer}>
           <form className={css.signUpForm}>
             <label>Email</label>
-            <input type="text" />
+            <input type="text" id="email" value={email} onChange={(event) => setEmail(event.target.value)}/>
             <label>Username</label>
-            <input type="text" />
+            <input type="text" id="username" value={login} onChange={(event) => setLogin(event.target.value)}/>
             <label>Password</label>
-            <input type="text" />
+            <input type="text" id="hashedPass" value={hashedPass} onChange={(event) => setHashedPass(event.target.value)}/>
 
-            <button className={css.signInButton} type="submit">
-              Sign Up
+            <button className={css.signInButton} onClick={handleRegister}>
+              SignUp
             </button>
+
           </form>
         </div>
         <a href="/log-in">
