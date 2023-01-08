@@ -27,7 +27,7 @@ public class ProductController {
     private final ProductFacade productFacade;
     private final OpinionFacade opinionFacade;
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public List<Product> getAllProducts(
         @RequestParam(value = "pageNo", defaultValue = "${paging.defaultPageNo}", required = false) int pageNo,
@@ -53,7 +53,7 @@ public class ProductController {
         return productFacade.getAllVisibleProductsByCategoryPath(categoryPath, pageNo, pageSize);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable long id) {
         return productFacade.getProduct(id);
@@ -69,19 +69,19 @@ public class ProductController {
         return productFacade.getAllProductsByCategoryId(id);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public Product addProduct(@RequestBody Product product) {
         return productFacade.add(product);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/hide")
     public void hideProduct(@RequestParam long id) {
         productFacade.hide(id);
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
     public Product editProduct(@RequestBody Product product) {
         return productFacade.edit(product);
