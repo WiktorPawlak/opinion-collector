@@ -8,6 +8,8 @@ export function getProductOrigins(body) {
   return get('/products/origins');
 }
 
-export function postProduct(body) {
-  return post('/products', body);
+export async function postProduct(body) {
+  return post('/products', body, {
+    'Content-Type': 'multipart/form-data'
+  });
 }
