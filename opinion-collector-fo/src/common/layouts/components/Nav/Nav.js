@@ -2,8 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../../components/Button/Button";
 import css from "./Nav.module.scss";
+import { useClient } from "../../../../hooks/useUser";
 
 function Navbar() {
+  const { getSelf, client } = useClient();
+
+  window.onload = function () {
+    getSelf();
+  };
+
   return (
     <nav className={css.navbar}>
       <Link to="/" className={css.navbarLogo}>
@@ -25,11 +32,19 @@ function Navbar() {
             About
           </Link>
         </li>
-        <li className={css.navItem}>
-          <a href="/log-in">
-            <button className={css.navButton}>Log in</button>
-          </a>
-        </li>
+        {client === undefined ? (
+          <li className={css.navItem}>
+            <a href="/log-in">
+              <button className={css.navButton}>Log in</button>
+            </a>
+          </li>
+        ) : (
+          <li className={css.navItem}>
+            <Link to="/clients/self" className={css.navLinks}>
+              {client.username.username}
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );

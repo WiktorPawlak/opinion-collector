@@ -1,30 +1,13 @@
-const loginCredentials = {
-  username: "user",
-  password: "user",
-};
+import { get, post } from "./api"
 
-const registerDto = {
-  email: "siema@siemdadaaa.com",
-  login: "stringdawdaddaa",
-  hashedPass: "string"
+export function postLogin(body) {
+    return post("/login", body)
 }
 
-export function login() {
-    console.log(JSON.stringify(loginCredentials))
-  fetch(`//localhost:8080/client/self`, {
-    headers: {
-      'Content-Type': 'application/json',
-      "Accept": 'application/json'
-    },
-    credentials: "include",
-    method: "GET",
-   // body: JSON.stringify(loginCredentials),
-  })
-    .then((response) => response.json)
-    .then((result) => {
-      console.log("Success:", result);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+export function apiGetSelf() {
+    return get("/clients/self")
+}
+
+export function apiGetClients() {
+    return get("/clients")
 }

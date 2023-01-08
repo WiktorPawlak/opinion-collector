@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Product from "../common/components/ProductTile/Product";
 import Footer from "../common/layouts/components/Footer/Footer";
 import css from "./AllProducts.module.scss";
+import { getProducts } from "../api/protuctApi";
 
 function AllProducts() {
-  const APP_ID = "f4a01666";
-  const APP_KEY = "568886d03a5002b76e81940321ecf1dd";
-
-  const [products, setRecipes] = useState([]);
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("chicken");
 
-  useEffect(() => {
-    getRecipes();
-  }, [query]);
+  const findProducts = useCallback(async () => {
+    const response = await getProducts();
 
-  const getRecipes = async () => {
-    const response = await fetch(
-      `https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`
-    );
-    const data = await response.json();
-    setRecipes(data.hits);
-    console.log(data.hits);
-  };
+      if (response[1] === 200) {
+        response[0].then((products) => setProducts(products))
+      } else {
+        //toast ?
+        console.log("Ni ma produktów");
+      }
+  }, []);
+
+  useEffect(() => {
+    findProducts();
+  }, [findProducts, query]);
+
+
 
   const updateSearch = (e) => {
     setSearch(e.target.value);
@@ -50,11 +52,11 @@ function AllProducts() {
       <div className={css.products}>
         {products.map((product) => (
           <Product
-            key={product.recipe.label}
-            title={product.recipe.label}
-            image={product.recipe.image}
-            description={product.recipe.cuisineType}
-            id={product.recipe.label}
+            key={product.id}
+            title={product.title}
+            image={product.image}
+            description={product.title}
+            id={product.id}
           />
         ))}
       </div>
