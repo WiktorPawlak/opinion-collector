@@ -1,5 +1,6 @@
 package pl.io.opinioncollector.infrastracture.product.facade;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -49,12 +51,19 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     public Product add(ProductImageDto productDto) throws IOException {
+
+        final Resource image = productDto.getImage().getResource();
+        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
+        try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+            fos.write(productDto.getImage().getBytes());
+        }
+
         var product = Product.builder()
             .categoryId(productDto.getCategoryId())
             .title(productDto.getTitle())
             .origin(productDto.getOrigin())
             .ean(productDto.getEan())
-            .image(productDto.getImage().getBytes())
+            .image("/assets/images/" + image.getFilename())
             .build();
         return productRepository.save(product);
     }

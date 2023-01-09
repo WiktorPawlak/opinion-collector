@@ -16,7 +16,7 @@ public class ProductDto {
 
     private String title;
 
-    private byte[] image;
+    private String image;
 
     private ProductOrigin origin;
 
