@@ -8,7 +8,7 @@ export function Client(client) {
       <span>{client.client.email.email}</span>
       <span>{client.client.role}</span>
       <button>Change role</button>
-      {client.client.enable ? <span>Active</span> : <span>Archived</span>}
+      {client.client.enable ? <span>Archived</span> : <span>Active</span>}
     </div>
   );
 }

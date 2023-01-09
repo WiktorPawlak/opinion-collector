@@ -1,5 +1,9 @@
 import { get, postMultipart } from './api';
 
+export function getProductsVisivle() {
+  return get('/products/visible');
+}
+
 export function getProducts() {
   return get('/products');
 }

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Product from '../common/components/ProductTile/Product';
 import Footer from '../common/layouts/components/Footer/Footer';
 import css from './AllProducts.module.scss';
-import { getProducts } from '../api/productApi';
+import { getProducts, getProductsVisivle as getProductsVisible } from '../api/productApi';
 import { useClient } from '../hooks/useUser';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +13,13 @@ function AllProducts() {
   const { clientRole } = useClient();
 
   const findProducts = useCallback(async () => {
-    const response = await getProducts();
+    let response;
+
+    if (clientRole == 'ADMIN') {
+      response = await getProducts();
+    } else {
+      response = await getProductsVisible();
+    }
 
     if (response[1] === 200) {
       setProducts(response[0]);
@@ -21,7 +27,7 @@ function AllProducts() {
       //toast ?
       console.log('Ni ma produktów');
     }
-  }, []);
+  }, [clientRole]);
 
   useEffect(() => {
     findProducts();
