@@ -39,8 +39,10 @@ function Navbar() {
           </li>
         ) : (
           <li className={css.navItem}>
-            <Link to="/clients/self" className={css.navLinks}>
-              {client.username.username}
+            <Link to="/clients/self">
+              <button className={css.navButton}>
+                {client.username.username}
+              </button>
             </Link>
           </li>
         )}

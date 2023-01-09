@@ -1,16 +1,18 @@
 package pl.io.opinioncollector.domain.product;
 
-import pl.io.opinioncollector.application.dto.ProductDto;
-import pl.io.opinioncollector.domain.product.model.Product;
-
+import java.io.IOException;
 import java.util.List;
+
+import pl.io.opinioncollector.application.dto.ProductDto;
+import pl.io.opinioncollector.application.dto.ProductImageDto;
+import pl.io.opinioncollector.domain.product.model.Product;
 
 public interface ProductFacade {
     List<Product> getAllProducts(int pageNo, int pageSize);
 
     ProductDto getProduct(long id);
 
-    Product add(Product product);
+    Product add(ProductImageDto product) throws IOException;
 
     void hide(long id);
 

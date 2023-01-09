@@ -1,8 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import css from './Footer.module.scss';
+import { useClient } from '../../../../hooks/useUser';
 
 function Footer() {
+  const { getSelf, client } = useClient();
+
+  window.onload = function () {
+    getSelf();
+  };
   return (
     <div className={css.footerContainer}>
       <hr />
@@ -26,11 +32,21 @@ function Footer() {
               About
             </Link>
           </li>
-          <li className={css.navItem}>
-            <a href="/log-in">
-              <button className={css.footerButton}>Log in</button>
-            </a>
-          </li>
+          {client === undefined ? (
+            <li className={css.navItem}>
+              <a href="/log-in">
+                <button className={css.navButton}>Log in</button>
+              </a>
+            </li>
+          ) : (
+            <li className={css.navItem}>
+              <Link to="/clients/self">
+                <button className={css.navButton}>
+                  {client.username.username}
+                </button>
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </div>

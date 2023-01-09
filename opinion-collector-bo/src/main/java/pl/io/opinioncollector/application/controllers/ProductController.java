@@ -1,6 +1,7 @@
 package pl.io.opinioncollector.application.controllers;
 
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import pl.io.opinioncollector.application.dto.ProductDto;
+import pl.io.opinioncollector.application.dto.ProductImageDto;
 import pl.io.opinioncollector.domain.opinion.OpinionFacade;
 import pl.io.opinioncollector.domain.opinion.model.Opinion;
 import pl.io.opinioncollector.domain.product.ProductFacade;
@@ -76,9 +79,20 @@ public class ProductController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productFacade.add(product);
+    @PostMapping(consumes = "multipart/form-data")
+    public Product addProduct(@RequestParam("image") MultipartFile file,
+                              @RequestParam("categoryId") long categoryId,
+                              @RequestParam("title") String title,
+                              @RequestParam("origin") String origin,
+                              @RequestParam("ean") String ean) throws IOException {
+        var productImageDto = ProductImageDto.builder()
+            .image(file)
+            .title(title)
+            .categoryId(categoryId)
+            .origin(ProductOrigin.valueOf(origin))
+            .ean(ean)
+            .build();
+        return productFacade.add(productImageDto);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

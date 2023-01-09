@@ -57,14 +57,3 @@ export function ProductDetails() {
     </div>
   );
 }
-
-// {
-//     "categoryId": 0,
-//     "title": "string",
-//     "image": [
-//     "string"
-// ],
-//     "origin": "USA",
-//     "visibility": true,
-//     "ean": "string"
-// }
