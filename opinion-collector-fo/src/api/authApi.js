@@ -1,11 +1,11 @@
-import { get, post, put } from './api';
+import { get, post, postNoResponse, put } from './api';
 
 export function postLogin(body) {
   return post('/login', body);
 }
 
 export function postRegister(body) {
-  return post('/register', body);
+  return postNoResponse('/register', body);
 }
 
 export function apiGetSelf() {
