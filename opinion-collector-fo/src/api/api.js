@@ -28,6 +28,7 @@ const defaultHeaders = {
 };
 
 export async function post(url, body, headers = defaultHeaders) {
+  console.log(JSON.stringify(body));
   const response = await fetch(`${BASE_URL}${url}`, {
     headers,
     credentials: 'include',

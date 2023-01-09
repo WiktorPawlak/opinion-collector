@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp/SignUp';
 import { ClientPanel } from './pages/ClientPanel';
 import { ProductDetails } from './pages/ProductDetails';
 import { CategoriesPage } from './pages/CategoriesPage';
+import { AddCategory } from './pages/AddCategory';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/clients/self" element={<ClientPanel />} />
         <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/categories/add" element={<AddCategory />} />
       </Routes>
     </Router>
   );
