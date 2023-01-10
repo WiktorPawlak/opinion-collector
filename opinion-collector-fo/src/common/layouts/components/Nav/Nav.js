@@ -4,7 +4,7 @@ import css from './Nav.module.scss';
 import { useClient } from '../../../../hooks/useUser';
 
 function Navbar() {
-  const { getSelf, client } = useClient();
+  const { getSelf, client, clientRole } = useClient();
 
   window.onload = function () {
     getSelf();
@@ -31,6 +31,14 @@ function Navbar() {
             About
           </Link>
         </li>
+        {clientRole === 'ADMIN' && (
+          <li className={css.navItem}>
+            <Link to="/clients" className={css.navLinks}>
+              Users
+            </Link>
+          </li>
+        )}
+
         {client === undefined ? (
           <li className={css.navItem}>
             <a href="/log-in">

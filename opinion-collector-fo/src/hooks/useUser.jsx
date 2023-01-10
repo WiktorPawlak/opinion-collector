@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
+  apiArchiveClient,
+  apiArchiveSelf,
   apiChangeEmail,
   apiChangePassword,
-  apiGetClients,
+  apiChangeRole,
+  apiGetActiveClients,
+  apiGetArchivedClients,
   apiGetSelf,
   postLogin
 } from '../api/authApi';
@@ -10,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 
 export function useClient() {
   const [client, setClient] = useState();
-  const [clients, setClients] = useState([]);
+  const [activeClients, setActiveClients] = useState([]);
+  const [archivedClients, setArchivedClients] = useState([]);
   const [clientRole, setClientRole] = useState();
   const navigate = useNavigate();
 
@@ -43,34 +48,60 @@ export function useClient() {
     }
   }, []);
 
-  const getClients = useCallback(async () => {
-    const response = await apiGetClients();
+  const getActiveClients = useCallback(async () => {
+    const response = await apiGetActiveClients();
 
     if (response[1] === 200) {
-      setClients(response[0]);
-    } else {
-      //toast?
+      const mapedClient = response[0].map((client) => ({
+        username: client.username.username,
+        email: client.email.email,
+        role: client.role
+      }));
+      setActiveClients(mapedClient);
     }
+  }, []);
+
+    const getArchivedClients = useCallback(async () => {
+    const response = await apiGetArchivedClients();
+
+    if (response[1] === 200) {
+      const mapedClient = response[0].map((client) => ({
+        username: client.username.username,
+        email: client.email.email,
+        role: client.role
+      }));
+      setArchivedClients(mapedClient);
+    }
+  }, []);
+
+  const clientChangeRole = useCallback(async (userName, role) => {
+    const response = await apiChangeRole({ userName: userName, role: role });
+
+    return response[1] === 200;
+  }, []);
+
+  const archiveClient = useCallback(async (username) => {
+    const response = await apiArchiveClient({ username: username });
+
+    return response[1] === 200;
+  }, []);
+
+    const archiveSelf = useCallback(async () => {
+    const response = await apiArchiveSelf();
+
+    return response[1] === 200;
   }, []);
 
   const changeEmail = useCallback(async (email) => {
     const response = await apiChangeEmail(email);
 
-    if (response[1] === 200) {
-      return 'Email changed';
-    } else {
-      return response[0];
-    }
+    return response[1] === 200;
   }, []);
 
-  const changePassword = useCallback(async (email) => {
-    const response = await apiChangePassword(email);
+  const changePassword = useCallback(async (password) => {
+    const response = await apiChangePassword(password);
 
-    if (response[1] === 200) {
-      return 'Password changed';
-    } else {
-      return response[0];
-    }
+    return response[1] === 200;
   }, []);
 
   useEffect(() => {
@@ -78,8 +109,12 @@ export function useClient() {
   }, [getSelf]);
 
   useEffect(() => {
-    getClients();
-  }, [getClients]);
+    getActiveClients();
+  }, [getActiveClients]);
+
+    useEffect(() => {
+    getArchivedClients();
+  }, [getArchivedClients]);
 
   useEffect(() => {
     if (client !== undefined) {
@@ -92,9 +127,11 @@ export function useClient() {
     logInClient,
     getSelf,
     clientRole,
-    getClients,
-    clients,
+    activeClients,
+    archivedClients,
     changeEmail,
-    changePassword
+    changePassword,
+    clientChangeRole,
+    archiveSelf
   };
 }
