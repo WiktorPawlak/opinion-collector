@@ -1,22 +1,38 @@
 import { get, post, postNoResponse, put } from './api';
 
-export function postLogin(body) {
+export async function postLogin(body) {
   return post('/login', body);
 }
 
-export function postRegister(body) {
+export async function postRegister(body) {
   return postNoResponse('/register', body);
 }
 
-export function apiGetSelf() {
+export async function apiGetSelf() {
   return get('/clients/self');
 }
 
-export function apiGetClients() {
-  return get('/clients');
+export async function apiGetActiveClients() {
+  return get('/clients/active-clients');
 }
 
-export function apiChangePassword(params) {
+export async function apiGetArchivedClients() {
+  return get('/clients/archived-clients');
+}
+
+export async function apiArchiveSelf() {
+  return put('/clients/self/profile-deletion');
+}
+
+export async function apiArchiveClient(params) {
+  return put('/clients/self/profile-deletion', params);
+}
+
+export async function apiChangeRole(params) {
+  return put('/clients/change-role', params);
+}
+
+export async function apiChangePassword(params) {
   return put('/clients/self/change-password', params);
 }
 

@@ -11,6 +11,7 @@ import { ClientPanel } from './pages/ClientPanel';
 import { ProductDetails } from './pages/ProductDetails';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { AddCategory } from './pages/AddCategory';
+import { ClientsPanel } from './pages/ClientsPanel';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/products/add" element={<ProductDetails />} />
         <Route path="/log-in" element={<LogIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/clients" element={<ClientsPanel />} />
         <Route path="/clients/self" element={<ClientPanel />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
