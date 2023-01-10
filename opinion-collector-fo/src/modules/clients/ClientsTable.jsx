@@ -8,10 +8,7 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material';
-import { useClient } from '../hooks/useUser';
-import { PageLoad } from './PageLoad';
 import { ClientActions } from './ClientActions';
-import { Box } from '@mui/system';
 import { useState } from 'react';
 
 const columns = [

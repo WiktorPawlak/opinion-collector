@@ -8,7 +8,7 @@ import {
   RadioGroup
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { useClient } from '../hooks/useUser';
+import { useClient } from '../../hooks/useUser';
 import { useState } from 'react';
 
 const style = {
@@ -29,7 +29,7 @@ const style = {
 export function ClientActions(username) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [role, setRole] = useState('');
-  const { archiveClient, clientChangeRole } = useClient();
+  const { clientChangeRole } = useClient();
 
   function handleModalClose() {
     setIsModalOpen(false);

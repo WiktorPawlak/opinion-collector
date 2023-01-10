@@ -7,11 +7,11 @@ import Nav from './common/layouts/components/Nav/Nav';
 import LogIn from './pages/LogIn';
 import SingleProduct from './pages/SingleProduct';
 import SignUp from './pages/SignUp/SignUp';
-import { ClientPanel } from './pages/ClientPanel';
 import { ProductDetails } from './pages/ProductDetails';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { AddCategory } from './pages/AddCategory';
-import { ClientsPanel } from './pages/ClientsPanel';
+import { ClientsPanel } from './modules/clients/ClientsPanel';
+import { ClientPanel } from './modules/clients/ClientPanel';
 
 function App() {
   return (

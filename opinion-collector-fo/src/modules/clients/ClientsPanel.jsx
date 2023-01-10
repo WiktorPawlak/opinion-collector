@@ -1,17 +1,14 @@
 import { Box } from '@mui/system';
 import { ClientsTable } from './ClientsTable';
-import { useClient } from '../hooks/useUser';
 import {
-  Button,
   FormControl,
-  InputLabel,
   MenuItem,
-  NativeSelect,
   Select,
   TextField
 } from '@mui/material';
-import { PageLoad } from './PageLoad';
 import { useState } from 'react';
+import { useClient } from '../../hooks/useUser';
+import { PageLoad } from '../../pages/PageLoad';
 
 export function ClientsPanel() {
   const [fliter, setFilter] = useState('');

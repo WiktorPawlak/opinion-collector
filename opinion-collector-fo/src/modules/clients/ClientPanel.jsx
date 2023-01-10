@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useClient } from '../hooks/useUser';
+import { useClient } from '../../hooks/useUser';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   Box,
@@ -7,9 +7,9 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { validatePassword } from '../validators/client/clientValidators';
+import { validatePassword } from '../../validators/client/clientValidators';
 import bcrypt from 'bcryptjs';
-import { PageLoad } from './PageLoad';
+import { PageLoad } from '../../pages/PageLoad';
 import { DeleteForever } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,7 +34,7 @@ export function ClientPanel() {
 
   async function handleButtonDeleteClient() {
     if (await archiveSelf()) {
-      navigate('/sign-up')
+      navigate('/log-in')
     }
   }
 
