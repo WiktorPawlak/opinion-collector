@@ -1,0 +1,24 @@
+.opinion {
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgb(188, 188, 188);
+  margin: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background: white;
+  align-items: center;
+  //min-width: 40%;
+  width: 300px;
+}
+
+.parentDiv {
+  width: 260px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.childDiv {
+  float: right;
+}
