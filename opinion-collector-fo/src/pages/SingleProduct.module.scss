@@ -45,3 +45,15 @@ img {
   background-color: #918cc2;
   color: white;
 }
+
+/* ///////////////////////// */
+.containerOpinions {
+  background-color: #726da8;
+  color: white;
+  display: block;
+  min-height: 100vh;
+  float: right;
+  width: 30%;
+  overflow: hidden;
+  position: relative;
+}
