@@ -78,6 +78,7 @@ public class ClientController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/archived-clients")
     public ResponseEntity<Object> getAllArchivedClients() {
         try {
@@ -88,6 +89,7 @@ public class ClientController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/active-clients")
     public ResponseEntity<Object> getAllActiveClients() {
         try {

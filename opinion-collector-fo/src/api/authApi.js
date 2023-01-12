@@ -1,7 +1,11 @@
-import { get, post, postNoResponse, put } from './api';
+import { get, getNoResponse, post, postNoResponse, put } from './api';
 
 export async function postLogin(body) {
   return post('/login', body);
+}
+
+export async function apiLogOut() {
+  return getNoResponse('/log-out');
 }
 
 export async function postRegister(body) {
