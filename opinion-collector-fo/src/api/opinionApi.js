@@ -21,9 +21,13 @@ export function putOpinionHidden(id) {
 }
 
 export function deleteOpinion(id) {
-    return delete(`/opinions/${id}`)
+    return delete (`/opinions/${id}`)
 }
 
 export function getOpinionsForClient(username) {
     return get(`/opinions/client/${username}`)
+}
+
+export function getOpinionStarReviews() {
+    return get('/opinions/starReviews')
 }

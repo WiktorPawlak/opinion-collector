@@ -19,3 +19,7 @@ export function getProductOrigins(body) {
 export async function postProduct(body) {
   return postMultipart('/products', body, true);
 }
+
+export async function getProductOpinions(id) {
+  return get(`/products/opinions/${id}`)
+}

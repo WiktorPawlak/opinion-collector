@@ -12,6 +12,7 @@ import { CategoriesPage } from './pages/CategoriesPage';
 import { AddCategory } from './pages/AddCategory';
 import { ClientsPanel } from './modules/clients/ClientsPanel';
 import { ClientPanel } from './modules/clients/ClientPanel';
+import { AddOpinion } from "./pages/AddOpinion";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/clients/self" element={<ClientPanel />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
+        <Route path="/opinions/add/:id" element={<AddOpinion />} />
       </Routes>
     </Router>
   );

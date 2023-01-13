@@ -1,8 +1,7 @@
 .opinion {
   border-radius: 10px;
-  box-shadow: 0px 5px 20px rgb(188, 188, 188);
   margin: 20px;
-  padding-top: 10px;
+  padding-top: 1px;
   padding-bottom: 10px;
   display: flex;
   flex-direction: column;
@@ -10,7 +9,7 @@
   background: white;
   align-items: center;
   //min-width: 40%;
-  width: 300px;
+  width: 600px;
 }
 
 .parentDiv {
@@ -22,3 +21,37 @@
 .childDiv {
   float: right;
 }
+
+.HideBtn {
+  padding: 8px 20px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #918cc2;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.DeleteBtn {
+  padding: 8px 20px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #918cc2;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.EditBtn {
+  padding: 8px 20px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #918cc2;
+  color: white;
+  margin-bottom: 12px;
+}
+

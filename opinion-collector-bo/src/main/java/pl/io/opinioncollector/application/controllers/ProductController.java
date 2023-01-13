@@ -107,8 +107,8 @@ public class ProductController {
         return productFacade.edit(product);
     }
 
-    @GetMapping("/opinions")
-    public List<Opinion> getOpinionsForProductId(@RequestParam long id) {
+    @GetMapping("/opinions/{id}")
+    public List<Opinion> getOpinionsForProductId(@PathVariable long id) {
         return opinionFacade.getFor(id);
     }
 
