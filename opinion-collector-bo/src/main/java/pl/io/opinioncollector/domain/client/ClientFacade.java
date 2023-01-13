@@ -18,6 +18,7 @@ public interface ClientFacade {
     Client getClient(String username);
     List<Client> getAllClients();
     void archive(String userName);
+    void active(String userName);
     void changeRole(String userName, ClientRole role);
     List<Client> getAllArchivedClients();
     List<Client> getAllActiveClients();

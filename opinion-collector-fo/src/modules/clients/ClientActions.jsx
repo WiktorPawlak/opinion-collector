@@ -26,10 +26,10 @@ const style = {
   backgroundColor: 'darkGrey'
 };
 
-export function ClientActions(username) {
+export function ClientActions( { username, showActive }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [role, setRole] = useState('');
-  const { clientChangeRole } = useClient();
+  const { clientChangeRole, archiveClient, activeClient } = useClient();
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -39,10 +39,20 @@ export function ClientActions(username) {
     setIsModalOpen(true);
   }
 
+  async function handleArchivClientButton() {
+    await archiveClient(username);
+    window.location.reload(true);
+  }
+
+    async function handleActiveClientButton() {
+    await activeClient(username);
+    window.location.reload(true);
+  }
+
   async function handleSaveRole() {
     if (role !== '') {
-      clientChangeRole(username.username, role);
-      setIsModalOpen(false)
+      clientChangeRole(username, role);
+      setIsModalOpen(false);
     }
   }
 
@@ -55,9 +65,23 @@ export function ClientActions(username) {
       >
         Change role
       </Button>
-      <Button variant="outlined" startIcon={<DeleteOutline />}>
-        Delete
-      </Button>
+      {showActive ? (
+        <Button
+          onClick={handleArchivClientButton}
+          variant="outlined"
+          startIcon={<DeleteOutline />}
+        >
+          Delete
+        </Button>
+      ) : (
+        <Button
+          onClick={handleActiveClientButton}
+          variant="outlined"
+        >
+          Active
+        </Button>
+      )}
+
       <Modal
         open={isModalOpen}
         onClose={handleModalClose}

@@ -62,6 +62,7 @@ export function ClientsPanel() {
           (client) =>
             client.username.includes(fliter) || client.email.includes(fliter)
         )}
+        showActive={showActive}
       />
     </Box>
   );

@@ -32,6 +32,13 @@ function Navbar() {
             Products
           </Link>
         </li>
+        {clientRole === 'ADMIN' && (
+        <li className={css.navItem}>
+            <Link to="/all_suggestions" className={css.navLinks}>
+              Suggestions
+            </Link>
+          </li>
+        )}
         <li className={css.navItem}>
           <Link to="/about" className={css.navLinks}>
             About
