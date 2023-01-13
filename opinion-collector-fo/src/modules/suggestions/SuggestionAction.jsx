@@ -1,4 +1,4 @@
-import { DeleteOutline, SaveOutlined } from '@mui/icons-material';
+import { SaveOutlined } from '@mui/icons-material';
 import {
   Button,
   FormControl,
@@ -16,32 +16,56 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  height: 600,
+  width: 1000,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
-  backgroundColor: 'darkGrey'
+  backgroundColor: 'darkGrey',
+  textAlign: 'center',
+  alignItems: 'center',
+  justifyContent: 'center'
+};
+const product_style_1 = {
+  display: 'inline-block',
+  width: '50%',
+  height: 500,
+  backgroundColor: 'red',
+  marginBottom: 2
+};
+const product_style_2 = {
+  display: 'inline-block',
+  width: '50%',
+  height: 500,
+  backgroundColor: 'green',
+  marginBottom: 2
 };
 
-export function SuggestionAction(username) {
+export function SuggestionAction(suggestionId) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [role, setRole] = useState('');
-  const { clientChangeRole } = useSuggestion();
+  const [suggestionState, setSuggestionState] = useState('');
+  const { acceptSuggestion, rejectSuggestion } = useSuggestion();
+
+
+
 
   function handleModalClose() {
     setIsModalOpen(false);
   }
 
-  function handleChangeRoleButton() {
+  function handleChangeSuggestionStateButton() {
     setIsModalOpen(true);
   }
-
   async function handleSaveRole() {
-    if (role !== '') {
-      clientChangeRole(username.username, role);
+    if (suggestionState === 'REJECTED') {
+      rejectSuggestion(suggestionId);
+      setIsModalOpen(false)
+    }
+    else if (suggestionState === 'ACCEPTED') {
+      acceptSuggestion(suggestionId);
       setIsModalOpen(false)
     }
   }
@@ -50,13 +74,10 @@ export function SuggestionAction(username) {
     <Box sx={{ display: 'inline' }}>
       <Button
         sx={{ marginRight: '7px' }}
-        onClick={handleChangeRoleButton}
+        onClick={handleChangeSuggestionStateButton}
         variant="outlined"
       >
         Show changes
-      </Button>
-      <Button variant="outlined" startIcon={<DeleteOutline />}>
-        Delete
       </Button>
       <Modal
         open={isModalOpen}
@@ -66,6 +87,32 @@ export function SuggestionAction(username) {
       >
         <Box sx={style}>
 
+            <Box sx={product_style_1}></Box>
+            <Box sx={product_style_2}></Box>
+
+
+          <FormControl>
+            <RadioGroup row onChange={(e) => setSuggestionState(e.target.value)}>
+              <FormControlLabel
+                value="REJECTED"
+                control={<Radio />}
+                label="REJECT"
+              />
+              <FormControlLabel
+                value="ACCEPTED"
+                control={<Radio />}
+                label="ACCEPT"
+              />
+            </RadioGroup>
+          </FormControl>
+          <Button
+            color="secondary"
+            variant="contained"
+            startIcon={<SaveOutlined />}
+            onClick={handleSaveRole}
+          >
+            Save
+          </Button>
         </Box>
       </Modal>
     </Box>

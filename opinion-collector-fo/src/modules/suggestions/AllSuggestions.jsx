@@ -1,18 +1,14 @@
 import { Box } from '@mui/system';
 import { SuggestionTable } from './SuggestionTable';
 import {
-  FormControl,
-  MenuItem,
-  Select,
   TextField
 } from '@mui/material';
-// import { useState } from 'react';
+import { useState } from 'react';
 import { useSuggestion } from '../../hooks/useSuggestion';
 import { PageLoad } from '../../pages/PageLoad';
 
 export function AllSuggestions() {
-  // const [fliter, setFilter] = useState('');
-
+  const [fliter, setFilter] = useState('');
   const {suggestions} = useSuggestion();
 
   function getSuggestions() {
@@ -43,12 +39,15 @@ export function AllSuggestions() {
         <TextField
           sx={{ width: '40%', margin: '10px' }}
           placeholder="Search"
-          // onChange={(e) => setFilter(e.target.value)}
+          onChange={(e) => setFilter(e.target.value)}
         />
       </Box>
 
       <SuggestionTable
-        suggestions={getSuggestions()}
+        suggestions={getSuggestions().filter(
+          (suggestions) =>
+            suggestions.username.includes(fliter) || suggestions.title.includes(fliter)
+        )}
       />
     </Box>
   );

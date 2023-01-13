@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import css from './Nav.module.scss';
 import { useClient } from '../../../../hooks/useUser';
-import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 
 function Navbar() {
@@ -35,6 +34,13 @@ function Navbar() {
         {clientRole === 'ADMIN' && (
         <li className={css.navItem}>
             <Link to="/all_suggestions" className={css.navLinks}>
+              Suggestions
+            </Link>
+          </li>
+        )}
+        {clientRole === 'STANDARD' && (
+        <li className={css.navItem}>
+            <Link to="/my_suggestions" className={css.navLinks}>
               Suggestions
             </Link>
           </li>
