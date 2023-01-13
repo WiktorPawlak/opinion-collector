@@ -15,7 +15,7 @@ const columns = [
   { id: 'username', label: 'Username', minWidth: 200 },
   { id: 'title', label: 'Product name', minWidth: 250 },
   { id: 'suggestionState', label: 'State', minWidth: 30 },
-  { id: 'actions', label: '', align: 'right' }
+  { id: 'suggestionId', label: '', align: 'right' }
 ];
 
 export function SuggestionTable({ suggestions }) {
@@ -59,8 +59,8 @@ export function SuggestionTable({ suggestions }) {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.id === 'actions' ? (
-                                <SuggestionAction username={row.username} />
+                              {column.id === 'suggestionId' ? (
+                                <SuggestionAction suggestionId={row.suggestionId} />
                               ) : (
                                 value
                               )}

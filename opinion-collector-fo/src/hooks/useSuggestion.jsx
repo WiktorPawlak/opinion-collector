@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  apiGetAllSuggestions
+  apiGetAllSuggestions,
+  apiAcceptSuggestion,
+  apiRejectSuggestion
 } from '../api/suggestionApi';
 
 export function useSuggestion() {
@@ -12,6 +14,7 @@ export function useSuggestion() {
 
     if (response[1] === 200) {
       const mapedClient = response[0].map((suggestion) => ({
+        suggestionId: suggestion.suggestionId,
         username: suggestion.client.username,
         title: suggestion.product.title,
         suggestionState: suggestion.suggestionState
@@ -21,13 +24,28 @@ export function useSuggestion() {
   }, []);
 
 
+  const acceptSuggestion = useCallback(async ({suggestionId}) => {
+    const response = await apiAcceptSuggestion({ suggestionId : suggestionId});
+    return response[1] === 200;
+  }, []);
+
+  const rejectSuggestion = useCallback(async ({suggestionId}) => {
+    const response = await apiRejectSuggestion({ suggestionId : suggestionId});
+
+    return response[1] === 200;
+  }, []);
+
+
 
   useEffect(() => {
     getSuggestions();
   }, [getSuggestions]);
 
 
+
   return {
-    suggestions
+    suggestions,
+    acceptSuggestion,
+    rejectSuggestion
   };
 }

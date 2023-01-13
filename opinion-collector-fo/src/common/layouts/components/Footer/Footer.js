@@ -4,7 +4,7 @@ import css from './Footer.module.scss';
 import { useClient } from '../../../../hooks/useUser';
 
 function Footer() {
-  const { getSelf, client } = useClient();
+  const { getSelf, client, clientRole } = useClient();
 
   window.onload = function () {
     getSelf();
@@ -27,11 +27,20 @@ function Footer() {
               Products
             </Link>
           </li>
-          <li className={css.navItem}>
+          {clientRole === 'ADMIN' && (
+        <li className={css.navItem}>
             <Link to="/all_suggestions" className={css.navLinks}>
               Suggestions
             </Link>
           </li>
+        )}
+        {clientRole === 'STANDARD' && (
+        <li className={css.navItem}>
+            <Link to="/my_suggestions" className={css.navLinks}>
+              Suggestions
+            </Link>
+          </li>
+        )}
           <li className={css.navItem}>
             <Link to="/about" className={css.navLinks}>
               About
