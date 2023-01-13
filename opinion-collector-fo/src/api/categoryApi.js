@@ -12,3 +12,6 @@ export function putCategory() {
   return put('/categories');
 }
 
+export function deleteCategory(id) {
+  return delete(`/categories/${id}`)
+}
