@@ -153,6 +153,15 @@ public class ClientService implements ClientFacade {
     }
 
     @Override
+    public void active(String userName) {
+        Client client = clientRepository.findByUsername(new ClientUsername(userName))
+            .orElseThrow(IllegalStateException::new);
+        client.setEnabled(true);
+        client.setModifiedAt(LocalDateTime.now());
+        clientRepository.save(client);
+    }
+
+    @Override
     public void changeRole(String userName, ClientRole role) {
         Client client = clientRepository.findByUsername(new ClientUsername(userName))
             .orElseThrow(IllegalStateException::new);

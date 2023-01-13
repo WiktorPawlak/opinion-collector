@@ -1,6 +1,12 @@
 import { useMemo, useCallback } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import {
+  Button,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/system';
 
 export const CategoriesList = ({ categories }) => {
@@ -28,11 +34,33 @@ export const CategoriesList = ({ categories }) => {
     return initialCategories;
   }, [categories, findChildren]);
 
+  function onEditClick(e) {
+    e.stopPropagation();
+  }
+
   const renderAccordion = (category) => {
     return (
       <Accordion sx={{ marginY: 2 }} key={category.categoryId}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <AccordionSummary disableGutters={true} expandIcon={<ExpandMoreIcon />}>
           {category.categoryName}
+          <Button
+            sx={{ width: '20' }}
+            variant="text"
+            className="search-btn"
+            onClick={onEditClick}
+          >
+            Edit
+          </Button>
+          {category.leaf === true && <Button
+            sx={{ width: '20' }}
+            variant="outlined"
+            startIcon={<DeleteIcon />}
+            onClick={onEditClick}
+            size="small"
+          >
+            Delete
+          </Button>}
+          
         </AccordionSummary>
         <AccordionDetails>
           {category.children &&

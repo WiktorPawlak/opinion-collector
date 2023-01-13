@@ -14,6 +14,8 @@ import { ClientsPanel } from './modules/clients/ClientsPanel';
 import { ClientPanel } from './modules/clients/ClientPanel';
 import { AllSuggestions } from './modules/suggestions/AllSuggestions';
 import { AddOpinion } from "./pages/AddOpinion";
+import {EditOpinion} from "./pages/EditOpinion";
+
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
         <Route path="/opinions/add/:id" element={<AddOpinion />} />
+        <Route path="/opinions/edit/:id" element={<EditOpinion />} />
       </Routes>
     </Router>
   );

@@ -11,6 +11,7 @@ export const AddOpinionForm = ({
                                     id
                                 }) => (
     <form className="form-container">
+        Add Your Opinion:
         <Autocomplete
             options={starReviews}
             onChange={(_, value) => {
@@ -31,7 +32,7 @@ export const AddOpinionForm = ({
         <TextField onChange={(e) =>
             setCons(e.target.value)} />
         <Button
-            component={Link} to={`/products/${id}`}
+            component = {Link} to={`/products/${id}`}
             sx={{ width: '40' }}
             variant="contained"
             onClick={handleSubmit}

@@ -7,7 +7,7 @@ import { useClient } from '../hooks/useUser';
 import {
   getProductById, getProductOpinions,
   getProducts,
-  getProductsVisivle as getProductsVisible
+  getProductsVisivle as getProductsVisible, getVisibleOpinionsForProductId
 } from '../api/productApi';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -18,6 +18,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Opinion from '../common/components/OpinionTile/OpinionTile';
 import Product from "../common/components/ProductTile/Product";
+import {putOpinionHidden} from "../api/opinionApi";
 
 function SingleProduct() {
   const { id } = useParams();
@@ -32,7 +33,13 @@ function SingleProduct() {
 
   const findOpinionsForProduct = useCallback(async () => {
     let response;
-    response = await getProductOpinions(id)
+    /*if (clientRole === 'STANDARD'){
+      response = await getVisibleOpinionsForProductId(id);
+    } else if (clientRole === 'ADMIN') {
+      response = await getProductOpinions(id);
+    }*/
+    //response = await getVisibleOpinionsForProductId(id);
+    response = await getProductOpinions(id);
     if (response[1] === 200) {
       setOpinions(response[0]);
     } else {
@@ -48,6 +55,19 @@ function SingleProduct() {
   useEffect(() => {
     fetchProductData();
   }, [fetchProductData]);
+
+  const handleOpinionHide = async (id) => {
+    console.log(id);
+    const opinionsToUpdate = [...opinions];
+    const indexOfOpinionToHide =
+        opinionsToUpdate.findIndex(opinion => opinion.opinionId === id);
+    if (indexOfOpinionToHide !== -1){
+      console.log(indexOfOpinionToHide);
+      opinionsToUpdate[indexOfOpinionToHide].hidden = !opinionsToUpdate[indexOfOpinionToHide].hidden;
+      setOpinions(opinionsToUpdate);
+    }
+    await putOpinionHidden(id);
+  }
 
   return (
     <div>
@@ -84,12 +104,15 @@ function SingleProduct() {
                 <Opinion
                     key={opinion.id}
                     opinionId={opinion.opinionId}
+                    handleOpinionHide={() => handleOpinionHide(opinion.opinionId)}
                     creationDate={opinion.creationDate}
                     clientUsername={opinion.clientUsername}
                     starReview={opinion.starReview}
                     opinionContent={opinion.opinionContent}
                     opinionCons={opinion.opinionCons}
                     opinionPros={opinion.opinionPros}
+                    hidden={opinion.hidden}
+                    productId={opinion.productId}
                 />
             ))}
           </div>

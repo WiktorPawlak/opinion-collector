@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useClient } from '../../hooks/useUser';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -12,6 +12,9 @@ import bcrypt from 'bcryptjs';
 import { PageLoad } from '../../pages/PageLoad';
 import { DeleteForever } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import {getProductOpinions} from "../../api/productApi";
+import {getOpinionsForClient} from "../../api/opinionApi";
+import Opinion from "../../common/components/OpinionTile/OpinionTile";
 
 export function ClientPanel() {
   const navigate = useNavigate();
@@ -21,7 +24,7 @@ export function ClientPanel() {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(true);
 
-  const { client, clientRole, changeEmail, changePassword, archiveSelf } =
+  const { client, clientRole, changeEmail, changePassword, archiveSelf, logOut } =
     useClient();
 
   async function changeEmailButtonHandle() {
@@ -34,6 +37,7 @@ export function ClientPanel() {
 
   async function handleButtonDeleteClient() {
     if (await archiveSelf()) {
+      await logOut()
       navigate('/log-in')
     }
   }
@@ -43,6 +47,7 @@ export function ClientPanel() {
       setIsPasswordValid(true);
       const hashedPass = bcrypt.hashSync(password, bcrypt.genSaltSync(12));
       await changePassword({ password: hashedPass });
+      await logOut()
     } else {
       setIsPasswordValid(false);
     }
@@ -120,6 +125,9 @@ export function ClientPanel() {
         >
           Change password
         </Button>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '40%' }}>
+              <br /><br /> Twoje opinie:
+          </Box>
       </Box>
     </Box>
   );

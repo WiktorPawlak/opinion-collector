@@ -12,7 +12,9 @@ import pl.io.opinioncollector.infrastracture.opinion.repository.OpinionRepositor
 import pl.io.opinioncollector.infrastracture.product.repository.ProductRepository;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,6 +55,9 @@ public class OpinionFacadeImpl implements OpinionFacade {
     @Override
     @Transactional
     public Opinion add(Opinion opinion) {
+        if (opinion.getCreationDate() == null){
+            opinion.setCreationDate(new Date());
+        }
         if (productRepository.existsById(opinion.getProductId())) {
             log.info("Adding opinion: " + opinion);
             return opinionRepository.save(opinion);
@@ -116,6 +121,17 @@ public class OpinionFacadeImpl implements OpinionFacade {
         } else {
             throw new IllegalAccessException
                 ("No permission to access this opinion");
+        }
+    }
+
+    @Override
+    public List<Opinion> getVisibleFor(long id) {
+        if (productRepository.existsById(id)) {
+            log.info("Getting all opinions for product with id: " + id);
+            return opinionRepository.findAllByProductIdAndIsHiddenIsFalse(id);
+        } else {
+            log.warn("Product with id " + id + " dont exist");
+            return Collections.emptyList();
         }
     }
 }

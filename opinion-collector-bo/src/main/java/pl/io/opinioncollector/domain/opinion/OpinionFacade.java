@@ -24,4 +24,6 @@ public interface OpinionFacade {
     void changeHidden(long opinionId, Principal principal) throws IllegalAccessException;
 
     List<Opinion> getForUser(String userid, Principal principal) throws IllegalAccessException;
+
+    List<Opinion> getVisibleFor(long id);
 }
