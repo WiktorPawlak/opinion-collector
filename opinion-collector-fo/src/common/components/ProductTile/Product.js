@@ -1,8 +1,10 @@
 import React from 'react';
 import css from './Product.module.scss';
 import { Link } from 'react-router-dom';
+import { useClient } from '../../../hooks/useUser';
 
-const Product = ({ title, description, image, id }) => {
+const Product = ({ title, description, image, id, handleProductHide }) => {
+  const { clientRole } = useClient();
   return (
     <div className={css.product}>
       <img src={image} alt=""></img>
@@ -15,6 +17,11 @@ const Product = ({ title, description, image, id }) => {
           <Link to={`/products/${id}`}>
             <button className={css.btn}>Rate</button>
           </Link>
+          {clientRole === 'ADMIN' && (
+            <button className={css.btn} onClick={handleProductHide}>
+              Hide
+            </button>
+          )}
         </div>
       </div>
     </div>
