@@ -21,7 +21,7 @@ export function ClientPanel() {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(true);
 
-  const { client, clientRole, changeEmail, changePassword, archiveSelf } =
+  const { client, clientRole, changeEmail, changePassword, archiveSelf, logOut } =
     useClient();
 
   async function changeEmailButtonHandle() {
@@ -34,6 +34,7 @@ export function ClientPanel() {
 
   async function handleButtonDeleteClient() {
     if (await archiveSelf()) {
+      await logOut()
       navigate('/log-in')
     }
   }
@@ -43,6 +44,7 @@ export function ClientPanel() {
       setIsPasswordValid(true);
       const hashedPass = bcrypt.hashSync(password, bcrypt.genSaltSync(12));
       await changePassword({ password: hashedPass });
+      await logOut()
     } else {
       setIsPasswordValid(false);
     }

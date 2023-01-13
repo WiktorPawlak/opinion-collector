@@ -28,8 +28,8 @@ export async function apiArchiveSelf() {
   return put('/clients/self/profile-deletion');
 }
 
-export async function apiArchiveClient(params) {
-  return put('/clients/self/profile-deletion', params);
+export async function apiArchiveClient(username) {
+  return put(`/clients/${username}/archive`);
 }
 
 export async function apiChangeRole(params) {

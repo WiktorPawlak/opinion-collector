@@ -87,7 +87,7 @@ export function useClient() {
   }, [navigate]);
 
   const archiveClient = useCallback(async (username) => {
-    const response = await apiArchiveClient({ username: username });
+    const response = await apiArchiveClient(username);
 
     return response[1] === 200;
   }, []);
@@ -139,6 +139,7 @@ export function useClient() {
     changePassword,
     clientChangeRole,
     archiveSelf,
+    archiveClient,
     logOut
   };
 }
