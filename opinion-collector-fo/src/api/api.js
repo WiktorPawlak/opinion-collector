@@ -22,6 +22,25 @@ export async function get(stringUrl, params) {
   }
 }
 
+
+export async function getNoResponse(stringUrl, params) {
+  const url = new URL(stringUrl, BASE_URL);
+  if (params) {
+    url.search = new URLSearchParams(params).toString();
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    credentials: 'include',
+    method: 'GET'
+  });
+
+  return response.status
+}
+
 const defaultHeaders = {
   'Content-Type': 'application/json',
   Accept: 'application/json'

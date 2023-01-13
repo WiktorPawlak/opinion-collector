@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
 import './LogIn.css';
 import { useClient } from '../hooks/useUser';
+import { Button, TextField } from '@mui/material';
+import { Box } from '@mui/system';
 
 function LogIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isError, setIsError] = useState(false);
   const { logInClient } = useClient();
 
-  function signInButtonHandle() {
-    //walidacja
-    logInClient({ username, password });
+  async function signInButtonHandle() {
+    if (!await logInClient({ username, password })) {
+      setIsError(true);
+    }
   }
 
   return (
@@ -20,15 +24,32 @@ function LogIn() {
           Sign in to <span>NAME</span>🍕
         </div>
         <div className="form-container">
-          <form className="sign-up-form">
-            <label>Username</label>
-            <input type="text" onChange={(e) => setUsername(e.target.value)} />
-            <label>Password</label>
-            <input type="text" onChange={(e) => setPassword(e.target.value)} />
-          </form>
-          <button className="signInButton" onClick={signInButtonHandle}>
-            Sign In
-          </button>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
+            <TextField
+              error={isError}
+              label="Username"
+              required
+              variant="outlined"
+              onChange={(e) => setUsername(e.target.value)}
+            ></TextField>
+            <TextField
+              sx={{ marginTop: '15px', marginBottom: '15px' }}
+              type="password"
+              label="Password"
+              error={isError}
+              required
+              variant="outlined"
+              helperText={isError ? 'Wrong username or password' : ' '}
+              onChange={(e) => setPassword(e.target.value)}
+            ></TextField>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={signInButtonHandle}
+            >
+              Sign in
+            </Button>
+          </Box>
         </div>
 
         <a href="/sign-up">
