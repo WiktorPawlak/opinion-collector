@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import { Button, Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box } from '@mui/system';
 
@@ -28,11 +28,31 @@ export const CategoriesList = ({ categories }) => {
     return initialCategories;
   }, [categories, findChildren]);
 
+  function onEditClick(e) {
+    e.stopPropagation();
+  }
+
   const renderAccordion = (category) => {
     return (
       <Accordion sx={{ marginY: 2 }} key={category.categoryId}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           {category.categoryName}
+          <Button
+      sx={{ width: '20' }}
+      variant="contained"
+      className="search-btn"
+      onClick={onEditClick}
+    >
+      Edit
+    </Button>
+    <Button
+      sx={{ width: '20' }}
+      variant="contained"
+      className="warning-btn"
+      onClick={onEditClick}
+    >
+      Delete
+    </Button>
         </AccordionSummary>
         <AccordionDetails>
           {category.children &&
