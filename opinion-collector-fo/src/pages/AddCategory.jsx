@@ -9,10 +9,9 @@ export function AddCategory() {
     const [ categoryId, setCategoryId ] = useState('');
     const [ parentId, setParentId ] = useState('');
     const [ categoryName, setCategoryName ] = useState('');
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+
         const formData = new FormData();
         formData.append('categoryId', categoryId);
         formData.append('parentId', parentId);
