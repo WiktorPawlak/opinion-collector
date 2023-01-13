@@ -2,11 +2,14 @@ import React from 'react';
 import css from './OpinionTile.module.scss';
 import {Link} from 'react-router-dom';
 import {useClient} from "../../../hooks/useUser";
+import SingleProduct from '../../../pages/SingleProduct';
+import Product from "../ProductTile/Product";
 import {putOpinionHidden} from "../../../api/opinionApi";
 
 
 const Opinion = ({ clientUsername, opinionContent, opinionPros,
-                 opinionCons, creationDate, opinionId, starReview, hidden, handleOpinionHide}) => {
+                 opinionCons, creationDate, opinionId, starReview,
+                     hidden, handleOpinionHide, productId, modificationDate}) => {
     const { clientRole } = useClient();
     return (
         <div className={css.opinion}>
@@ -27,7 +30,7 @@ const Opinion = ({ clientUsername, opinionContent, opinionPros,
                     && <button className={css.DeleteBtn}>Delete Opinion</button>}
                     {clientRole === 'ADMIN'
                     &&
-                    <Link style={{ marginRight: '10vw' }} to={`/opinions/edit/${opinionId}`}>
+                    <Link style={{ marginRight: '10vw' }} to={`/opinions/edit/${opinionId}/${productId}`}>
                         <button className={css.EditBtn}>Edit Opinion</button>
                     </Link>}
                 </div>

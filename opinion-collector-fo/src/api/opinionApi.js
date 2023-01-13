@@ -4,7 +4,7 @@ export function apiGetOpinions() {
     return get('/opinions')
 }
 
-export function getOpinionsById(id) {
+export function getOpinion(id) {
     return get(`/opinions/${id}`)
 }
 

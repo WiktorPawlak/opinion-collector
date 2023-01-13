@@ -35,7 +35,7 @@ function App() {
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
         <Route path="/opinions/add/:id" element={<AddOpinion />} />
-        <Route path="/opinions/edit/:id" element={<EditOpinion />} />
+        <Route path="/opinions/edit/:id/:id" element={<EditOpinion />} />
       </Routes>
     </Router>
   );

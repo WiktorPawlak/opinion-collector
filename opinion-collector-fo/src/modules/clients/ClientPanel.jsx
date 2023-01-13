@@ -12,9 +12,11 @@ import bcrypt from 'bcryptjs';
 import { PageLoad } from '../../pages/PageLoad';
 import { DeleteForever } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import {getProductOpinions} from "../../api/productApi";
-import {getOpinionsForClient} from "../../api/opinionApi";
+import {getProductOpinions, getVisibleOpinionsForProductId} from "../../api/productApi";
+import {getOpinionsForClient, putOpinionHidden} from "../../api/opinionApi";
 import Opinion from "../../common/components/OpinionTile/OpinionTile";
+import css from "../../pages/SingleProduct.module.scss";
+import SingleProduct from "../../pages/SingleProduct";
 
 export function ClientPanel() {
   const navigate = useNavigate();
@@ -24,8 +26,26 @@ export function ClientPanel() {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(true);
 
+  //////////////////////////////////////////////////////
+  const [opinions, setOpinions] = useState([]);
+
   const { client, clientRole, changeEmail, changePassword, archiveSelf, logOut } =
     useClient();
+
+    const findOpinionsForClient = useCallback(async () => {
+        let response;
+        response = await getOpinionsForClient(client.username.username);
+        if (response[1] === 200) {
+            setOpinions(response[0]);
+        } else {
+            //toast ?
+            console.log('Nie ma opinii');
+        }
+    }, [client]);
+
+    useEffect(() => {
+        findOpinionsForClient();
+    }, [findOpinionsForClient]);
 
   async function changeEmailButtonHandle() {
     if (await changeEmail({ email: email })) {
@@ -127,6 +147,24 @@ export function ClientPanel() {
         </Button>
           <Box sx={{ display: 'flex', flexDirection: 'column', width: '40%' }}>
               <br /><br /> Twoje opinie:
+              <div>
+                  {opinions.map((opinion) => (
+                      <Opinion
+                          key={opinion.id}
+                          opinionId={opinion.opinionId}
+                          handleOpinionHide={() => SingleProduct.handleOpinionHide(opinion.opinionId)}
+                          creationDate={opinion.creationDate}
+                          modificationDate={opinion.modificationDate}
+                          clientUsername={opinion.clientUsername}
+                          starReview={opinion.starReview}
+                          opinionContent={opinion.opinionContent}
+                          opinionCons={opinion.opinionCons}
+                          opinionPros={opinion.opinionPros}
+                          hidden={opinion.hidden}
+                          productId={opinion.productId}
+                      />
+                  ))}
+              </div>
           </Box>
       </Box>
     </Box>
