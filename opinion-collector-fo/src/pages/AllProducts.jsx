@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 function AllProducts() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
-  const [query, setQuery] = useState('chicken');
+  const [query, setQuery] = useState('');
   const { clientRole } = useClient();
 
   const findProducts = useCallback(async () => {

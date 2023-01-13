@@ -44,4 +44,17 @@ img {
   cursor: pointer;
   background-color: #918cc2;
   color: white;
+  margin-bottom: 12px;
+}
+
+/* ///////////////////////// */
+.containerOpinions {
+  background-color: #726da8;
+  display: block;
+  min-height: 100vh;
+  float: right;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
 }

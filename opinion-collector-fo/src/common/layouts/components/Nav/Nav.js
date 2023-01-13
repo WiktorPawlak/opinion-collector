@@ -2,13 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import css from './Nav.module.scss';
 import { useClient } from '../../../../hooks/useUser';
+import { Box } from '@mui/system';
+import { Button } from '@mui/material';
 
 function Navbar() {
-  const { getSelf, client, clientRole } = useClient();
+  const { getSelf, client, clientRole, logOut } = useClient();
 
   window.onload = function () {
     getSelf();
   };
+
+  async function handleButtonLogOut() {
+    logOut()
+  }
 
   return (
     <nav className={css.navbar}>
@@ -59,6 +65,14 @@ function Navbar() {
                 {client.username.username}
               </button>
             </Link>
+            <Button
+              sx={{ marginLeft: '10px' }}
+              variant="contained"
+              color="secondary"
+              onClick={handleButtonLogOut}
+            >
+              Log out
+            </Button>
           </li>
         )}
       </ul>

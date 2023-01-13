@@ -8,6 +8,7 @@ import {
   apiGetActiveClients,
   apiGetArchivedClients,
   apiGetSelf,
+  apiLogOut,
   postLogin
 } from '../api/authApi';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +31,6 @@ export function useClient() {
           window.location.reload(false);
           return true;
         } else {
-          console.log('Wrong password or username');
           return false;
         }
       }
@@ -61,7 +61,7 @@ export function useClient() {
     }
   }, []);
 
-    const getArchivedClients = useCallback(async () => {
+  const getArchivedClients = useCallback(async () => {
     const response = await apiGetArchivedClients();
 
     if (response[1] === 200) {
@@ -79,6 +79,12 @@ export function useClient() {
 
     return response[1] === 200;
   }, []);
+
+  const logOut = useCallback(async () => {
+    await apiLogOut();
+    navigate('/log-in');
+    window.location.reload(true);
+  }, [navigate]);
 
   const archiveClient = useCallback(async (username) => {
     const response = await apiArchiveClient({ username: username });
@@ -112,7 +118,7 @@ export function useClient() {
     getActiveClients();
   }, [getActiveClients]);
 
-    useEffect(() => {
+  useEffect(() => {
     getArchivedClients();
   }, [getArchivedClients]);
 
@@ -132,6 +138,7 @@ export function useClient() {
     changeEmail,
     changePassword,
     clientChangeRole,
-    archiveSelf
+    archiveSelf,
+    logOut
   };
 }
