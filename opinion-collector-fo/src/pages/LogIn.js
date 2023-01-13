@@ -4,6 +4,7 @@ import './LogIn.css';
 import { useClient } from '../hooks/useUser';
 import { Button, TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import { ToastContainer } from 'react-toastify';
 
 function LogIn() {
   const [username, setUsername] = useState('');
@@ -58,6 +59,7 @@ function LogIn() {
           </button>
         </a>
       </div>
+      <ToastContainer />
       <CopyrightFooter />
     </div>
   );

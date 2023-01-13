@@ -11,6 +11,7 @@ import {
   validatePassword,
   validateUsername
 } from '../../validators/client/clientValidators';
+import { useNavigate } from 'react-router-dom';
 
 const salt = bcrypt.genSaltSync(12);
 
@@ -22,7 +23,7 @@ function SignUp() {
   const [isEmailError, setIsEmailError] = useState(false);
   const [isUsernamError, setIsUsernameError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
-
+  const navigate = useNavigate()
   const registerDto = { email, login, password };
 
   function validateForm() {
@@ -53,9 +54,9 @@ function SignUp() {
       const response = await postRegister({ email, login, hashedPass });
       if (response[0] === 201) {
         toast('Account created!\nPlease log in. :)');
+        navigate('/log-in');
       } else {
         toast('Could not create new accout. :(');
-        console.log('Could not create new accout: ', response[0]);
       }
     }
   };
