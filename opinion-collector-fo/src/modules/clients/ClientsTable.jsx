@@ -20,6 +20,11 @@ const columns = [
 
 export function ClientsTable({ clients, showActive }) {
   const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   return (
     <Paper
@@ -45,7 +50,7 @@ export function ClientsTable({ clients, showActive }) {
           </TableHead>
           <TableBody>
             {clients &&
-              clients.slice(page * 10, page * 10 + 10).map((row) => {
+              clients.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
@@ -70,12 +75,12 @@ export function ClientsTable({ clients, showActive }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={10}
+        rowsPerPageOptions={rowsPerPage}
         component="div"
         count={clients.length}
-        rowsPerPage={10}
+        rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={setPage}
+        onPageChange={handleChangePage}
       />
     </Paper>
   );

@@ -32,6 +32,10 @@ export async function apiArchiveClient(username) {
   return put(`/clients/${username}/archive`);
 }
 
+export async function apiActiveClient(username) {
+  return put(`/clients/${username}/active`);
+}
+
 export async function apiChangeRole(params) {
   return put('/clients/change-role', params);
 }

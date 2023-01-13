@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
+  apiActiveClient,
   apiArchiveClient,
   apiArchiveSelf,
   apiChangeEmail,
@@ -92,6 +93,12 @@ export function useClient() {
     return response[1] === 200;
   }, []);
 
+    const activeClient = useCallback(async (username) => {
+    const response = await apiActiveClient(username);
+
+    return response[1] === 200;
+  }, []);
+
     const archiveSelf = useCallback(async () => {
     const response = await apiArchiveSelf();
 
@@ -139,6 +146,7 @@ export function useClient() {
     changePassword,
     clientChangeRole,
     archiveSelf,
+    activeClient,
     archiveClient,
     logOut
   };

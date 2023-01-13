@@ -53,8 +53,8 @@ function SignUp() {
       const hashedPass = bcrypt.hashSync(password, salt);
       const response = await postRegister({ email, login, hashedPass });
       if (response[0] === 201) {
-        toast('Account created!\nPlease log in. :)');
         navigate('/log-in');
+         toast('Account created!\nPlease log in. :)');
       } else {
         toast('Could not create new accout. :(');
       }

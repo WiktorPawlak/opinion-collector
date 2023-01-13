@@ -29,7 +29,7 @@ const style = {
 export function ClientActions( { username, showActive }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [role, setRole] = useState('');
-  const { clientChangeRole, archiveClient } = useClient();
+  const { clientChangeRole, archiveClient, activeClient } = useClient();
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -41,6 +41,11 @@ export function ClientActions( { username, showActive }) {
 
   async function handleArchivClientButton() {
     await archiveClient(username);
+    window.location.reload(true);
+  }
+
+    async function handleActiveClientButton() {
+    await activeClient(username);
     window.location.reload(true);
   }
 
@@ -70,9 +75,8 @@ export function ClientActions( { username, showActive }) {
         </Button>
       ) : (
         <Button
-          onClick={handleArchivClientButton}
+          onClick={handleActiveClientButton}
           variant="outlined"
-          startIcon={<DeleteOutline />}
         >
           Active
         </Button>

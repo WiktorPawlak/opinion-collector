@@ -70,9 +70,21 @@ public class ClientController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("{username}/archive")
-    public ResponseEntity<Object> getArchiveClient(@PathVariable String username) {
+    public ResponseEntity<Object> archiveClient(@PathVariable String username) {
         try {
             clientFacade.archive(username);
+            return ResponseEntity.ok().build();
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("{username}/active")
+    public ResponseEntity<Object> activeClient(@PathVariable String username) {
+        try {
+            clientFacade.active(username);
             return ResponseEntity.ok().build();
         } catch (IllegalStateException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
