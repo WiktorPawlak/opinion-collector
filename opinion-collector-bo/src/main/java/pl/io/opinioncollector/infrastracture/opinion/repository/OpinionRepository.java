@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface OpinionRepository extends JpaRepository<Opinion, Long> {
     List<Opinion> findAllByProductId(long id);
     List<Opinion> findAllByClientUsername(String username);
+    List<Opinion> findAllByProductIdAndIsHiddenIsFalse(long id);
 }

@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { postOpinion } from "../api/opinionApi";
-import { AddOpinionForm } from '../modules/opinions/AddOpinion/AddOpinionForm';
+import { putOpinion } from "../api/opinionApi";
+import { EditOpinionForm } from '../modules/opinions/EditOpinion/EditOpinionForm';
 import { useOpinion } from "../hooks/useOpinion";
-import {useNavigate, useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useClient} from "../hooks/useUser";
 
-export function AddOpinion() {
+export function EditOpinion() {
     const { id } = useParams();
-    const { client } = useClient();
     const { starReviews, starReviewLoading } = useOpinion();
 
     const [ starReview, setStarReview ] = useState('')
@@ -15,7 +14,6 @@ export function AddOpinion() {
     const [ pros, setPros ] = useState('')
     const [ cons, setCons ] = useState('')
     const now = new Date();
-    const navigate = useNavigate();
 
     //console.log(useClient().getSelf());
 
@@ -27,10 +25,9 @@ export function AddOpinion() {
         formData.append('opinionPros', encodeURIComponent(pros));
         formData.append('opinionCons', encodeURIComponent(cons));
         formData.append('productId', id);
-        formData.append('clientUsername', client.username.username);
-        await postOpinion(Object.fromEntries(formData));
-        //console.log(new Date().toLocaleString());
-
+        formData.append('clientUsername', 'Roman');
+        await putOpinion(Object.fromEntries(formData));
+        console.log(id);
     };
 
     if (starReviewLoading) {
@@ -39,7 +36,7 @@ export function AddOpinion() {
 
     return (
         <div className="container flex center-column">
-            <AddOpinionForm
+            <EditOpinionForm
                 handleSubmit={handleSubmit}
                 starReviews={starReviews}
                 setStarReview={setStarReview}

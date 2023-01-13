@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useClient } from '../../hooks/useUser';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -12,6 +12,9 @@ import bcrypt from 'bcryptjs';
 import { PageLoad } from '../../pages/PageLoad';
 import { DeleteForever } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import {getProductOpinions} from "../../api/productApi";
+import {getOpinionsForClient} from "../../api/opinionApi";
+import Opinion from "../../common/components/OpinionTile/OpinionTile";
 
 export function ClientPanel() {
   const navigate = useNavigate();
@@ -120,6 +123,9 @@ export function ClientPanel() {
         >
           Change password
         </Button>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '40%' }}>
+              <br /><br /> Twoje opinie:
+          </Box>
       </Box>
     </Box>
   );

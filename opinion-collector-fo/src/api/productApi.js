@@ -23,3 +23,7 @@ export async function postProduct(body) {
 export async function getProductOpinions(id) {
   return get(`/products/opinions/${id}`)
 }
+
+export async function getVisibleOpinionsForProductId(id) {
+  return get(`/products/opinions/visible/${id}`)
+}

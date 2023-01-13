@@ -2,6 +2,7 @@ package pl.io.opinioncollector.application.controllers;
 
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,7 +63,6 @@ public class ProductController {
         return Arrays.stream(ProductOrigin.POLAND.getDeclaringClass().getEnumConstants()).toList();
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable long id) {
         return productFacade.getProduct(id);
@@ -112,8 +112,14 @@ public class ProductController {
         return opinionFacade.getFor(id);
     }
 
+    @GetMapping("/opinions/visible/{id}")
+    public List<Opinion> getVisibleOpinionsForProductId(@PathVariable long id) {
+        return opinionFacade.getVisibleFor(id);
+    }
+
     @GetMapping("/starAverage")
     public double starAverage(@RequestParam long id) {
         return opinionFacade.starAverage(id);
     }
 }
+
