@@ -12,6 +12,7 @@ import { CategoriesPage } from './pages/CategoriesPage';
 import { AddCategory } from './pages/AddCategory';
 import { ClientsPanel } from './modules/clients/ClientsPanel';
 import { ClientPanel } from './modules/clients/ClientPanel';
+import { AllSuggestions } from './modules/suggestions/AllSuggestions';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/clients" element={<ClientsPanel />} />
         <Route path="/clients/self" element={<ClientPanel />} />
+        <Route path="/all_suggestions" element={<AllSuggestions />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
       </Routes>
