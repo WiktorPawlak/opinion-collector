@@ -14,7 +14,7 @@ import { ClientsPanel } from './modules/clients/ClientsPanel';
 import { ClientPanel } from './modules/clients/ClientPanel';
 import { AllSuggestions } from './modules/suggestions/AllSuggestions';
 import { AddOpinion } from "./pages/AddOpinion";
-import {EditOpinion} from "./pages/EditOpinion";
+import { EditOpinion } from "./pages/EditOpinion";
 
 
 function App() {
