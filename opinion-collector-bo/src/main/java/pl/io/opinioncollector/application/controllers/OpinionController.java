@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.io.opinioncollector.domain.opinion.OpinionFacade;
 import pl.io.opinioncollector.domain.opinion.model.Opinion;
+import pl.io.opinioncollector.domain.opinion.model.StarReview;
+import pl.io.opinioncollector.domain.product.model.ProductOrigin;
 
+import java.util.Arrays;
 import java.util.List;
 import java.security.Principal;
 
@@ -44,7 +47,7 @@ public class OpinionController {
         }
     }
 
-    @PreAuthorize("hasAuthority('STANDARD')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public Opinion addOpinion(@RequestBody Opinion opinion) {
         return opinionFacade.add(opinion);
@@ -78,4 +81,8 @@ public class OpinionController {
         opinionFacade.changeHidden(id, principal);
     }
 
+    @GetMapping("/starReviews")
+    public List<StarReview> getOpinionStarReviews() {
+        return Arrays.stream(StarReview.ONE.getDeclaringClass().getEnumConstants()).toList();
+    }
 }
