@@ -33,20 +33,18 @@ function SingleProduct() {
 
   const findOpinionsForProduct = useCallback(async () => {
     let response;
-    /*if (clientRole === 'STANDARD'){
+    if (clientRole === 'STANDARD'){
       response = await getVisibleOpinionsForProductId(id);
     } else if (clientRole === 'ADMIN') {
       response = await getProductOpinions(id);
-    }*/
-    //response = await getVisibleOpinionsForProductId(id);
-    response = await getProductOpinions(id);
+    }
     if (response[1] === 200) {
       setOpinions(response[0]);
     } else {
       //toast ?
       console.log('Nie ma opinii');
     }
-  }, []);
+  }, [clientRole]);
 
   useEffect(() => {
     findOpinionsForProduct();
@@ -106,6 +104,7 @@ function SingleProduct() {
                     opinionId={opinion.opinionId}
                     handleOpinionHide={() => handleOpinionHide(opinion.opinionId)}
                     creationDate={opinion.creationDate}
+                    modificationDate={opinion.modificationDate}
                     clientUsername={opinion.clientUsername}
                     starReview={opinion.starReview}
                     opinionContent={opinion.opinionContent}

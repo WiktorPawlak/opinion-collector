@@ -1,5 +1,7 @@
 import { Autocomplete, Button, TextField } from '@mui/material';
 import {Link} from "react-router-dom";
+import Opinion from "../../../common/components/OpinionTile/OpinionTile";
+import OpinionTile from "../../../common/components/OpinionTile/OpinionTile";
 
 export const EditOpinionForm = ({
                                    handleSubmit,
@@ -8,7 +10,8 @@ export const EditOpinionForm = ({
                                    setContent,
                                    setPros,
                                    setCons,
-                                   id
+                                   id,
+                                   content, pros, cons,
                                }) => (
     <form className="form-container">
         Edit Your Opinion:
@@ -23,13 +26,19 @@ export const EditOpinionForm = ({
             )}
         />
         <label>Content</label>
-        <TextField onChange={(e) =>
+        <TextField
+            defaultValue={content}
+            onChange={(e) =>
             setContent(e.target.value)} />
         <label>Pros</label>
-        <TextField onChange={(e) =>
+        <TextField
+            defaultValue={pros}
+            onChange={(e) =>
             setPros(e.target.value)} />
         <label>Cons</label>
-        <TextField onChange={(e) =>
+        <TextField
+            defaultValue={cons}
+            onChange={(e) =>
             setCons(e.target.value)} />
         <Button
             component = {Link} to={`/products/${id}`}

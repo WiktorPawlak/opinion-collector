@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Product from '../common/components/ProductTile/Product';
 import Footer from '../common/layouts/components/Footer/Footer';
+import { putProductHidden } from '../api/productApi';
 import css from './AllProducts.module.scss';
-import { getProducts, getProductsVisivle as getProductsVisible } from '../api/productApi';
+import {
+  getProducts,
+  getProductsVisivle as getProductsVisible
+} from '../api/productApi';
 import { useClient } from '../hooks/useUser';
 import { Link } from 'react-router-dom';
 
@@ -43,6 +47,21 @@ function AllProducts() {
     setSearch('');
   };
 
+  const handleProductHide = async (id) => {
+    console.log(id);
+    const productsToUpdate = [...products];
+    const indexOfProductToHide = productsToUpdate.findIndex(
+      (product) => product.productId === id
+    );
+    if (indexOfProductToHide !== -1) {
+      console.log(indexOfProductToHide);
+      productsToUpdate[indexOfProductToHide].hidden =
+        !productsToUpdate[indexOfProductToHide].hidden;
+      setProducts(productsToUpdate);
+    }
+    await putProductHidden(id);
+  };
+
   return (
     <div className="products">
       <div className={css.productsNavs}>
@@ -68,6 +87,7 @@ function AllProducts() {
         {products.map((product) => (
           <Product
             key={product.id}
+            handleProductHide={() => handleProductHide(product.productId)}
             title={product.title}
             image={product.image}
             description={product.title}

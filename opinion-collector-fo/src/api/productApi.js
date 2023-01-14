@@ -1,4 +1,4 @@
-import { get, postMultipart } from './api';
+import { get, postMultipart, put } from './api';
 
 export function getProductsVisivle() {
   return get('/products/visible');
@@ -21,9 +21,13 @@ export async function postProduct(body) {
 }
 
 export async function getProductOpinions(id) {
-  return get(`/products/opinions/${id}`)
+  return get(`/products/opinions/${id}`);
 }
 
 export async function getVisibleOpinionsForProductId(id) {
-  return get(`/products/opinions/visible/${id}`)
+  return get(`/products/opinions/visible/${id}`);
+}
+
+export function putProductHidden(id) {
+  return put(`/products/${id}`);
 }
