@@ -8,6 +8,8 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/system';
+import { deleteCategory } from '../../../../api/categoryApi';
+import { eventWrapper } from '@testing-library/user-event/dist/utils';
 
 export const CategoriesList = ({ categories }) => {
   const findChildren = useCallback((category, categories) => {
@@ -34,8 +36,14 @@ export const CategoriesList = ({ categories }) => {
     return initialCategories;
   }, [categories, findChildren]);
 
+
   function onEditClick(e) {
     e.stopPropagation();
+  }
+
+  async function onDeleteClick(categoryId) {
+    await deleteCategory(categoryId);
+    window.location.reload();
   }
 
   const renderAccordion = (category) => {
@@ -55,17 +63,18 @@ export const CategoriesList = ({ categories }) => {
             sx={{ width: '20' }}
             variant="outlined"
             startIcon={<DeleteIcon />}
-            onClick={onEditClick}
+            onClick={() => onDeleteClick(category.categoryId)}
             size="small"
           >
             Delete
           </Button>}
-          
+
         </AccordionSummary>
-        <AccordionDetails>
+        {category.leaf === false && <AccordionDetails>
           {category.children &&
             category.children.map((child) => renderAccordion(child))}
-        </AccordionDetails>
+        </AccordionDetails>}
+        
       </Accordion>
     );
   };
