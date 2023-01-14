@@ -5,15 +5,15 @@ export async function apiGetAllSuggestions() {
 }
 
 export async function apiGetSuggestion({suggestionId}) {
-  return get(`/suggestions/${suggestionId}`);
+  return await get(`/suggestions/${suggestionId}`);
 }
 
 export async function apiAcceptSuggestion({suggestionId}) {
-  return post(`/suggestions/${suggestionId}/accept`)
+  return await post(`/suggestions/${suggestionId}/accept`)
 }
 
 export async function apiRejectSuggestion({suggestionId}) {
-  return post(`/suggestions/${suggestionId}/reject`)
+  return await post(`/suggestions/${suggestionId}/reject`)
 }
 
 
