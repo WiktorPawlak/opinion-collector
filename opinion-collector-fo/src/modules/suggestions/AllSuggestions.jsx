@@ -11,11 +11,8 @@ export function AllSuggestions() {
   const [fliter, setFilter] = useState('');
   const {suggestions} = useSuggestion();
 
-  function getSuggestions() {
-    return suggestions;
-  }
 
-  if (suggestions.length === 0) {
+  if (suggestions === null) {
     return (<PageLoad />)
   }
 
@@ -44,7 +41,7 @@ export function AllSuggestions() {
       </Box>
 
       <SuggestionTable
-        suggestions={getSuggestions().filter(
+        suggestions={suggestions.filter(
           (suggestions) =>
             suggestions.username.includes(fliter) || suggestions.title.includes(fliter)
         )}

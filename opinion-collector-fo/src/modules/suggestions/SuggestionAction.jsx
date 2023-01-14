@@ -1,16 +1,26 @@
 import { SaveOutlined } from '@mui/icons-material';
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   Modal,
   Radio,
-  RadioGroup
+  RadioGroup,
+  CardMedia,
+  CardContent,
+  CardActions,
+  TextField
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { useSuggestion } from '../../hooks/useSuggestion';
+import { useHandleSuggestion } from '../../hooks/useSuggestion';
 import { useEffect, useState } from 'react';
 import { apiGetSuggestion } from '../../api/suggestionApi';
+import Card from '@mui/material/Card';
+
+import Typography from '@mui/material/Typography';
 
 const style = {
   position: 'absolute',
@@ -45,11 +55,10 @@ const product_style_2 = {
   marginBottom: 2
 };
 
-export function SuggestionAction(suggestionId) {
+export function SuggestionAction({ suggestionInfo }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [suggestionState, setSuggestionState] = useState('');
-  const { acceptSuggestion, rejectSuggestion } = useSuggestion();
-  const [suggestionInfo, setSuggestionInfo] = useState(null);
+  const { acceptSuggestion, rejectSuggestion } = useHandleSuggestion();
+
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -58,29 +67,10 @@ export function SuggestionAction(suggestionId) {
   function handleChangeSuggestionStateButton() {
     setIsModalOpen(true);
   }
-  async function handleSaveRole() {
-    if (suggestionState === 'REJECTED') {
-      rejectSuggestion(suggestionId);
-      setIsModalOpen(false)
-    }
-    else if (suggestionState === 'ACCEPTED') {
-      acceptSuggestion(suggestionId);
-      setIsModalOpen(false)
-    }
-  }
-
-  useEffect(() => {
-    apiGetSuggestion(suggestionId)
-      .then((data) => {
-        setSuggestionInfo(data[0]);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }, []);
+  const [categoryId, setCategoryId] = useState(1);
 
   return (
-    <Box sx={{ display: 'inline' }}> 
+    <Box sx={{ display: 'inline' }}>
       <Button
         sx={{ marginRight: '7px' }}
         onClick={handleChangeSuggestionStateButton}
@@ -88,94 +78,109 @@ export function SuggestionAction(suggestionId) {
       >
         Show changes
       </Button>
-      <Modal
+      <Dialog
         open={isModalOpen}
         onClose={handleModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-
-            <Box sx={product_style_1}>
-              <p><b>Old product</b></p>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Product category id:</td>
-                    <td>{suggestionInfo?.product?.categoryId}</td>
-                  </tr>
-                  <tr>
-                    <td>Product name:</td>
-                    <td>{suggestionInfo?.product?.title}</td>
-                  </tr>
-                  <tr>
-                    <td>Image:</td>
-                    <td>{suggestionInfo?.product?.image}</td>
-                  </tr>
-                  <tr>
-                    <td>Origin:</td>
-                    <td>{suggestionInfo?.product?.origin}</td>
-                  </tr>
-                  <tr>
-                    <td>EAN:</td>
-                    <td>{suggestionInfo?.product?.ean}</td>
-                  </tr>
-                </tbody>
-              </table>  
-            </Box>
-            <Box sx={product_style_2}>
-            <p><b>New suggestion</b></p>
-            <table>
-                <tbody>
-                  <tr>
-                    <td>Product category id:</td>
-                    <td>{suggestionInfo?.suggestionProduct?.categoryId}</td>
-                  </tr>
-                  <tr>
-                    <td>Product name:</td>
-                    <td>{suggestionInfo?.suggestionProduct?.title}</td>
-                  </tr>
-                  <tr>
-                    <td>Image:</td>
-                    <td>{suggestionInfo?.suggestionProduct?.image}</td>
-                  </tr>
-                  <tr>
-                    <td>Origin:</td>
-                    <td>{suggestionInfo?.suggestionProduct?.origin}</td>
-                  </tr>
-                  <tr>
-                    <td>EAN:</td>
-                    <td>{suggestionInfo?.suggestionProduct?.ean}</td>
-                  </tr>
-                </tbody>
-              </table>    
-            </Box>
-
-
-          <FormControl>
-            <RadioGroup row onChange={(e) => setSuggestionState(e.target.value)}>
-              <FormControlLabel
-                value="REJECTED"
-                control={<Radio />}
-                label="REJECT"
-              />
-              <FormControlLabel
-                value="ACCEPTED"
-                control={<Radio />}
-                label="ACCEPT"
-              />
-            </RadioGroup>
-          </FormControl>
-          <Button
-            color="secondary"
-            variant="contained"
-            startIcon={<SaveOutlined />}
-            onClick={handleSaveRole}
+        <DialogTitle id="alert-dialog-title">{'Accept changes?'}</DialogTitle>
+        <Box
+          sx={{
+            display: 'flex',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'stretch',
+            gap: 2,
+            padding: 2
+          }}
+        >
+          <Card
+            variant="outlined"
+            sx={{ width: 345, backgroundColor: 'rgb(255,0,0,0.03)' }}
           >
-            Save
-          </Button>
+            <CardMedia
+              sx={{ height: 140 }}
+              image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
+              title="current product photo"
+            />
+
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {suggestionInfo?.product?.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Category ID: {suggestionInfo?.product?.categoryId}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Origin: {suggestionInfo?.product?.origin}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                EAN: {suggestionInfo?.product?.ean}
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card
+            variant="outlined"
+            sx={{ width: 345, backgroundColor: 'rgb(0,255,0,0.03)' }}
+          >
+            <CardMedia
+              sx={{ height: 140 }}
+              image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
+              title="Suggested product photo"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {suggestionInfo?.suggestionProduct?.title}
+              </Typography>
+              {/* <Typography variant="body2" color="text.secondary">
+                Category ID: {suggestionInfo?.suggestionProduct?.categoryId}
+              </Typography> */}
+              <TextField
+                variant="filled"
+                margin="none"
+                size="small"
+                label="Category ID"
+                value={categoryId}
+                onChange={(event) => setCategoryId(event.target.value)}
+              ></TextField>
+
+              {/* RTK QUERY */}
+
+              <Typography variant="body2" color="text.secondary">
+                Origin: {suggestionInfo?.suggestionProduct?.origin}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                EAN: {suggestionInfo?.suggestionProduct?.ean}
+              </Typography>
+            </CardContent>
+          </Card>
         </Box>
-      </Modal>
+
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setIsModalOpen(false);
+              rejectSuggestion(suggestionInfo.suggestionId);
+              window.location.reload();
+            }}
+            size="small"
+          >
+            Reject
+          </Button>
+          <Button
+            onClick={() => {
+              setIsModalOpen(false);
+              acceptSuggestion(suggestionInfo.suggestionId);
+              window.location.reload();
+            }}
+            size="small"
+            autoFocus
+          >
+            Accept
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

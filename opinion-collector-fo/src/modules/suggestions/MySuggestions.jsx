@@ -4,24 +4,17 @@ import {
   TextField
 } from '@mui/material';
 import { useState } from 'react';
-import { useSuggestion } from '../../hooks/useSuggestion';
+import { useMySuggestion } from '../../hooks/useSuggestion';
 import { useClient } from '../../hooks/useUser';
 import { PageLoad } from '../../pages/PageLoad';
 
 export function MySuggestions() {
   const [fliter, setFilter] = useState('');
-  const {mySuggestions} = useSuggestion();
   const { client } = useClient();
+  const {mySuggestions} = useMySuggestion( client?.username?.username);
 
-  function getClientName() {
-    return client?.username?.username;
-  }
 
-  function getMySuggestions() {
-    return mySuggestions;
-  }
-
-  if (mySuggestions.length === 0) {
+  if (mySuggestions === null) {
     return (<PageLoad />)
   }
 
@@ -51,7 +44,7 @@ export function MySuggestions() {
       </Box>
 
       <SuggestionTable
-        suggestions={getMySuggestions(getClientName()).filter(
+        suggestions={mySuggestions.filter(
           (suggestions) =>
             suggestions.username.includes(fliter) || suggestions.title.includes(fliter)
         )}
