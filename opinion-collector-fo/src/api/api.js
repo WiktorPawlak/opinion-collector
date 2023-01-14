@@ -71,9 +71,9 @@ export async function remove(url, body, headers = defaultHeaders) {
   });
 
   if (response.ok) {
-    return [await response.json(), response.status];
+    return [response.status];
   } else {
-    return [await response.text(), response.status];
+    return [response.status];
   }
 }
 
