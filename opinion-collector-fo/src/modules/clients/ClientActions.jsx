@@ -40,6 +40,7 @@ export function ClientActions( { username, showActive }) {
   }
 
   async function handleArchivClientButton() {
+    console.log(username);
     await archiveClient(username);
     window.location.reload(true);
   }

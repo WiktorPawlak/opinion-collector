@@ -62,6 +62,21 @@ export async function post(url, body, headers = defaultHeaders) {
   }
 }
 
+export async function remove(url, body, headers = defaultHeaders) {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    headers,
+    credentials: 'include',
+    method: 'DELETE',
+    body: JSON.stringify(body)
+  });
+
+  if (response.ok) {
+    return [await response.json(), response.status];
+  } else {
+    return [await response.text(), response.status];
+  }
+}
+
 export async function postNoResponse(url, body, headers = defaultHeaders) {
   const response = await fetch(`${BASE_URL}${url}`, {
     headers,

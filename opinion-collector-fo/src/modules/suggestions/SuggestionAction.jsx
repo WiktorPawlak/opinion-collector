@@ -1,4 +1,4 @@
-import { SaveOutlined } from '@mui/icons-material';
+import { SaveOutlined, DeleteOutline } from '@mui/icons-material';
 import {
   Button,
   Dialog,
@@ -17,7 +17,7 @@ import {
 import { Box } from '@mui/system';
 import { useHandleSuggestion } from '../../hooks/useSuggestion';
 import { useEffect, useState } from 'react';
-import { apiGetSuggestion } from '../../api/suggestionApi';
+import { apiGetSuggestion, apiDeleteSuggestion } from '../../api/suggestionApi';
 import Card from '@mui/material/Card';
 
 import Typography from '@mui/material/Typography';
@@ -56,12 +56,27 @@ const product_style_2 = {
 };
 
 export function SuggestionAction({ suggestionInfo }) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { acceptSuggestion, rejectSuggestion } = useHandleSuggestion();
 
 
   function handleModalClose() {
     setIsModalOpen(false);
+  }
+
+  function handleDeleteSuggestionButton() {
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleDeleteModalClose() {
+    setIsDeleteModalOpen(false);
+  }
+
+  async function handleConfirmDeleteButton() {
+    console.log(suggestionInfo);
+    await apiDeleteSuggestion(suggestionInfo);
+    window.location.reload(true);
   }
 
   function handleChangeSuggestionStateButton() {
@@ -78,6 +93,29 @@ export function SuggestionAction({ suggestionInfo }) {
       >
         Show changes
       </Button>
+      <Button
+          onClick={handleDeleteSuggestionButton}
+          variant="outlined"
+          startIcon={<DeleteOutline />}
+        >
+          Delete
+        </Button>
+        <Dialog
+        open={isDeleteModalOpen}
+        onClose={handleDeleteModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+    <div className="modal">
+      <div className="modal_box">
+        <p>You sure you wanna delete?</p>
+        <button className="modal_buttonCancel">Cancel</button>
+        <button onClick={handleConfirmDeleteButton} className="modal_buttoDelete">
+          Confirm
+        </button>
+      </div>
+    </div>
+      </Dialog>
       <Dialog
         open={isModalOpen}
         onClose={handleModalClose}

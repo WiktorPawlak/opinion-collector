@@ -35,7 +35,6 @@ export function MySuggestions() {
           width: '100%'
         }}
       >
-        (console.log(getClientName()));
         <TextField
           sx={{ width: '40%', margin: '10px' }}
           placeholder="Search"
