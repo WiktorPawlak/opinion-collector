@@ -8,6 +8,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/system';
+import { deleteCategory } from '../../../../api/categoryApi';
 
 export const CategoriesList = ({ categories }) => {
   const findChildren = useCallback((category, categories) => {
@@ -38,6 +39,10 @@ export const CategoriesList = ({ categories }) => {
     e.stopPropagation();
   }
 
+  async function onDeleteClick(categoryId) {
+    await deleteCategory(categoryId);
+  }
+
   const renderAccordion = (category) => {
     return (
       <Accordion sx={{ marginY: 2 }} key={category.categoryId}>
@@ -55,12 +60,12 @@ export const CategoriesList = ({ categories }) => {
             sx={{ width: '20' }}
             variant="outlined"
             startIcon={<DeleteIcon />}
-            onClick={onEditClick}
+            onClick={() => onDeleteClick(category.categoryId)}
             size="small"
           >
             Delete
           </Button>}
-          
+
         </AccordionSummary>
         <AccordionDetails>
           {category.children &&
