@@ -51,9 +51,6 @@ export function SuggestionAction(suggestionId) {
   const { acceptSuggestion, rejectSuggestion } = useSuggestion();
   const [suggestionInfo, setSuggestionInfo] = useState(null);
 
-
-
-
   function handleModalClose() {
     setIsModalOpen(false);
   }
@@ -75,7 +72,6 @@ export function SuggestionAction(suggestionId) {
   useEffect(() => {
     apiGetSuggestion(suggestionId)
       .then((data) => {
-        console.log(data);
         setSuggestionInfo(data[0]);
       })
       .catch((err) => {
@@ -84,7 +80,7 @@ export function SuggestionAction(suggestionId) {
   }, []);
 
   return (
-    <Box sx={{ display: 'inline' }}>
+    <Box sx={{ display: 'inline' }}> 
       <Button
         sx={{ marginRight: '7px' }}
         onClick={handleChangeSuggestionStateButton}

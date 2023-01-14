@@ -13,6 +13,7 @@ import { AddCategory } from './pages/AddCategory';
 import { ClientsPanel } from './modules/clients/ClientsPanel';
 import { ClientPanel } from './modules/clients/ClientPanel';
 import { AllSuggestions } from './modules/suggestions/AllSuggestions';
+import { MySuggestions } from './modules/suggestions/MySuggestions';
 import { AddOpinion } from "./pages/AddOpinion";
 import { EditOpinion } from "./pages/EditOpinion";
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/clients" element={<ClientsPanel />} />
         <Route path="/clients/self" element={<ClientPanel />} />
         <Route path="/all_suggestions" element={<AllSuggestions />} />
+        <Route path="/my_suggestions" element={<MySuggestions />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
         <Route path="/opinions/add/:id" element={<AddOpinion />} />

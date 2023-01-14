@@ -8,6 +8,10 @@ export async function apiGetSuggestion({suggestionId}) {
   return await get(`/suggestions/${suggestionId}`);
 }
 
+export async function apiGetMySuggestion(username) {
+  return await get(`/suggestions/search?username=${username}`);
+}
+
 export async function apiAcceptSuggestion({suggestionId}) {
   return await post(`/suggestions/${suggestionId}/accept`)
 }
