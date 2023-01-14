@@ -1,8 +1,9 @@
-import { SaveOutlined } from '@mui/icons-material';
+import { SaveOutlined, DeleteOutline } from '@mui/icons-material';
 import {
   Button,
   Dialog,
   DialogActions,
+  DialogContent,
   DialogTitle,
   FormControl,
   FormControlLabel,
@@ -12,7 +13,8 @@ import {
   CardMedia,
   CardContent,
   CardActions,
-  TextField
+  TextField,
+  Autocomplete
 } from '@mui/material';
 import { Box } from '@mui/system';
 import {
@@ -20,21 +22,38 @@ import {
   useHandleSuggestion
 } from '../../hooks/useSuggestion';
 import { useEffect, useState } from 'react';
-import { apiGetSuggestion } from '../../api/suggestionApi';
+import { apiGetSuggestion, apiDeleteSuggestion } from '../../api/suggestionApi';
 import Card from '@mui/material/Card';
 import { useClient } from '../../hooks/useUser';
-
+import { useProductOrigins } from '../../hooks/useProductOrigins';
+import { useCategory } from '../../hooks/useCategory';
 import Typography from '@mui/material/Typography';
 
 export function SuggestionAction({ suggestionInfo }) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const { acceptSuggestion, rejectSuggestion } = useHandleSuggestion();
   const editSuggestion = useEditSuggestion();
   const { clientRole } = useClient();
+  const { origins, loading } = useProductOrigins();
+  const { categories, loadingCat } = useCategory();
 
   function handleModalClose() {
     setIsModalOpen(false);
+  }
+
+  function handleDeleteSuggestionButton() {
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleDeleteModalClose() {
+    setIsDeleteModalOpen(false);
+  }
+
+  async function handleConfirmDeleteButton() {
+    await apiDeleteSuggestion(suggestionInfo);
+    window.location.reload(true);
   }
 
   function handleChangeSuggestionStateButton() {
@@ -56,6 +75,22 @@ export function SuggestionAction({ suggestionInfo }) {
       >
         Show changes
       </Button>
+      <Button
+        onClick={handleDeleteSuggestionButton}
+        variant="outlined"
+        startIcon={<DeleteOutline />}
+      >
+        Delete
+      </Button>
+      <Dialog open={isDeleteModalOpen} onClose={handleDeleteModalClose}>
+        <DialogContent>
+          Are you Sure? Your suggestion will be permanently lost
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteModalClose}>Cancel</Button>
+          <Button onClick={handleConfirmDeleteButton}>Delete</Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={isModalOpen}
         onClose={handleModalClose}
@@ -125,19 +160,19 @@ export function SuggestionAction({ suggestionInfo }) {
         </Box>
 
         <DialogActions>
-        {clientRole == 'STANDARD' && (
-          <Button
-            onClick={() => {
-              setIsModalOpen(false);
-              setIsModalEditOpen(true);
-              //window.location.reload();
-            }}
-            size="small"
-          >
-            Edit
-          </Button>
-        )}
-          
+          {clientRole == 'STANDARD' && (
+            <Button
+              onClick={() => {
+                setIsModalOpen(false);
+                setIsModalEditOpen(true);
+                //window.location.reload();
+              }}
+              size="small"
+            >
+              Edit
+            </Button>
+          )}
+
           <Box sx={{ flex: 1 }} />
           {clientRole == 'ADMIN' && (
             <>
@@ -227,14 +262,7 @@ export function SuggestionAction({ suggestionInfo }) {
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
               ></TextField>
-              <TextField
-                variant="filled"
-                margin="none"
-                size="small"
-                label="Category ID"
-                value={categoryId}
-                onChange={(event) => setCategoryId(event.target.value)}
-              ></TextField>
+
               <TextField
                 variant="filled"
                 margin="none"
@@ -243,19 +271,30 @@ export function SuggestionAction({ suggestionInfo }) {
                 value={ean}
                 onChange={(event) => setEan(event.target.value)}
               ></TextField>
-              <TextField
+              <Autocomplete
+                options={categories}
+                getOptionLabel={(category) => category.categoryName}
+                onChange={(_, value) => setCategoryId(value.categoryId)}
+                sx={{ width: '80%' }}
                 variant="filled"
-                margin="none"
-                size="small"
-                label="origin"
-                value={origin}
-                onChange={(event) => setOrigin(event.target.value)}
-              ></TextField>
+                renderInput={(params) => (
+                  <TextField {...params} label="Category" variant="filled" />
+                )}
+              />
+
+              <Autocomplete
+                options={origins}
+                onChange={(_, value) => setOrigin(value)}
+                sx={{ width: '80%' }}
+                variant="filled"
+                renderInput={(params) => (
+                  <TextField {...params} label="Origin" variant="filled" />
+                )}
+              />
             </CardContent>
           </Card>
         </Box>
         <DialogActions>
-          
           <Button
             onClick={() => {
               setIsModalEditOpen(false);

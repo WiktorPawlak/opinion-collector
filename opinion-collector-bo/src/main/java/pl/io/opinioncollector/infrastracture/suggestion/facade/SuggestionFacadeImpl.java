@@ -66,7 +66,7 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     @Override
     public Suggestion edit(SuggestionDto editedSuggestion, Principal principal) {
         Suggestion suggestion = getById(editedSuggestion.getSuggestionId());
-        if(!principal.getName().equals(suggestion.getClient().getUsername())){
+        if (!principal.getName().equals(suggestion.getClient().getUsername())) {
             log.info("Access denied");
             throw new AccessDeniedException("Access denied");
         }
@@ -85,8 +85,10 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
         Optional<Suggestion> suggestion = suggestionRepository.findById(id);
         Client client = clientFacade.getClient(principal.getName());
         suggestion.ifPresentOrElse(s -> {
-            if(!s.getClient().equals(principal.getName()) || !client.getRole().equals(ClientRole.ADMIN)){
-                throw new AccessDeniedException("Access denied");
+            if (!s.getClient().getUsername().equals(principal.getName())) {
+                if (!client.getRole().equals(ClientRole.ADMIN)) {
+                    throw new AccessDeniedException("Access denied");
+                }
             }
         }, () -> {
             throw new EntityNotFoundException("Entity with given id doesn't exist");
@@ -115,7 +117,7 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
 
     @Override
     public List<Suggestion> findUserSuggestions(String clientUserName, Principal principal) {
-        if(!clientUserName.equals(principal.getName())){
+        if (!clientUserName.equals(principal.getName())) {
             throw new AccessDeniedException("Access denied");
         }
         return suggestionRepository.findAllByClientUsername(clientUserName);

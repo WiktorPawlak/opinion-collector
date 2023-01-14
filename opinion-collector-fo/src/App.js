@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp/SignUp';
 import { ProductDetails } from './pages/ProductDetails';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { AddCategory } from './pages/AddCategory';
+import { EditCategory } from './pages/EditCategory';
 import { ClientsPanel } from './modules/clients/ClientsPanel';
 import { ClientPanel } from './modules/clients/ClientPanel';
 import { AllSuggestions } from './modules/suggestions/AllSuggestions';
@@ -36,8 +37,9 @@ function App() {
         <Route path="/suggestions/add/:id" element={<AddSuggestion />} />
         <Route path="/all_suggestions" element={<AllSuggestions />} />
         <Route path="/my_suggestions" element={<MySuggestions />} />
-        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/categories"  element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
+        <Route path="/categories/edit/:id" element={<EditCategory />} />
         <Route path="/opinions/add/:id" element={<AddOpinion />} />
         <Route path="/opinions/edit/:id/:id" element={<EditOpinion />} />
       </Routes>

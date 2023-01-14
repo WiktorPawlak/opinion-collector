@@ -62,6 +62,21 @@ export async function post(url, body, headers = defaultHeaders) {
   }
 }
 
+export async function remove(url, body, headers = defaultHeaders) {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    headers,
+    credentials: 'include',
+    method: 'DELETE',
+    body: JSON.stringify(body)
+  });
+
+  if (response.ok) {
+    return [response.status];
+  } else {
+    return [response.status];
+  }
+}
+
 export async function postNoResponse(url, body, headers = defaultHeaders) {
   const response = await fetch(`${BASE_URL}${url}`, {
     headers,
@@ -76,6 +91,24 @@ export async function postNoResponse(url, body, headers = defaultHeaders) {
     return [response.status];
   }
 }
+
+// export async function putWithBody(stringUrl, body, headers = defaultHeaders) {
+//   const url = new URL(stringUrl, BASE_URL);
+
+//   console.log(body);
+//   const response = await fetch(url, {
+//     headers,
+//     credentials: 'include',
+//     method: 'PUT',
+//     body: JSON.stringify(body)
+//   })
+
+//   if (response.ok) {
+//     return [response.status];
+//   } else {
+//     return [response.status];
+//   }
+// };
 
 export async function put(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
