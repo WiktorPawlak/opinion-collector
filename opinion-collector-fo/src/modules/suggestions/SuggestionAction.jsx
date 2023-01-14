@@ -3,6 +3,7 @@ import {
   Button,
   Dialog,
   DialogActions,
+  DialogContent,
   DialogTitle,
   FormControl,
   FormControlLabel,
@@ -74,7 +75,6 @@ export function SuggestionAction({ suggestionInfo }) {
   }
 
   async function handleConfirmDeleteButton() {
-    console.log(suggestionInfo);
     await apiDeleteSuggestion(suggestionInfo);
     window.location.reload(true);
   }
@@ -100,22 +100,18 @@ export function SuggestionAction({ suggestionInfo }) {
         >
           Delete
         </Button>
-        <Dialog
-        open={isDeleteModalOpen}
-        onClose={handleDeleteModalClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-    <div className="modal">
-      <div className="modal_box">
-        <p>You sure you wanna delete?</p>
-        <button className="modal_buttonCancel">Cancel</button>
-        <button onClick={handleConfirmDeleteButton} className="modal_buttoDelete">
-          Confirm
-        </button>
-      </div>
-    </div>
-      </Dialog>
+    <Dialog
+   open={isDeleteModalOpen}
+   onClose={handleDeleteModalClose}
+   >
+   <DialogContent>
+      Are you Sure? Your suggestion will be permanently lost
+   </DialogContent>
+   <DialogActions>
+      <Button onClick={handleDeleteModalClose}>Cancel</Button>
+      <Button onClick={handleConfirmDeleteButton}>Delete</Button>
+   </DialogActions>
+</Dialog>
       <Dialog
         open={isModalOpen}
         onClose={handleModalClose}
