@@ -62,6 +62,10 @@ function AllProducts() {
     await putProductHidden(id);
   };
 
+  const handleSuggestChanges = async (id) => {
+    
+  }
+
   return (
     <div className="products">
       <div className={css.productsNavs}>

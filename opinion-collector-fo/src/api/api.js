@@ -96,6 +96,24 @@ export async function put(stringUrl, params) {
   return [await response.text(), response.status];
 }
 
+export async function putWithBody(stringUrl, body) {
+  const url = new URL(stringUrl, BASE_URL);
+
+
+  const response = await fetch(url, {
+    // headers: {
+    //   "Content-Type": "application/json",
+    //   Accept: "application/json",
+    // },
+    headers: defaultHeaders,
+    credentials: 'include',
+    method: 'PUT',
+    body
+  });
+
+  return [await response.text(), response.status];
+}
+
 export async function postMultipart(url, body) {
   const response = await fetch(`${BASE_URL}${url}`, {
     credentials: 'include',
