@@ -79,7 +79,7 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     @Transactional
-    public Product edit(ProductImageDto productDto) throws IOException{
+    public void edit(ProductImageDto productDto) throws IOException{
         final Resource image = productDto.getImage().getResource();
         final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
         try (FileOutputStream fos = new FileOutputStream(imagePath)) {
@@ -94,7 +94,7 @@ public class ProductFacadeImpl implements ProductFacade {
             .ean(productDto.getEan())
             .image("/assets/images/" + image.getFilename())
             .build();
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
 

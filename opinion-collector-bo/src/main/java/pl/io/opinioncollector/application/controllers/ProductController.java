@@ -105,7 +105,7 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping(consumes = "multipart/form-data")
-    public Product editProduct(@RequestParam("image") MultipartFile file,
+    public void editProduct(@RequestParam("image") MultipartFile file,
                                @RequestParam("categoryId") long categoryId,
                                @RequestParam("title") String title,
                                @RequestParam("origin") String origin,
@@ -117,7 +117,7 @@ public class ProductController {
             .origin(ProductOrigin.valueOf(origin))
             .ean(ean)
             .build();
-        return productFacade.edit(productImageDto);
+         productFacade.edit(productImageDto);
     }
 
 

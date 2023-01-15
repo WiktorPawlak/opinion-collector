@@ -10,7 +10,7 @@ import {
   getProductById
 } from '../api/productApi';
 import Opinion from '../common/components/OpinionTile/OpinionTile';
-import {deleteOpinion, putOpinionHidden} from "../api/opinionApi";
+import { deleteOpinion, putOpinionHidden } from '../api/opinionApi';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -21,12 +21,15 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow, TextField, Rating, DialogActions
-} from "@mui/material"
-import {SuggestionTable} from "../modules/suggestions/SuggestionTable";
+  TableRow,
+  TextField,
+  Rating,
+  DialogActions
+} from '@mui/material';
+import { SuggestionTable } from '../modules/suggestions/SuggestionTable';
 import Product from '../common/components/ProductTile/Product';
-import {Button} from "../common/components/Button/Button";
-import Typography from "@mui/material/Typography";
+import { Button } from '../common/components/Button/Button';
+import Typography from '@mui/material/Typography';
 
 function SingleProduct() {
   const { id } = useParams();
@@ -38,7 +41,7 @@ function SingleProduct() {
 
   const [page, setPage] = useState(0);
   const [filter, setFilter] = useState('');
-  const [ starReview, setStarReview ] = useState('');
+  const [starReview, setStarReview] = useState('');
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -84,37 +87,45 @@ function SingleProduct() {
         !opinionsToUpdate[indexOfOpinionToHide].hidden;
       setOpinions(opinionsToUpdate);
     }
-    await putOpinionHidden(id)
-  }
+    await putOpinionHidden(id);
+  };
 
   const handleOpinionEdit = async (id) => {
     console.log(id);
     const opinionId = id;
     const opinionToUpdate = [...opinions];
-    const indexOfOpinionToEdit =
-        opinionToUpdate.findIndex(opinion => opinion.opinionId === id);
-    if (indexOfOpinionToEdit !== -1){
+    const indexOfOpinionToEdit = opinionToUpdate.findIndex(
+      (opinion) => opinion.opinionId === id
+    );
+    if (indexOfOpinionToEdit !== -1) {
       setOpinions(opinionToUpdate);
     }
-    if (opinionToUpdate[indexOfOpinionToEdit].clientUsername === client.username.username){
+    if (
+      opinionToUpdate[indexOfOpinionToEdit].clientUsername ===
+      client.username.username
+    ) {
       navigate(`/opinions/edit/${opinionId}/${product.id}`);
     }
-  }
+  };
 
   const handleOpinionDelete = async (id) => {
     console.log(id);
     const opinionToUpdate = [...opinions];
-    const indexOfOpinionToDelete =
-        opinionToUpdate.findIndex(opinion => opinion.opinionId === id);
-    if (indexOfOpinionToDelete !== -1){
+    const indexOfOpinionToDelete = opinionToUpdate.findIndex(
+      (opinion) => opinion.opinionId === id
+    );
+    if (indexOfOpinionToDelete !== -1) {
       console.log(indexOfOpinionToDelete);
       setOpinions(opinionToUpdate);
     }
-    if (opinionToUpdate[indexOfOpinionToDelete].clientUsername === client.username.username){
+    if (
+      opinionToUpdate[indexOfOpinionToDelete].clientUsername ===
+      client.username.username
+    ) {
       window.location.reload();
     }
     await deleteOpinion(id);
-  }
+  };
 
   return (
     <div>
@@ -133,7 +144,6 @@ function SingleProduct() {
             <h4>
               From <span>{product.origin}</span>
             </h4>
-            <p>Super cool description.</p>
 
             <Link style={{ marginRight: '10vw' }} to={`/opinions/add/${id}`}>
               <button className={css.btn}>Rate</button>
@@ -145,53 +155,58 @@ function SingleProduct() {
             )}
 
             <br />
-            {clientRole == 'ADMIN' && <button className={css.btn}>Edit</button>}
             <img src={BgAsset} className={css.bgAsset} alt="Fajne zdjęcie" />
           </div>
 
           <Paper
-              sx={{
-                width: '100%',
-                overflow: 'hidden'
-              }}
+            sx={{
+              width: '100%',
+              overflow: 'hidden'
+            }}
           >
             <TableContainer sx={{ maxHeight: 750 }}>
               <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                </TableHead>
+                <TableHead></TableHead>
                 <TableBody>
                   {opinions &&
-                  opinions.slice(page * 10, page * 10 + 10).map((opinion) => {
-                    return (
+                    opinions.slice(page * 10, page * 10 + 10).map((opinion) => {
+                      return (
                         <Box>
                           <Opinion
-                              key={opinion.id}
-                              opinionId={opinion.opinionId}
-                              handleOpinionHide={() => handleOpinionHide(opinion.opinionId)}
-                              handleOpinionEdit={() => handleOpinionEdit(opinion.opinionId)}
-                              handleOpinionDelete={() => handleOpinionDelete(opinion.opinionId)}
-                              creationDate={opinion.creationDate}
-                              modificationDate={opinion.modificationDate}
-                              clientUsername={opinion.clientUsername}
-                              starReview={opinion.starReview}
-                              opinionContent={opinion.opinionContent}
-                              opinionCons={opinion.opinionCons}
-                              opinionPros={opinion.opinionPros}
-                              hidden={opinion.hidden}
-                              productId={opinion.productId}
-                          /></Box>
-                    );
-                  })}
+                            key={opinion.id}
+                            opinionId={opinion.opinionId}
+                            handleOpinionHide={() =>
+                              handleOpinionHide(opinion.opinionId)
+                            }
+                            handleOpinionEdit={() =>
+                              handleOpinionEdit(opinion.opinionId)
+                            }
+                            handleOpinionDelete={() =>
+                              handleOpinionDelete(opinion.opinionId)
+                            }
+                            creationDate={opinion.creationDate}
+                            modificationDate={opinion.modificationDate}
+                            clientUsername={opinion.clientUsername}
+                            starReview={opinion.starReview}
+                            opinionContent={opinion.opinionContent}
+                            opinionCons={opinion.opinionCons}
+                            opinionPros={opinion.opinionPros}
+                            hidden={opinion.hidden}
+                            productId={opinion.productId}
+                          />
+                        </Box>
+                      );
+                    })}
                 </TableBody>
               </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={10}
-                component="div"
-                count={opinions.length}
-                rowsPerPage={10}
-                page={page}
-                onPageChange={handleChangePage}
+              rowsPerPageOptions={10}
+              component="div"
+              count={opinions.length}
+              rowsPerPage={10}
+              page={page}
+              onPageChange={handleChangePage}
             />
           </Paper>
         </>

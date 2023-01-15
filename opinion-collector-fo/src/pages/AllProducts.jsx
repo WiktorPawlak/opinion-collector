@@ -74,18 +74,6 @@ function AllProducts() {
     navigate(`/products/edit/${id}`);
   };
 
-  const handleEdit = async (idPr) => {
-    const id = idPr;
-    const productToUpdate = [...products];
-    const indexOfProductToEdit = productToUpdate.findIndex(
-      (product) => product.id === idPr
-    );
-    if (indexOfProductToEdit !== -1) {
-      setProducts(productToUpdate);
-    }
-    navigate(`/products/edit/${id}`);
-  };
-
   const handleSuggestChanges = async (id) => {};
 
   return (
