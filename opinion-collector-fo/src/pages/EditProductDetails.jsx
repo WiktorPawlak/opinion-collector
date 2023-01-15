@@ -36,7 +36,7 @@ export function EditProductDetails() {
     formData.append('origin', origin);
     formData.append('ean', ean);
     navigate(`/products`);
-    await putProduct(Object.fromEntries(formData));
+    await putProduct(formData);
   };
 
   if (categoryLoading) {
