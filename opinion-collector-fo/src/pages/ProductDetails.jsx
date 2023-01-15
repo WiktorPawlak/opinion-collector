@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { useProductOrigins } from '../hooks/useProductOrigins';
 import { postProduct } from '../api/productApi';
 import { AddProductForm } from '../modules/product-details/components/AddProductForm/AddProductForm';
+import css from './ProductDetails.module.scss';
+import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
+import BgAsset from '../common/images/bg_asset.png';
 
 export function ProductDetails() {
   const { categories, categoryLoading } = useCategory();
@@ -41,8 +44,12 @@ export function ProductDetails() {
   }
 
   return (
-    <div className="container flex center-column">
+    <div className={css.container}>
+      <div className={css.title}>
+        <h2>Add a new product</h2>
+      </div>
       <AddProductForm
+        className={css.productForm}
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
         isFilePicked={isFilePicked}
@@ -54,6 +61,10 @@ export function ProductDetails() {
         setOrigin={setOrigin}
         setTitle={setTitle}
       />
+      <div className={css.bgImg}>
+        <img src={BgAsset} className={css.bgAsset} alt="Fajne zdjęcie" />
+      </div>
+      <CopyrightFooter />
     </div>
   );
 }
