@@ -24,8 +24,8 @@ export async function postProduct(body) {
   return postMultipart('/products', body, true);
 }
 
-export function putProduct(body) {
-  return putMultipart('/products', body, true);
+export async function putProduct(body) {
+  return await putMultipart('/products', body, true);
 }
 
 export async function getProductOpinions(id) {

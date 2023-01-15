@@ -4,8 +4,8 @@ export function apiGetCategories() {
   return get('/categories');
 }
 
-export function getCategory(id) {
-  return get(`/categories/${id}`);
+export async function getCategory(id) {
+  return await get(`/categories/${id}`);
 }
 
 export function postCategory(body) {

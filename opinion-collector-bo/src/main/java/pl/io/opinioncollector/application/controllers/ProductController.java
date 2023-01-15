@@ -112,12 +112,14 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping(consumes = "multipart/form-data")
-    public void editProduct(@RequestParam("image") MultipartFile file,
+    public void editProduct(@RequestParam(value = "image", required = false) MultipartFile file,
+                               @RequestParam("id") long id,
                                @RequestParam("categoryId") long categoryId,
                                @RequestParam("title") String title,
                                @RequestParam("origin") String origin,
                                @RequestParam("ean") String ean) throws IOException {
         var productImageDto = ProductImageDto.builder()
+            .id(id)
             .image(file)
             .title(title)
             .categoryId(categoryId)

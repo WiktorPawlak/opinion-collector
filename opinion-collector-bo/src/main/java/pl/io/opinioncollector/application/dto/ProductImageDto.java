@@ -13,6 +13,8 @@ import pl.io.opinioncollector.domain.product.model.ProductOrigin;
 @AllArgsConstructor
 public class ProductImageDto {
 
+    private long id;
+
     private long categoryId;
 
     private String title;

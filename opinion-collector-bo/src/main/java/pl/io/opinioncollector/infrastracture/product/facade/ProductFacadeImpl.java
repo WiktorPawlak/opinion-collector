@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -84,22 +85,29 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     @Transactional
-    public void edit(ProductImageDto productDto) throws IOException{
-        final Resource image = productDto.getImage().getResource();
-        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
-        try (FileOutputStream fos = new FileOutputStream(imagePath)) {
-            fos.write(productDto.getImage().getBytes());
-        }
-
-        var product = Product.builder()
+    public void edit(ProductImageDto productDto) throws IOException {
+        var productBuilder = Product.builder()
+            .id(productDto.getId())
             .categoryId(productDto.getCategoryId())
             .title(productDto.getTitle())
             .visibility(true)
             .origin(productDto.getOrigin())
-            .ean(productDto.getEan())
-            .image("/assets/images/" + image.getFilename())
-            .build();
-        productRepository.save(product);
+            .ean(productDto.getEan());
+
+        if (productDto.getImage() != null) {
+            final Resource image = productDto.getImage().getResource();
+            final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
+            try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+                fos.write(productDto.getImage().getBytes());
+            }
+            productBuilder.image("/assets/images/" + image.getFilename());
+        } else {
+            Product product = productRepository.findById(productDto.getId())
+                .orElseThrow();
+            productBuilder.image(product.getImage());
+        }
+
+        productRepository.save(productBuilder.build());
     }
 
 

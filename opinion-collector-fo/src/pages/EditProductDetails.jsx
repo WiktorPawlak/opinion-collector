@@ -32,28 +32,31 @@ export function EditProductDetails() {
     setProduct(response[0]);
   }, [id]);
 
-  const categoryData = async (categoryId) => {
-    const response = await getCategory(categoryId);
-    setCategory(response[0]);
-  };
+  const categoryData = useCallback( async (categoryId) => {
+     const response = await getCategory(categoryId);
+     setCategory(response[0]);
+  }, []);
 
   useEffect(() => {
     fetchProductData();
   }, [fetchProductData]);
 
   useEffect(() => {
-    if (product !== null) {
-      console.log(product);
+    if (product) {
+      categoryData(product.categoryId);
+    }
+  }, [categoryData, product])
 
+  useEffect(() => {
+    if (product !== null) {
       setSelectedFile(product.image);
       setTitle(product.title);
       setOrigin(product.origin);
       setEan(product.ean);
-      setCategory(product.categoryId);
     }
   }, [product]);
 
-  if (product === null) {
+  if (product === null || category === null) {
     return <PageLoad />;
   }
   if (loading) {
@@ -72,15 +75,17 @@ export function EditProductDetails() {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('image', selectedFile);
-    formData.append('categoryId', category.id);
+    if (selectedFile) {
+      formData.append('image', selectedFile);
+    }
+    formData.append('categoryId', category.categoryId);
     formData.append('id', id);
     formData.append('title', title);
     formData.append('origin', origin);
     formData.append('ean', ean);
     navigate('/products');
     console.log(Object.fromEntries(formData));
-    await putProduct(Object.fromEntries(formData));
+    await putProduct(formData);
   };
 
   return (
