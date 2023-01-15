@@ -48,7 +48,6 @@ function AllProducts() {
   };
 
   const handleProductHide = async (id) => {
-    console.log(id);
     const productsToUpdate = [...products];
     const indexOfProductToHide = productsToUpdate.findIndex(
       (product) => product.productId === id
@@ -62,9 +61,6 @@ function AllProducts() {
     await putProductHidden(id);
   };
 
-  const handleSuggestChanges = async (id) => {
-    
-  }
 
   return (
     <div className="products">
@@ -91,7 +87,7 @@ function AllProducts() {
         {products.map((product) => (
           <Product
             key={product.id}
-            handleProductHide={() => handleProductHide(product.productId)}
+            handleProductHide={() => handleProductHide(product.id)}
             title={product.title}
             image={product.image}
             description={product.title}

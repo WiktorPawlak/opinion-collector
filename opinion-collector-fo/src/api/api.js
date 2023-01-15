@@ -2,7 +2,6 @@ const BASE_URL = 'http://localhost:8080';
 
 export async function get(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
-  console.log(params);
   if (params) {
     url.search = new URLSearchParams(params).toString();
   }
@@ -121,7 +120,6 @@ export async function putWithBodyS(stringUrl, body) {
 
 export async function put(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
-  console.log(params);
   if (params) {
     url.search = new URLSearchParams(params).toString();
   }

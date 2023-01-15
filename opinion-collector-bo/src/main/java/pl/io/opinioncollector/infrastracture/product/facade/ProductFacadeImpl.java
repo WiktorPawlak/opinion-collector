@@ -62,6 +62,7 @@ public class ProductFacadeImpl implements ProductFacade {
         var product = Product.builder()
             .categoryId(productDto.getCategoryId())
             .title(productDto.getTitle())
+            .visibility(true)
             .origin(productDto.getOrigin())
             .ean(productDto.getEan())
             .image("/assets/images/" + image.getFilename())
