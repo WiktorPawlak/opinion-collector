@@ -101,7 +101,7 @@ function AllProducts() {
         {products.map((product) => (
           <Product
             key={product.id}
-            handleProductHide={() => handleProductHide(product.productId)}
+            handleProductHide={() => handleProductHide(product.id)}
             handleProductEdit={() => handleProductEdit(product.id)}
             title={product.title}
             image={product.image}
