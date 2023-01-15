@@ -8,13 +8,14 @@ import {
   getProductsVisivle as getProductsVisible
 } from '../api/productApi';
 import { useClient } from '../hooks/useUser';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function AllProducts() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
   const { clientRole } = useClient();
+  const navigate = useNavigate();
 
   const findProducts = useCallback(async () => {
     let response;
@@ -62,9 +63,19 @@ function AllProducts() {
     await putProductHidden(id);
   };
 
-  const handleSuggestChanges = async (id) => {
-    
-  }
+  const handleProductEdit = async (idPr) => {
+    const id = idPr;
+    const productToUpdate = [...products];
+    const indexOfProductToEdit = productToUpdate.findIndex(
+      (product) => product.id === idPr
+    );
+    if (indexOfProductToEdit !== -1) {
+      setProducts(productToUpdate);
+    }
+    navigate(`/products/edit/${id}`);
+  };
+
+  const handleSuggestChanges = async (id) => {};
 
   return (
     <div className="products">
@@ -92,6 +103,7 @@ function AllProducts() {
           <Product
             key={product.id}
             handleProductHide={() => handleProductHide(product.productId)}
+            handleProductEdit={() => handleProductEdit(product.id)}
             title={product.title}
             image={product.image}
             description={product.title}
