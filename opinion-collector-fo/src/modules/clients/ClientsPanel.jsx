@@ -1,27 +1,39 @@
 import { Box } from '@mui/system';
 import { ClientsTable } from './ClientsTable';
-import {
-  FormControl,
-  MenuItem,
-  Select,
-  TextField
-} from '@mui/material';
+import { FormControl, MenuItem, Select, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useClient } from '../../hooks/useUser';
 import { PageLoad } from '../../pages/PageLoad';
+import { useCallback } from 'react';
+import { useEffect } from 'react';
 
 export function ClientsPanel() {
   const [fliter, setFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [clients, setClients] = useState([]);
   const [showActive, setShowActive] = useState(true);
 
-  const { activeClients, archivedClients } = useClient();
+  const { getActiveClients, getArchivedClients } = useClient();
 
-  function getClients() {
-    return showActive ? activeClients : archivedClients;
-  }
+  const findClients = useCallback(async () => {
+    setLoading(true);
+    let response;
 
-  if (activeClients.length === 0) {
-    return (<PageLoad />)
+    if (showActive) {
+      response = await getActiveClients();
+    } else {
+      response = await getArchivedClients();
+    }
+    setClients(response);
+    setLoading(false);
+  }, [getActiveClients, getArchivedClients, showActive]);
+
+  useEffect(() => {
+    findClients();
+  }, [findClients]);
+
+  if (loading) {
+    return <PageLoad />;
   }
 
   return (
@@ -58,7 +70,7 @@ export function ClientsPanel() {
       </Box>
 
       <ClientsTable
-        clients={getClients().filter(
+        clients={clients.filter(
           (client) =>
             client.username.includes(fliter) || client.email.includes(fliter)
         )}

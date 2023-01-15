@@ -16,8 +16,6 @@ import { useNavigate } from 'react-router-dom';
 
 export function useClient() {
   const [client, setClient] = useState();
-  const [activeClients, setActiveClients] = useState([]);
-  const [archivedClients, setArchivedClients] = useState([]);
   const [clientRole, setClientRole] = useState();
   const navigate = useNavigate();
 
@@ -53,12 +51,11 @@ export function useClient() {
     const response = await apiGetActiveClients();
 
     if (response[1] === 200) {
-      const mapedClient = response[0].map((client) => ({
+      return response[0].map((client) => ({
         username: client.username.username,
         email: client.email.email,
         role: client.role
       }));
-      setActiveClients(mapedClient);
     }
   }, []);
 
@@ -66,12 +63,11 @@ export function useClient() {
     const response = await apiGetArchivedClients();
 
     if (response[1] === 200) {
-      const mapedClient = response[0].map((client) => ({
+      return response[0].map((client) => ({
         username: client.username.username,
         email: client.email.email,
         role: client.role
       }));
-      setArchivedClients(mapedClient);
     }
   }, []);
 
@@ -122,14 +118,6 @@ export function useClient() {
   }, [getSelf]);
 
   useEffect(() => {
-    getActiveClients();
-  }, [getActiveClients]);
-
-  useEffect(() => {
-    getArchivedClients();
-  }, [getArchivedClients]);
-
-  useEffect(() => {
     if (client !== undefined) {
       setClientRole(client.role);
     }
@@ -140,8 +128,8 @@ export function useClient() {
     logInClient,
     getSelf,
     clientRole,
-    activeClients,
-    archivedClients,
+    getActiveClients,
+    getArchivedClients,
     changeEmail,
     changePassword,
     clientChangeRole,

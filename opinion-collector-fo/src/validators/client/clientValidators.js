@@ -1,24 +1,24 @@
-
 export function validatePassword(password, repeatedPassword) {
-    if ((password === "" || repeatedPassword === "") || (password !== repeatedPassword)) {
-        return false;
-    } else {
-        return true;
-    }
+  const re = new RegExp(
+    '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+  );
+  return re.test(password) && password === repeatedPassword;
 }
 
 export function validateEmail(email) {
-    if ((email === "")) {
-        return false;
-    } else {
-        return true;
-    }
+  const re = new RegExp(
+    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@' +
+      '[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$'
+  );
+
+  return re.test(email);
 }
 
 export function validateUsername(uesrname) {
-    if ((uesrname === "")) {
-        return false;
-    } else {
-        return true;
-    }
+  return (
+    uesrname !== '' &&
+    uesrname.length >= 3 &&
+    uesrname.length <= 40 &&
+    !uesrname.includes(' ')
+  );
 }

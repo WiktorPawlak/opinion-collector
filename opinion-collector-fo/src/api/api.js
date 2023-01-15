@@ -2,7 +2,6 @@ const BASE_URL = 'http://localhost:8080';
 
 export async function get(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
-  console.log(params);
   if (params) {
     url.search = new URLSearchParams(params).toString();
   }
@@ -48,7 +47,6 @@ const defaultHeaders = {
 };
 
 export async function post(url, body, headers = defaultHeaders) {
-  console.log(JSON.stringify(body));
   const response = await fetch(`${BASE_URL}${url}`, {
     headers,
     credentials: 'include',
@@ -107,7 +105,6 @@ export async function putWithBody(url, body, headers = defaultHeaders) {
 
 export async function put(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
-  console.log(params);
   if (params) {
     url.search = new URLSearchParams(params).toString();
   }
