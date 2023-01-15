@@ -5,11 +5,9 @@ import BgAsset from '../common/images/bg_asset.png';
 import { Link, useParams } from 'react-router-dom';
 import { useClient } from '../hooks/useUser';
 import {
-  getProductById, getProductOpinions,
-  getVisibleOpinionsForProductId,
-  getProductById,
   getProductOpinions,
-  getVisibleOpinionsForProductId
+  getVisibleOpinionsForProductId,
+  getProductById
 } from '../api/productApi';
 import Opinion from '../common/components/OpinionTile/OpinionTile';
 import {deleteOpinion, putOpinionHidden} from "../api/opinionApi";
@@ -27,7 +25,6 @@ import {
 } from "@mui/material"
 import {SuggestionTable} from "../modules/suggestions/SuggestionTable";
 import Product from '../common/components/ProductTile/Product';
-import { putOpinionHidden } from '../api/opinionApi';
 
 function SingleProduct() {
   const { id } = useParams();

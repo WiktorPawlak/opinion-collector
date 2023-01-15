@@ -83,7 +83,7 @@ export function useHandleSuggestion() {
 export function useEditSuggestion() {
   const editSuggestion = useCallback(async (suggestionId, body) => {
     const response = await apiEditSuggestion({suggestionId: suggestionId}, body);
-    return response[1] === 200;
+    return response === 200;
   }, [])
 
   return editSuggestion;

@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
     getOpinionStarReviews,
-    putOpinion,
-    getOpinion
+    putOpinion
 } from "../api/opinionApi";
 
 
@@ -21,7 +20,7 @@ export function useOpinion() {
 
     const editOpinion = useCallback(async () => {
         const response = await putOpinion();
-        return response[1] === 200;
+        return response === 200;
     }, []);
 
     useEffect(() => {
