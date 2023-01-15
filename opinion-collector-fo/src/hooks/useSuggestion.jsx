@@ -36,11 +36,9 @@ export function useSuggestion() {
 export function useMySuggestion(username) {
   const [mySuggestions, setMySuggestions] = useState(null);
 
-
   const getMySuggestions = useCallback(async () => {
     if (!username) return;
     const response = await apiGetMySuggestion(username);
-
 
     if (response[1] === 200) {
       const mappedClient = response[0].map((suggestion) => ({

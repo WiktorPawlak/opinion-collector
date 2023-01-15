@@ -7,29 +7,35 @@ export const EditProductForm = ({
   origins,
   isFilePicked,
   selectedFile,
-  setCategoryId,
   setEan,
+  setCategory,
   setOrigin,
   setTitle,
+  ean,
+  category,
+  origin,
+  title,
   handleFileChange,
   id
 }) => (
   <form className="form-container forms">
     <label>Category</label>
     <Autocomplete
+      defaultValue={category}
       isOptionEqualToValue={(option, value) =>
         option.categoryId === value.categoryId
       }
       getOptionLabel={(option) => option.categoryName}
       options={categories}
       onChange={(_, value) => {
-        setCategoryId(value.categoryId);
+        setCategory(value);
       }}
       sx={{ width: '80%' }}
       renderInput={(params) => <TextField {...params} label="Kategoria" />}
     />
     <label>Title</label>
     <TextField
+      defaultValue={title}
       sx={{ width: '80%' }}
       required
       onChange={(e) => setTitle(e.target.value)}
@@ -46,6 +52,7 @@ export const EditProductForm = ({
       <p>Select a file to show details</p>
     )}
     <Autocomplete
+      defaultValue={origin}
       options={origins}
       onChange={(_, value) => {
         setOrigin(value);
@@ -57,7 +64,9 @@ export const EditProductForm = ({
     />
 
     <label>EAN</label>
-    <TextField onChange={(e) => setEan(e.target.value)} />
+    <TextField
+      defaultValue={ean}
+      onChange={(e) => setEan(e.target.value)} />
 
     <Button
       sx={{ width: '40' }}
