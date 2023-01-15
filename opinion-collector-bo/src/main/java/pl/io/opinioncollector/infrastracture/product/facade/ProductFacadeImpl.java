@@ -79,6 +79,27 @@ public class ProductFacadeImpl implements ProductFacade {
 
     @Override
     @Transactional
+    public Product edit(ProductImageDto productDto) throws IOException{
+        final Resource image = productDto.getImage().getResource();
+        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
+        try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+            fos.write(productDto.getImage().getBytes());
+        }
+
+        var product = Product.builder()
+            .categoryId(productDto.getCategoryId())
+            .title(productDto.getTitle())
+            .visibility(true)
+            .origin(productDto.getOrigin())
+            .ean(productDto.getEan())
+            .image("/assets/images/" + image.getFilename())
+            .build();
+        return productRepository.save(product);
+    }
+
+
+    @Override
+    @Transactional
     public Product edit(Product product) {
         Product productEdited = productRepository.findById(product.getId()).orElseThrow(() -> new EntityNotFoundException("Entity with given id doesn't exist"));
         productEdited.setCategoryId(product.getCategoryId());
