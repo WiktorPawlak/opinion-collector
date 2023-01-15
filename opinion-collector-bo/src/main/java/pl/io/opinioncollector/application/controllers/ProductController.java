@@ -68,6 +68,11 @@ public class ProductController {
         return productFacade.getProduct(id);
     }
 
+    @GetMapping("/whole/{id}")
+    public Product getWholeProduct(@PathVariable long id) {
+        return productFacade.getWholeProduct(id);
+    }
+
     @GetMapping("/visible/{id}")
     public ProductDto getVisibleProduct(@PathVariable long id) {
         return productFacade.getVisibleProduct(id);
@@ -94,6 +99,8 @@ public class ProductController {
             .build();
         return productFacade.add(productImageDto);
     }
+
+
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/hide/{id}")

@@ -1,4 +1,4 @@
-import { get, post, put, putWithBodyS, remove } from './api';
+import { get, post, postMultipart, put, putWithBodyS, remove } from './api';
 
 
 export async function apiGetAllSuggestions() {
@@ -27,7 +27,7 @@ export async function apiEditSuggestion({suggestionId}, body) {
 }
 
 export async function apiPostSuggestion(id, body) {
-  return await post(`/suggestions?productId=${id}`, body)
+  return await postMultipart(`/suggestions?productId=${id}`, body, true)
 }
 
 export async function apiDeleteSuggestion({suggestionId}) {

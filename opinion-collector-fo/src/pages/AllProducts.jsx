@@ -35,6 +35,7 @@ function AllProducts() {
 
   useEffect(() => {
     findProducts();
+    
   }, [findProducts, query]);
 
   const updateSearch = (e) => {
@@ -45,6 +46,8 @@ function AllProducts() {
     e.preventDefault();
     setQuery(search);
     setSearch('');
+    console.log(products)
+
   };
 
   const handleProductHide = async (id) => {
@@ -92,6 +95,7 @@ function AllProducts() {
             image={product.image}
             description={product.title}
             id={product.id}
+            categoryId={product.categoryId}
           />
         ))}
       </div>

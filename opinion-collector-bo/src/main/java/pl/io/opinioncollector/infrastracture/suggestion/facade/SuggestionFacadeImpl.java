@@ -40,6 +40,17 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     private final ProductRepository productRepository;
     private final ClientFacade clientFacade;
 
+    private String uploadImage(MultipartFile file) {
+        final Resource image = file.getResource();
+        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
+        try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+            fos.write(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "/assets/images/" + image.getFilename();
+    }
+
     @Override
     public Product getProductForSuggestion(long id) {
         return productRepository.findById(id).orElseThrow();
@@ -57,14 +68,7 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
 
     @Override
     public Suggestion createSuggestion(ClientUsername clientUsername, long productId, MultipartFile file, SuggestionProduct suggestionProduct) {
-        final Resource image = file.getResource();
-        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
-        try (FileOutputStream fos = new FileOutputStream(imagePath)) {
-            fos.write(file.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        suggestionProduct.setImage(imagePath);
+        suggestionProduct.setImage(uploadImage(file));
         Product product = getProductForSuggestion(productId);
         Suggestion suggestion = Suggestion.builder()
             .product(product)
@@ -76,14 +80,17 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     }
 
     @Override
-    public Suggestion edit(SuggestionDto editedSuggestion, Principal principal) {
+    public Suggestion edit(SuggestionDto editedSuggestion, MultipartFile file, Principal principal) {
         Suggestion suggestion = getById(editedSuggestion.getSuggestionId());
         if (!principal.getName().equals(suggestion.getClient().getUsername())) {
             log.info("Access denied");
             throw new AccessDeniedException("Access denied");
         }
+
+        SuggestionProduct product = suggestion.getSuggestionProduct();
+        product.setImage(uploadImage(file));
         suggestion.setSuggestionState(SuggestionState.SUBMITTED);
-        suggestion.setSuggestionProduct(editedSuggestion.getSuggestionProduct());
+        suggestion.setSuggestionProduct(product);
         if (suggestionRepository.existsById(editedSuggestion.getSuggestionId())) {
             return suggestionRepository.save(suggestion);
         } else {

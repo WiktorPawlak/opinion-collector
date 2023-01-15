@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.io.opinioncollector.application.dto.SuggestionDto;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.product.model.Product;
+import pl.io.opinioncollector.domain.product.model.ProductOrigin;
 import pl.io.opinioncollector.domain.suggestion.SuggestionFacade;
 import pl.io.opinioncollector.domain.suggestion.model.Suggestion;
 import pl.io.opinioncollector.domain.suggestion.model.SuggestionProduct;
@@ -46,8 +47,20 @@ public class SuggestionController {
 
     @PostMapping(consumes = "multipart/form-data")
     @PreAuthorize("hasAuthority('STANDARD')")
-    public Suggestion createSuggestion(Principal principal, @RequestParam long productId, @RequestParam("image") MultipartFile file, @RequestBody SuggestionProduct suggestionProduct) {
-        return suggestionFacade.createSuggestion(new ClientUsername(principal.getName()), productId, file, suggestionProduct);
+    public Suggestion createSuggestion(Principal principal,
+                                       @RequestParam long productId,
+                                       @RequestParam("image") MultipartFile file,
+                                       @RequestParam("categoryId") long categoryId,
+                                       @RequestParam("title") String title,
+                                       @RequestParam("origin") String origin,
+                                       @RequestParam("ean") String ean) {
+        return suggestionFacade.createSuggestion(new ClientUsername(principal.getName()),
+            productId,
+            file,
+            new SuggestionProduct(categoryId,
+                title,
+                ProductOrigin.valueOf(origin),
+                ean));
     }
 
     @PostMapping("/{id}/accept")
@@ -62,10 +75,21 @@ public class SuggestionController {
         suggestionFacade.acceptOrReject(id, SuggestionState.REJECTED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value="/{id}", consumes = "multipart/form-data")
     @PreAuthorize("hasAuthority('STANDARD')")
-    public Suggestion editSuggestion(@PathVariable long id, @RequestBody SuggestionDto editedSuggestion, Principal principal) {
-        return suggestionFacade.edit(editedSuggestion, principal);
+    public Suggestion editSuggestion(@PathVariable long id,
+                                     @RequestParam("image") MultipartFile file,
+                                     @RequestParam("categoryId") long categoryId,
+                                     @RequestParam("title") String title,
+                                     @RequestParam("origin") String origin,
+                                     @RequestParam("ean") String ean,
+                                     Principal principal) {
+
+
+        return suggestionFacade.edit(new SuggestionDto(id, new SuggestionProduct(categoryId,
+            title,
+            ProductOrigin.valueOf(origin),
+            ean)), file, principal);
     }
 
     @DeleteMapping("/{id}")

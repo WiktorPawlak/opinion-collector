@@ -50,6 +50,11 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
+    public Product getWholeProduct(long id) {
+        return productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity with given id doesn't exist"));
+    }
+
+    @Override
     public Product add(ProductImageDto productDto) throws IOException {
 
         final Resource image = productDto.getImage().getResource();

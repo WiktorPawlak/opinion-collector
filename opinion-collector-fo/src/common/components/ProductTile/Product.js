@@ -3,7 +3,7 @@ import css from './Product.module.scss';
 import { Link } from 'react-router-dom';
 import { useClient } from '../../../hooks/useUser';
 
-const Product = ({ title, description, image, id, handleProductHide }) => {
+const Product = ({ title, description, image, id, handleProductHide, categoryId }) => {
   const { clientRole } = useClient();
   return (
     <div className={css.product}>
