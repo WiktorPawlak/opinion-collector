@@ -12,16 +12,17 @@ import {
 
 export const AddSuggestionForm = ({
   handleSubmit,
-  origins,
   categories,
-  handleFileChange,
+  origins,
   isFilePicked,
-  setTitle,
-  setCategoryID,
+  selectedFile,
+  setCategoryId,
+  setEan,
   setOrigin,
-  setEAN,
-  id,
-  product
+  setTitle,
+  handleFileChange,
+  product,
+  id
 }) => (
   <>
     <Box
@@ -41,15 +42,15 @@ export const AddSuggestionForm = ({
         <CardMedia
           component="img"
           height="194"
-          image="https://media.licdn.com/dms/image/C560BAQHMnA03XDdf3w/company-logo_200_200/0/1519855918965?e=2147483647&v=beta&t=J3kUMZwIphc90TFKH5oOO9Sa9K59fimgJf-s_okU3zs"
-          alt="Paella dish"
+          image={product.image}
+          alt="Product image"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {product.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Category ID: {product.category}
+            Category: {product.category}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Origin: {product.origin}
@@ -65,23 +66,22 @@ export const AddSuggestionForm = ({
       >
         <CardMedia
           sx={{ height: 140 }}
-          image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
+          
           title="Suggested product photo"
         />
         <CardContent>
-          <input required type="file" name="file" onChange={handleFileChange} />
+          <input required type="file" name="file" onChange={handleFileChange}  />
           <TextField
             variant="filled"
             margin="none"
             size="small"
             label="Title"
-            //value={title}
             onChange={(event) => setTitle(event.target.value)}
           ></TextField>
           <Autocomplete
             options={categories}
             getOptionLabel={(category) => category.categoryName}
-            onChange={(_, value) => setCategoryID(value.categoryId)}
+            onChange={(_, value) => setCategoryId(2)}
             sx={{ width: '50%' }}
             variant="filled"
             renderInput={(params) => (
@@ -104,7 +104,7 @@ export const AddSuggestionForm = ({
             size="small"
             label="EAN"
             //value={ean}
-            onChange={(event) => setEAN(event.target.value)}
+            onChange={(event) => setEan(event.target.value)}
           ></TextField>
         </CardContent>
       </Card>

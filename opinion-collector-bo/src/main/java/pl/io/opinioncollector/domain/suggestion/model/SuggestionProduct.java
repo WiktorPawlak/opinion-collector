@@ -16,4 +16,11 @@ public class SuggestionProduct {
     private ProductOrigin origin;
     private boolean visibility;
     private String ean;
+
+    public SuggestionProduct(long categoryId, String title, ProductOrigin origin, String ean) {
+        this.categoryId = categoryId;
+        this.title = title;
+        this.origin = origin;
+        this.ean = ean;
+    }
 }

@@ -101,11 +101,9 @@ export async function putWithBody(url, body, headers = defaultHeaders) {
   return response.status;
 }
 
-export async function putWithBodyS(stringUrl, body) {
-  const url = new URL(stringUrl, BASE_URL);
+export async function putWithBodyS(url, body) {
 
-  const response = await fetch(url, {
-    headers: defaultHeaders,
+  const response = await fetch(`${BASE_URL}${url}`, {
     credentials: 'include',
     method: 'PUT',
     body

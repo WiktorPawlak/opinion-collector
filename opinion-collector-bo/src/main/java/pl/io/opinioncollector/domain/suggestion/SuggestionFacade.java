@@ -21,7 +21,7 @@ public interface SuggestionFacade {
 
     Suggestion createSuggestion(ClientUsername clientUsername, long productId, MultipartFile file, SuggestionProduct product);
 
-    Suggestion edit(SuggestionDto editedSuggestion, Principal principal);
+    Suggestion edit(SuggestionDto editedSuggestion, MultipartFile file, Principal principal);
 
     void delete(Long id, Principal principal);
 

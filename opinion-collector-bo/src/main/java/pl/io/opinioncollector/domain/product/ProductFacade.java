@@ -11,6 +11,7 @@ public interface ProductFacade {
     List<Product> getAllProducts(int pageNo, int pageSize);
 
     ProductDto getProduct(long id);
+    Product getWholeProduct(long id);
 
     Product add(ProductImageDto product) throws IOException;
 

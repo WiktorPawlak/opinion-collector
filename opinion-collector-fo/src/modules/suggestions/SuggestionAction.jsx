@@ -5,14 +5,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormControlLabel,
-  Modal,
-  Radio,
-  RadioGroup,
   CardMedia,
   CardContent,
-  CardActions,
   TextField,
   Autocomplete
 } from '@mui/material';
@@ -33,11 +27,15 @@ export function SuggestionAction({ suggestionInfo }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+
   const { acceptSuggestion, rejectSuggestion } = useHandleSuggestion();
   const editSuggestion = useEditSuggestion();
   const { clientRole } = useClient();
   const { origins, loading } = useProductOrigins();
   const { categories, loadingCat } = useCategory();
+  
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isFilePicked, setIsFilePicked] = useState(false);
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -51,12 +49,18 @@ export function SuggestionAction({ suggestionInfo }) {
     setIsDeleteModalOpen(false);
   }
 
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setIsFilePicked(true);
+  };
+
   async function handleConfirmDeleteButton() {
     await apiDeleteSuggestion(suggestionInfo);
     window.location.reload(true);
   }
 
   function handleChangeSuggestionStateButton() {
+    console.log(suggestionInfo)
     setIsModalOpen(true);
   }
   const [title, setTitle] = useState(suggestionInfo.suggestionProduct.title);
@@ -114,7 +118,7 @@ export function SuggestionAction({ suggestionInfo }) {
           >
             <CardMedia
               sx={{ height: 140 }}
-              image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
+              image={suggestionInfo.product.image}
               title="current product photo"
             />
 
@@ -139,7 +143,7 @@ export function SuggestionAction({ suggestionInfo }) {
           >
             <CardMedia
               sx={{ height: 140 }}
-              image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
+              image={suggestionInfo.suggestionProduct.image}
               title="Suggested product photo"
             />
             <CardContent>
@@ -225,11 +229,12 @@ export function SuggestionAction({ suggestionInfo }) {
           >
             <CardMedia
               sx={{ height: 140 }}
-              image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
+              image={suggestionInfo.product.image}
               title="current product photo"
             />
 
             <CardContent>
+              
               <Typography gutterBottom variant="h5" component="div">
                 {suggestionInfo?.product?.title}
               </Typography>
@@ -250,10 +255,13 @@ export function SuggestionAction({ suggestionInfo }) {
           >
             <CardMedia
               sx={{ height: 140 }}
-              image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
+                            image={suggestionInfo.suggestionProduct.image}
+
               title="Suggested product photo"
             />
             <CardContent>
+            <input required type="file" name="file" onChange={handleFileChange} />
+
               <TextField
                 variant="filled"
                 margin="none"
@@ -300,18 +308,17 @@ export function SuggestionAction({ suggestionInfo }) {
               setIsModalEditOpen(false);
               setIsModalOpen(true);
               suggestionInfo.client = 1;
-              const body = JSON.stringify({
-                suggestionId: suggestionInfo.suggestionId,
-                suggestionProduct: {
-                  categoryId: categoryId,
-                  ean: ean,
-                  image: 'image placeholder',
-                  origin: origin,
-                  title: title,
-                  visibility: true
-                }
-              });
-              editSuggestion(suggestionInfo.suggestionId, body);
+
+              const formData = new FormData();
+              formData.append('suggestionId', suggestionInfo.suggestionId);
+              formData.append('image', selectedFile);
+              formData.append('categoryId', categoryId);
+              formData.append('title', title);
+              formData.append('origin', origin);
+              formData.append('ean', ean);
+              
+              
+              editSuggestion(suggestionInfo.suggestionId, formData);
             }}
             size="small"
           >

@@ -12,6 +12,10 @@ export function getProductById(id) {
   return get(`/products/${id}`);
 }
 
+export function getWholeProductById(id) {
+  return get(`/products/whole/${id}`);
+}
+
 export function getProductOrigins(body) {
   return get('/products/origins');
 }
