@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getProductOrigins } from '../api/productApi';
+import { getProductOrigins, putProduct } from '../api/productApi';
 
 export function useProductOrigins() {
   const [origins, setOrigins] = useState([]);
@@ -14,9 +14,14 @@ export function useProductOrigins() {
     }
   }, []);
 
+  const editProduct = useCallback(async () => {
+    const response = await putProduct();
+    return response === 200;
+  }, []);
+
   useEffect(() => {
     getOrigins();
   }, [getOrigins]);
 
-  return { origins, loading };
+  return { origins, loading, editProduct };
 }

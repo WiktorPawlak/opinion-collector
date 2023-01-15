@@ -6,6 +6,8 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -109,10 +111,23 @@ public class ProductController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping
-    public Product editProduct(@RequestBody Product product) {
-        return productFacade.edit(product);
+    @PutMapping(consumes = "multipart/form-data")
+    public Product editProduct(@RequestParam("image") MultipartFile file,
+                               @RequestParam("categoryId") long categoryId,
+                               @RequestParam("title") String title,
+                               @RequestParam("origin") String origin,
+                               @RequestParam("ean") String ean) throws IOException {
+        var productImageDto = ProductImageDto.builder()
+            .image(file)
+            .title(title)
+            .categoryId(categoryId)
+            .origin(ProductOrigin.valueOf(origin))
+            .ean(ean)
+            .build();
+        return productFacade.edit(productImageDto);
     }
+
+
 
     @GetMapping("/opinions/{id}")
     public List<Opinion> getOpinionsForProductId(@PathVariable long id) {

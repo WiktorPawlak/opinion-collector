@@ -18,6 +18,7 @@ public interface ProductFacade {
     void hide(long id);
 
     Product edit(Product product);
+    Product edit(ProductImageDto product) throws IOException;
 
     List<Product> getAllVisibleProducts(int pageNo, int pageSize);
 

@@ -36,23 +36,25 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Cookie cookie = WebUtils.getCookie(request, "opinionCollector");
+        if (!request.getRequestURI().equals("/login") ) {
+            try {
+                if (cookie != null) {
+                    String jwtString = cookie.getValue();
 
-        try {
-            if (cookie != null) {
-                String jwtString = cookie.getValue();
+                    Jwt jwt = jwtDecoder.decode(jwtString);
 
-                Jwt jwt = jwtDecoder.decode(jwtString);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(jwt.getClaim("sub"));
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(jwt.getClaim("sub"));
+                    Authentication authentication =
+                        authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), jwt.getClaim("pas"), userDetails.getAuthorities()));
 
-                Authentication authentication =
-                    authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), jwt.getClaim("pas"), userDetails.getAuthorities()));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (JwtValidationException e) {
+                log.info("Token expired, generating new");
             }
-        } catch (JwtValidationException e) {
-            log.info("Token expired, generating new");
+
         }
 
         filterChain.doFilter(request, response);

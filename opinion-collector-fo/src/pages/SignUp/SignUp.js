@@ -74,7 +74,7 @@ function SignUp() {
               label="Username"
               required
               variant="outlined"
-              helperText={isUsernamError ? 'Username not valid' : ' '}
+              helperText={isUsernamError ? 'Username is not valid' : ' '}
               onChange={(e) => setLogin(e.target.value)}
             ></TextField>
             <TextField
@@ -82,7 +82,7 @@ function SignUp() {
               label="Email"
               required
               variant="outlined"
-              helperText={isEmailError ? 'E-mail not valid' : ' '}
+              helperText={isEmailError ? 'E-mail is not valid' : ' '}
               onChange={(e) => setEmail(e.target.value)}
             ></TextField>
             <TextField
@@ -100,7 +100,7 @@ function SignUp() {
               error={isPasswordError}
               required
               variant="outlined"
-              helperText={isPasswordError ? 'Password not valid' : ' '}
+              helperText={isPasswordError ? 'Password is not valid' : ' '}
               onChange={(e) => setRepeatPassword(e.target.value)}
             ></TextField>
             <Button

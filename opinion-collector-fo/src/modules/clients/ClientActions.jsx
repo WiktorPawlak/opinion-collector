@@ -26,10 +26,10 @@ const style = {
   backgroundColor: 'darkGrey'
 };
 
-export function ClientActions( { username, showActive }) {
+export function ClientActions({ username, showActive }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [role, setRole] = useState('');
-  const { clientChangeRole, archiveClient, activeClient } = useClient();
+  const { clientChangeRole, archiveClient, activeClient, client } = useClient();
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -45,7 +45,7 @@ export function ClientActions( { username, showActive }) {
     window.location.reload(true);
   }
 
-    async function handleActiveClientButton() {
+  async function handleActiveClientButton() {
     await activeClient(username);
     window.location.reload(true);
   }
@@ -75,10 +75,7 @@ export function ClientActions( { username, showActive }) {
           Delete
         </Button>
       ) : (
-        <Button
-          onClick={handleActiveClientButton}
-          variant="outlined"
-        >
+        <Button onClick={handleActiveClientButton} variant="outlined">
           Active
         </Button>
       )}

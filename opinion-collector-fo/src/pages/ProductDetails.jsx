@@ -6,10 +6,12 @@ import { AddProductForm } from '../modules/product-details/components/AddProduct
 import css from './ProductDetails.module.scss';
 import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
 import BgAsset from '../common/images/bg_asset.png';
+import { useNavigate } from 'react-router-dom';
 
 export function ProductDetails() {
   const { categories, categoryLoading } = useCategory();
   const { origins, originLoading } = useProductOrigins();
+  const navigate = useNavigate();
 
   const [categoryId, setCategoryId] = useState('');
   const [title, setTitle] = useState('');
@@ -33,7 +35,7 @@ export function ProductDetails() {
     formData.append('title', title);
     formData.append('origin', origin);
     formData.append('ean', ean);
-
+    navigate(`/products`);
     await postProduct(formData);
   };
 
