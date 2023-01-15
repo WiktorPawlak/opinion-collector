@@ -2,6 +2,7 @@ package pl.io.opinioncollector.infrastracture.opinion.facade;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import pl.io.opinioncollector.domain.client.model.ClientId;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
@@ -17,7 +18,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
@@ -70,14 +73,19 @@ public class OpinionFacadeImpl implements OpinionFacade {
     @Override
     @Transactional
     public void edit(Opinion opinion, Principal principal) throws IllegalAccessException {
-        if ((opinionRepository.findById(opinion.getOpinionId()).isPresent())
-            && (Objects.equals(principal.getName(), opinion.getClientUsername()))) {
-            log.info("Editing opinion: " + opinion);
-            opinionRepository.save(opinion);
-        } else {
-            throw new IllegalAccessException
-                ("No permission to access this opinion");
+        if (opinion.getCreationDate() == null){
+            opinion.setCreationDate(new Date());
         }
+        Optional<Opinion> resolved = opinionRepository.findById(opinion.getOpinionId());
+        resolved.ifPresentOrElse(op -> {
+                if (!op.getClientUsername().equals(principal.getName())){
+                    throw new AccessDeniedException("No permisson to access this opinion");
+                }
+            }, () -> {
+                throw new EntityNotFoundException("Opinion with given id doesn't exist");
+            }
+        );
+        opinionRepository.save(opinion);
     }
 
     @Override

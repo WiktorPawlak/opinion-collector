@@ -1,35 +1,50 @@
-import {useCallback, useState} from 'react';
-import { putOpinion } from "../api/opinionApi";
+import {useCallback, useEffect, useState} from 'react';
+import {putOpinion, getOpinion, postOpinion} from "../api/opinionApi";
 import { EditOpinionForm } from '../modules/opinions/EditOpinion/EditOpinionForm';
 import { useOpinion } from "../hooks/useOpinion";
 import { useParams } from "react-router-dom";
-import { useClient} from "../hooks/useUser";
-import {useLocation} from "react-router-dom";
-import {getProductOpinions} from "../api/productApi";
-import Opinion from "../common/components/OpinionTile/OpinionTile";
-import {apiGetActiveClients} from "../api/authApi";
+import { useClient } from "../hooks/useUser";
+import { useNavigate } from 'react-router-dom';
 
 export function EditOpinion() {
     const { id } = useParams();
+    const { opinionId } = useParams();
     const { client } = useClient();
     const { starReviews, starReviewLoading } = useOpinion();
+    const navigate = useNavigate();
 
-    const [ starReview, setStarReview ] = useState('')
-    const [ content, setContent ] = useState('')
-    const [ pros, setPros ] = useState('')
-    const [ cons, setCons ] = useState('')
-    const now = new Date();
+    const [ opinionById, setOpinionById ] = useState();
+    const [ starReview, setStarReview ] = useState('');
+    const [ content, setContent ] = useState('');
+    const [ pros, setPros ] = useState('');
+    const [ cons, setCons ] = useState('');
+
+    const findOpinionById = (async () => {
+        let response;
+        response = await getOpinion(opinionId);
+        if (response[1] === 200) {
+            setOpinionById(response[0])
+        } else {
+            console.log('Nie ma takiej opinii');
+        }
+    });
+
+    useEffect(() => {
+        findOpinionById();
+    }, [findOpinionById]);
 
     const handleSubmit = async (event) => {
-        //event.preventDefault();
-        /*const formData = new FormData();
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('opinionId', opinionId);
         formData.append('starReview', starReview);
         formData.append('opinionContent', encodeURIComponent(content));
         formData.append('opinionPros', encodeURIComponent(pros));
         formData.append('opinionCons', encodeURIComponent(cons));
         formData.append('productId', id);
-        formData.append('clientUsername', client.username.username);*/
-        await putOpinion();
+        formData.append('clientUsername', client.username.username);
+        navigate(`/products/${id}`);
+        await putOpinion(Object.fromEntries(formData));
     };
 
     if (starReviewLoading) {
@@ -45,8 +60,8 @@ export function EditOpinion() {
                 setContent={setContent}
                 setPros={setPros}
                 setCons={setCons}
-                id={id}
-                content={content}
+                id={opinionId}
+                content={opinionById}
                 pros={pros}
                 cons={cons}
             />

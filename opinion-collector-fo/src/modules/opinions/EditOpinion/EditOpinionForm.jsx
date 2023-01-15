@@ -1,7 +1,6 @@
-import { Autocomplete, Button, TextField } from '@mui/material';
+import {Autocomplete, Button, Rating, TextField} from '@mui/material';
 import {Link} from "react-router-dom";
-import Opinion from "../../../common/components/OpinionTile/OpinionTile";
-import OpinionTile from "../../../common/components/OpinionTile/OpinionTile";
+import React from "react";
 
 export const EditOpinionForm = ({
                                    handleSubmit,
@@ -10,20 +9,20 @@ export const EditOpinionForm = ({
                                    setContent,
                                    setPros,
                                    setCons,
-                                   id,
-                                   content, pros, cons,
+                                   id, content,pros,cons
                                }) => (
     <form className="form-container">
         Edit Your Opinion:
-        <Autocomplete
-            options={starReviews}
-            onChange={(_, value) => {
-                setStarReview(value);
+        <Rating
+            name="simple-controlled"
+            onChange={(event, newValue) => {
+                if(newValue===1) setStarReview('ONE')
+                else if(newValue===2) setStarReview('TWO')
+                else if(newValue===3) setStarReview('THREE')
+                else if(newValue===4) setStarReview('FOUR')
+                else if(newValue===5) setStarReview('FIVE')
             }}
-            sx={{ width: '35%' }}
-            renderInput={(params) => (
-                <TextField {...params} label="Star rating..." />
-            )}
+            precision={1.0}
         />
         <label>Content</label>
         <TextField

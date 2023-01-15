@@ -30,7 +30,6 @@ export function EditProductDetails() {
     formData.append('title', title);
     formData.append('origin', origin);
     formData.append('ean', ean);
-
     await postProduct(formData);
   };
 

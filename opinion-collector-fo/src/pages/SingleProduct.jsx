@@ -6,25 +6,39 @@ import {Link, useParams} from 'react-router-dom';
 import { useClient } from '../hooks/useUser';
 import {
   getProductById, getProductOpinions,
-  getProducts,
-  getProductsVisivle as getProductsVisible, getVisibleOpinionsForProductId
+  getVisibleOpinionsForProductId
 } from '../api/productApi';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import Opinion from '../common/components/OpinionTile/OpinionTile';
-import Product from "../common/components/ProductTile/Product";
-import {putOpinionHidden} from "../api/opinionApi";
+import {deleteOpinion, putOpinion, putOpinionHidden} from "../api/opinionApi";
+import { useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow, TextField, Rating
+} from "@mui/material"
+import {SuggestionTable} from "../modules/suggestions/SuggestionTable";
 
 function SingleProduct() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [opinions, setOpinions] = useState([]);
   const { clientRole } = useClient();
+  const { client } = useClient();
+  const navigate = useNavigate();
+
+  const [page, setPage] = useState(0);
+  const [filter, setFilter] = useState('');
+  const [ starReview, setStarReview ] = useState('');
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   const fetchProductData = useCallback(async () => {
     const response = await getProductById(id);
@@ -35,7 +49,7 @@ function SingleProduct() {
     let response;
     if (clientRole === 'STANDARD'){
       response = await getVisibleOpinionsForProductId(id);
-    } else if (clientRole === 'ADMIN') {
+    } else {
       response = await getProductOpinions(id);
     }
     if (response[1] === 200) {
@@ -64,7 +78,34 @@ function SingleProduct() {
       opinionsToUpdate[indexOfOpinionToHide].hidden = !opinionsToUpdate[indexOfOpinionToHide].hidden;
       setOpinions(opinionsToUpdate);
     }
-    await putOpinionHidden(id);
+    await putOpinionHidden(id)
+  }
+
+  const handleOpinionEdit = async (id) => {
+    console.log(id);
+    const opinionId = id;
+    const opinionToUpdate = [...opinions];
+    const indexOfOpinionToEdit =
+        opinionToUpdate.findIndex(opinion => opinion.opinionId === id);
+    if (indexOfOpinionToEdit !== -1){
+      setOpinions(opinionToUpdate);
+    }
+    navigate(`/opinions/edit/${opinionId}/${product.id}`);
+  }
+
+  const handleOpinionDelete = async (id) => {
+    console.log(id);
+    const opinionToUpdate = [...opinions];
+    const indexOfOpinionToDelete =
+        opinionToUpdate.findIndex(opinion => opinion.opinionId === id);
+    if (indexOfOpinionToDelete !== -1){
+      console.log(indexOfOpinionToDelete);
+      setOpinions(opinionToUpdate);
+    }
+    if (opinionToUpdate[indexOfOpinionToDelete].clientUsername === client.username.username){
+      window.location.reload();
+    }
+    await deleteOpinion(id);
   }
 
   return (
@@ -85,36 +126,59 @@ function SingleProduct() {
               From <span>{product.origin}</span>
             </h4>
             <p>Super cool description.</p>
-
-
             <Link style={{ marginRight: '10vw' }} to={`/opinions/add/${id}`}>
               <button className={css.btn}>Rate</button>
             </Link>
-
-
             <br />
             {clientRole == 'ADMIN' && <button className={css.btn}>Edit</button>}
             <img src={BgAsset} className={css.bgAsset} alt="Fajne zdjęcie" />
           </div>
 
-          <div className={css.containerOpinions}>
-            {opinions.map((opinion) => (
-                <Opinion
-                    key={opinion.id}
-                    opinionId={opinion.opinionId}
-                    handleOpinionHide={() => handleOpinionHide(opinion.opinionId)}
-                    creationDate={opinion.creationDate}
-                    modificationDate={opinion.modificationDate}
-                    clientUsername={opinion.clientUsername}
-                    starReview={opinion.starReview}
-                    opinionContent={opinion.opinionContent}
-                    opinionCons={opinion.opinionCons}
-                    opinionPros={opinion.opinionPros}
-                    hidden={opinion.hidden}
-                    productId={opinion.productId}
-                />
-            ))}
-          </div>
+          <Paper
+              sx={{
+                width: '100%',
+                overflow: 'hidden'
+              }}
+          >
+            <TableContainer sx={{ maxHeight: 750 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                </TableHead>
+                <TableBody>
+                  {opinions &&
+                  opinions.slice(page * 10, page * 10 + 10).map((opinion) => {
+                    return (
+                        <Box>
+                          <Opinion
+                              key={opinion.id}
+                              opinionId={opinion.opinionId}
+                              handleOpinionHide={() => handleOpinionHide(opinion.opinionId)}
+                              handleOpinionEdit={() => handleOpinionEdit(opinion.opinionId)}
+                              handleOpinionDelete={() => handleOpinionDelete(opinion.opinionId)}
+                              creationDate={opinion.creationDate}
+                              modificationDate={opinion.modificationDate}
+                              clientUsername={opinion.clientUsername}
+                              starReview={opinion.starReview}
+                              opinionContent={opinion.opinionContent}
+                              opinionCons={opinion.opinionCons}
+                              opinionPros={opinion.opinionPros}
+                              hidden={opinion.hidden}
+                              productId={opinion.productId}
+                          /></Box>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={10}
+                component="div"
+                count={opinions.length}
+                rowsPerPage={10}
+                page={page}
+                onPageChange={handleChangePage}
+            />
+          </Paper>
         </>
       )}
       <CopyrightFooter className={css.footer} />

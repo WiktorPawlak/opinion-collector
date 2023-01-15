@@ -1,4 +1,4 @@
-import {get, post, postMultipart, put} from './api';
+import {get, post, put, putWithBody, remove} from './api';
 
 export function apiGetOpinions() {
     return get('/opinions')
@@ -12,8 +12,8 @@ export function postOpinion(body) {
     return post('/opinions',body)
 }
 
-export function putOpinion() {
-    return put('/opinions')
+export function putOpinion(body) {
+    return putWithBody('/opinions', body)
 }
 
 export function putOpinionHidden(id) {
@@ -21,7 +21,7 @@ export function putOpinionHidden(id) {
 }
 
 export function deleteOpinion(id) {
-    return delete (`/opinions/${id}`)
+    return remove(`/opinions/${id}`)
 }
 
 export function getOpinionsForClient(username) {

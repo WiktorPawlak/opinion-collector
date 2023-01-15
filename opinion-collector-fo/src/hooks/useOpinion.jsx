@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { apiGetOpinions, getOpinionStarReviews, postOpinion, getOpinion } from "../api/opinionApi";
-import {apiArchiveClient} from "../api/authApi";
+import {
+    getOpinionStarReviews,
+    putOpinion,
+    getOpinion
+} from "../api/opinionApi";
+
 
 
 export function useOpinion() {
@@ -15,9 +19,20 @@ export function useOpinion() {
         }
     }, []);
 
+    const editOpinion = useCallback(async () => {
+        const response = await putOpinion();
+        return response[1] === 200;
+    }, []);
+
     useEffect(() => {
         getStarReviews();
     }, [getStarReviews]);
 
-    return { starReviews, loading };
+
+    return {
+        starReviews,
+        loading,
+        editOpinion,
+        getStarReviews
+    };
 }

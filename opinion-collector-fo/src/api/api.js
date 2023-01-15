@@ -2,6 +2,7 @@ const BASE_URL = 'http://localhost:8080';
 
 export async function get(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
+  console.log(params);
   if (params) {
     url.search = new URLSearchParams(params).toString();
   }
@@ -92,12 +93,29 @@ export async function postNoResponse(url, body, headers = defaultHeaders) {
   }
 }
 
+export async function putWithBody(url, body, headers = defaultHeaders) {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    headers,
+    credentials: 'include',
+    method: 'PUT',
+    body: JSON.stringify(body)
+  });
+
+  if (response.ok) {
+    return [await response.json(), response.status];
+  } else {
+    return [await response.text(), response.status];
+  }
+
+}
+
 export async function put(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
   console.log(params);
   if (params) {
     url.search = new URLSearchParams(params).toString();
   }
+
 
   const response = await fetch(url, {
     // headers: {
