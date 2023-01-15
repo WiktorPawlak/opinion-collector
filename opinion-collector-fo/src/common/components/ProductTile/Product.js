@@ -22,6 +22,13 @@ const Product = ({ title, description, image, id, handleProductHide }) => {
               Hide
             </button>
           )}
+          {clientRole === 'STANDARD' && (
+            <Link to={`/suggestions/add/${id}`}>
+            <button className={css.btn}>
+              Suggest changes
+            </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

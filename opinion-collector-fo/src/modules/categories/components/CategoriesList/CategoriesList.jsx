@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import {
   Button,
   Accordion,
@@ -7,9 +7,13 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box } from '@mui/system';
+import { Box, Container } from '@mui/system';
+import { deleteCategory } from '../../../../api/categoryApi';
+import { Link, useNavigate } from 'react-router-dom';
+import css from '../../../../pages/AllProducts.module.scss';
 
 export const CategoriesList = ({ categories }) => {
+
   const findChildren = useCallback((category, categories) => {
     const children = categories.filter(
       (child) => child.parent && child.parent.categoryId === category.categoryId
@@ -34,46 +38,59 @@ export const CategoriesList = ({ categories }) => {
     return initialCategories;
   }, [categories, findChildren]);
 
-  function onEditClick(e) {
-    e.stopPropagation();
+  async function onDeleteClick(categoryId) {
+    await deleteCategory(categoryId);
+    window.location.reload();
   }
 
   const renderAccordion = (category) => {
     return (
       <Accordion sx={{ marginY: 2 }} key={category.categoryId}>
-        <AccordionSummary disableGutters={true} expandIcon={<ExpandMoreIcon />}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           {category.categoryName}
-          <Button
-            sx={{ width: '20' }}
-            variant="text"
-            className="search-btn"
-            onClick={onEditClick}
-          >
-            Edit
-          </Button>
+          <Link to={`/categories/edit/${category.categoryId}`}
+          state={{
+            categoryName: category.categoryName,
+            parent: category.parent,
+            categoryPath: category.categoryPath
+          }}>
+            <Button
+              sx={{ width: '20' }}
+              variant="text"
+              className="search-btn"
+            >
+              Edit
+            </Button>
+          </Link>
           {category.leaf === true && <Button
             sx={{ width: '20' }}
             variant="outlined"
             startIcon={<DeleteIcon />}
-            onClick={onEditClick}
+            onClick={() => onDeleteClick(category.categoryId)}
             size="small"
           >
             Delete
           </Button>}
-          
+
         </AccordionSummary>
-        <AccordionDetails>
+        {category.leaf === false && <AccordionDetails>
           {category.children &&
             category.children.map((child) => renderAccordion(child))}
-        </AccordionDetails>
+        </AccordionDetails>}
+
       </Accordion>
     );
   };
 
   return (
-    <Box padding={4}>
-      {restructuredCategoriesTree &&
-        restructuredCategoriesTree.map((category) => renderAccordion(category))}
-    </Box>
+    <Container>
+        <Link to="/categories/add">
+          <button className={css.addProductButton}>Add category</button>
+        </Link>
+      <Box padding={4}>
+        {restructuredCategoriesTree &&
+          restructuredCategoriesTree.map((category) => renderAccordion(category))}
+      </Box>
+    </Container>
   );
 };

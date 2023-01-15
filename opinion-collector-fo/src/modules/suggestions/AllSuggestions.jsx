@@ -1,6 +1,9 @@
 import { Box } from '@mui/system';
 import { SuggestionTable } from './SuggestionTable';
 import {
+  FormControl,
+  MenuItem,
+  Select,
   TextField
 } from '@mui/material';
 import { useState } from 'react';
@@ -9,11 +12,17 @@ import { PageLoad } from '../../pages/PageLoad';
 
 export function AllSuggestions() {
   const [fliter, setFilter] = useState('');
-  const {suggestions} = useSuggestion();
+  const { suggestions } = useSuggestion();
+  const [showByState, setShowByState] = useState('ALL');
 
 
   if (suggestions === null) {
     return (<PageLoad />)
+  }
+
+  function getSuggestions() {
+    // console.log(showByState !== 'ALL' ? suggestions.filter((suggestion) => suggestion.suggestionState === showByState) : suggestions);
+    return showByState !== 'ALL' ? suggestions.filter((suggestion) => suggestion.suggestionState === showByState) : suggestions;
   }
 
   return (
@@ -38,10 +47,20 @@ export function AllSuggestions() {
           placeholder="Search"
           onChange={(e) => setFilter(e.target.value)}
         />
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <Select
+            value={showByState}
+            onChange={(e) => setShowByState(e.target.value)}
+          >
+            <MenuItem value={'ALL'}>ALL</MenuItem>
+            <MenuItem value={'SUBMITTED'}>SUBMITTED</MenuItem>
+            <MenuItem value={'REJECTED'}>REJECTED</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
 
       <SuggestionTable
-        suggestions={suggestions.filter(
+        suggestions={getSuggestions().filter(
           (suggestions) =>
             suggestions.username.includes(fliter) || suggestions.title.includes(fliter)
         )}

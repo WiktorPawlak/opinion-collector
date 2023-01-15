@@ -72,9 +72,9 @@ export async function remove(url, body, headers = defaultHeaders) {
   });
 
   if (response.ok) {
-    return [await response.json(), response.status];
+    return [response.status];
   } else {
-    return [await response.text(), response.status];
+    return [response.status];
   }
 }
 
@@ -124,6 +124,24 @@ export async function put(stringUrl, params) {
     // },
     credentials: 'include',
     method: 'PUT'
+  });
+
+  return [await response.text(), response.status];
+}
+
+export async function putWithBody(stringUrl, body) {
+  const url = new URL(stringUrl, BASE_URL);
+
+
+  const response = await fetch(url, {
+    // headers: {
+    //   "Content-Type": "application/json",
+    //   Accept: "application/json",
+    // },
+    headers: defaultHeaders,
+    credentials: 'include',
+    method: 'PUT',
+    body
   });
 
   return [await response.text(), response.status];

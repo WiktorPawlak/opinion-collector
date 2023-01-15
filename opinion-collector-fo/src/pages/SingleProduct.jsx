@@ -2,14 +2,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
 import css from './SingleProduct.module.scss';
 import BgAsset from '../common/images/bg_asset.png';
-import {Link, useParams} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useClient } from '../hooks/useUser';
 import {
   getProductById, getProductOpinions,
+  getVisibleOpinionsForProductId,
+  getProductById,
+  getProductOpinions,
   getVisibleOpinionsForProductId
 } from '../api/productApi';
 import Opinion from '../common/components/OpinionTile/OpinionTile';
-import {deleteOpinion, putOpinion, putOpinionHidden} from "../api/opinionApi";
+import {deleteOpinion, putOpinionHidden} from "../api/opinionApi";
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -23,6 +26,8 @@ import {
   TableRow, TextField, Rating
 } from "@mui/material"
 import {SuggestionTable} from "../modules/suggestions/SuggestionTable";
+import Product from '../common/components/ProductTile/Product';
+import { putOpinionHidden } from '../api/opinionApi';
 
 function SingleProduct() {
   const { id } = useParams();
@@ -47,7 +52,7 @@ function SingleProduct() {
 
   const findOpinionsForProduct = useCallback(async () => {
     let response;
-    if (clientRole === 'STANDARD'){
+    if (clientRole === 'STANDARD') {
       response = await getVisibleOpinionsForProductId(id);
     } else {
       response = await getProductOpinions(id);
@@ -71,11 +76,13 @@ function SingleProduct() {
   const handleOpinionHide = async (id) => {
     console.log(id);
     const opinionsToUpdate = [...opinions];
-    const indexOfOpinionToHide =
-        opinionsToUpdate.findIndex(opinion => opinion.opinionId === id);
-    if (indexOfOpinionToHide !== -1){
+    const indexOfOpinionToHide = opinionsToUpdate.findIndex(
+      (opinion) => opinion.opinionId === id
+    );
+    if (indexOfOpinionToHide !== -1) {
       console.log(indexOfOpinionToHide);
-      opinionsToUpdate[indexOfOpinionToHide].hidden = !opinionsToUpdate[indexOfOpinionToHide].hidden;
+      opinionsToUpdate[indexOfOpinionToHide].hidden =
+        !opinionsToUpdate[indexOfOpinionToHide].hidden;
       setOpinions(opinionsToUpdate);
     }
     await putOpinionHidden(id)
@@ -126,9 +133,16 @@ function SingleProduct() {
               From <span>{product.origin}</span>
             </h4>
             <p>Super cool description.</p>
+
             <Link style={{ marginRight: '10vw' }} to={`/opinions/add/${id}`}>
               <button className={css.btn}>Rate</button>
             </Link>
+            {clientRole === 'STANDARD' && (
+              <Link to={`/suggestions/add/${id}`}>
+                <button className={css.btn}>Suggest changes</button>
+              </Link>
+            )}
+
             <br />
             {clientRole == 'ADMIN' && <button className={css.btn}>Edit</button>}
             <img src={BgAsset} className={css.bgAsset} alt="Fajne zdjęcie" />

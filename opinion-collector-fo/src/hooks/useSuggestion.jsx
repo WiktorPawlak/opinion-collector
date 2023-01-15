@@ -3,7 +3,8 @@ import {
   apiGetAllSuggestions,
   apiAcceptSuggestion,
   apiRejectSuggestion,
-  apiGetMySuggestion
+  apiGetMySuggestion,
+  apiEditSuggestion
 } from '../api/suggestionApi';
 
 export function useSuggestion() {
@@ -77,4 +78,13 @@ export function useHandleSuggestion() {
     acceptSuggestion,
     rejectSuggestion
   };
+}
+
+export function useEditSuggestion() {
+  const editSuggestion = useCallback(async (suggestionId, body) => {
+    const response = await apiEditSuggestion({suggestionId: suggestionId}, body);
+    return response[1] === 200;
+  }, [])
+
+  return editSuggestion;
 }

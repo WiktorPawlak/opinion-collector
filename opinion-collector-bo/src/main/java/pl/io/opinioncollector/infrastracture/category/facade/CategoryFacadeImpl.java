@@ -124,8 +124,20 @@ public class CategoryFacadeImpl implements CategoryFacade {
         if (categoryRepository.findById(categoryDto.getCategoryId()).isPresent()) {
             Category category = get(categoryDto.getCategoryId());
             category.setCategoryId(categoryDto.getCategoryId());
-            category.setParent(get(categoryDto.getParentId()));
             category.setCategoryName(categoryDto.getCategoryName());
+
+            Category oldParent = category.getParent();
+            if (oldParent != null && categoryRepository.findByParentCategoryId(oldParent.getCategoryId()).size() <= 1) {
+                oldParent.setLeaf(true);
+                categoryRepository.save(oldParent);
+            }
+            Category newParent = get(categoryDto.getParentId());
+            if (newParent != null && newParent.isLeaf()) {
+                newParent.setLeaf(false);
+                categoryRepository.save(newParent);
+            }
+
+            category.setParent(newParent);
             categoryRepository.save(category);
         }
     }
@@ -140,18 +152,17 @@ public class CategoryFacadeImpl implements CategoryFacade {
     @Override
     @Transactional
     public void delete(long categoryId) {
-
         if (categoryRepository.existsById(categoryId)) {
             Category category = get(categoryId);
             if (category.isLeaf()) {
-                Category parent = get(category.getParent().getCategoryId());
-                if (parent != null) {
+                Category parent = category.getParent();
+                if (parent != null && categoryRepository.findByParentCategoryId(parent.getCategoryId()).size() <= 1) {
                     parent.setLeaf(true);
                     editInternal(parent);
                 }
                 categoryRepository.delete(get(categoryId));
             }
-
         }
     }
+
 }

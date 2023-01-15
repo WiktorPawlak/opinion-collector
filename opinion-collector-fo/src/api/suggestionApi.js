@@ -1,4 +1,5 @@
-import { get, post, remove } from './api';
+import { get, post, put, putWithBody, remove } from './api';
+
 
 export async function apiGetAllSuggestions() {
   return get('/suggestions');
@@ -20,8 +21,16 @@ export async function apiRejectSuggestion({suggestionId}) {
   return await post(`/suggestions/${suggestionId}/reject`)
 }
 
+
+export async function apiEditSuggestion({suggestionId}, body) {
+  return await putWithBody(`/suggestions/${suggestionId}`, body)
+}
+
+export async function apiPostSuggestion(id, body) {
+  return await post(`/suggestions?productId=${id}`, body)
+}
+
 export async function apiDeleteSuggestion({suggestionId}) {
   return await remove(`/suggestions/${suggestionId}`)
 }
-
 

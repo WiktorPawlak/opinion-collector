@@ -70,7 +70,7 @@ public class SuggestionController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') ||" +
         "hasAuthority('STANDARD')")
-    public void deleteSuggestion(Long id, Principal principal) {
+    public void deleteSuggestion(@PathVariable Long id, Principal principal) {
         suggestionFacade.delete(id, principal);
     }
 
