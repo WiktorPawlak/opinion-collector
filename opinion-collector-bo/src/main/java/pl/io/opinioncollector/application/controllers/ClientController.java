@@ -13,6 +13,8 @@ import pl.io.opinioncollector.domain.client.ClientFacade;
 import pl.io.opinioncollector.domain.client.model.Client;
 import pl.io.opinioncollector.domain.client.model.ClientRole;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
 
@@ -49,9 +51,18 @@ public class ClientController {
     }
 
     @PutMapping("/self/change-password")
-    public ResponseEntity<Object> changePass(Principal principal, String hashedPass) {
+    public ResponseEntity<Object> changePass(Principal principal, String password, HttpServletResponse response) {
         try {
-            clientFacade.changePass(principal.getName(), hashedPass);
+            Cookie cookie = new Cookie("opinionCollector", "token");
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            cookie.setSecure(true);
+            cookie.setHttpOnly(true);
+
+            response.addCookie(cookie);
+
+            clientFacade.changePass(principal.getName(), password);
+
             return ResponseEntity.ok("Password changed");
         } catch (IllegalStateException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -59,8 +70,16 @@ public class ClientController {
     }
 
     @PutMapping("/self/profile-deletion")
-    public ResponseEntity<Object> archive(Principal principal) {
+    public ResponseEntity<Object> archive(Principal principal, HttpServletResponse response) {
         try {
+            Cookie cookie = new Cookie("opinionCollector", "token");
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            cookie.setSecure(true);
+            cookie.setHttpOnly(true);
+
+            response.addCookie(cookie);
+
             clientFacade.archive(principal.getName());
             return ResponseEntity.ok("Profile deletion");
         } catch (IllegalStateException ex) {
