@@ -5,7 +5,6 @@ import {
 } from "../api/opinionApi";
 
 
-
 export function useOpinion() {
     const [loading, setLoading] = useState(true);
     const [starReviews, setStarReviews] = useState([]);

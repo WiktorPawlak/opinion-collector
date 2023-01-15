@@ -1,41 +1,67 @@
 import { useCategory } from '../hooks/useCategory';
-import { useState, useEffect } from 'react';
-import { useProductOrigins } from '../hooks/useProductOrigins';
-import { putProduct, getProductById } from '../api/productApi';
+import { useState, useEffect, useCallback } from 'react';
+import { useProduct, useProductOrigins } from '../hooks/useProductOrigins';
+import { putProduct, getProductById, getWholeProductById } from '../api/productApi';
 import { EditProductForm } from '../modules/product-details/components/EditProductForm/EditProductForm';
 import css from './EditProductDetails.module.scss';
 import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
 import BgAsset from '../common/images/bg_asset.png';
 import { useNavigate, useParams } from 'react-router-dom';
+import { PageLoad } from './PageLoad';
+import { getCategory } from '../api/categoryApi';
+import { useClient } from '../hooks/useUser';
 
 export function EditProductDetails() {
-  const { categories, categoryLoading } = useCategory();
-  const { origins, originLoading } = useProductOrigins();
   const navigate = useNavigate();
-  const { id } = useParams();
 
-  const [productById, setProductById] = useState();
-  const [categoryId, setCategoryId] = useState('');
+  const { id } = useParams();
+  const { client } = useClient();
+  const { origins, loading } = useProductOrigins();
+  const { categories, loadingCat } = useCategory();
+
+  const [product, setProduct] = useState(null);
+  const [category, setCategory] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isFilePicked, setIsFilePicked] = useState(false);
   const [title, setTitle] = useState('');
   const [origin, setOrigin] = useState('');
   const [ean, setEan] = useState('');
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isFilePicked, setIsFilePicked] = useState(false);
+  const fetchProductData = useCallback(async () => {
+    const response = await getWholeProductById(id);
+    setProduct(response[0]);
+  }, [id]);
 
-  const findProductById = async () => {
-    let response;
-    response = await getProductById(id);
-    if (response[1] === 200) {
-      setProductById(response[0]);
-    } else {
-      console.log('Nie ma takiego produktu');
-    }
+  const categoryData = async (categoryId) => {
+    const response = await getCategory(categoryId);
+    setCategory(response[0]);
   };
 
   useEffect(() => {
-    findProductById();
-  }, [findProductById]);
+    fetchProductData();
+  }, [fetchProductData]);
+
+  useEffect(() => {
+    if (product !== null) {
+      console.log(product);
+
+      setSelectedFile(product.image);
+      setTitle(product.title);
+      setOrigin(product.origin);
+      setEan(product.ean);
+      setCategory(product.categoryId);
+    }
+  }, [product]);
+
+  if (product === null) {
+    return <PageLoad />;
+  }
+  if (loading) {
+    return <p>loading origins...</p>;
+  }
+  if (loadingCat) {
+    return <p>loading categories...</p>;
+  }
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -47,20 +73,15 @@ export function EditProductDetails() {
 
     const formData = new FormData();
     formData.append('image', selectedFile);
-    formData.append('categoryId', categoryId);
+    formData.append('categoryId', category.id);
     formData.append('id', id);
     formData.append('title', title);
     formData.append('origin', origin);
     formData.append('ean', ean);
     navigate('/products');
+    console.log(Object.fromEntries(formData));
     await putProduct(Object.fromEntries(formData));
   };
-
-  if (categoryLoading) {
-    return <p>Loading categories...</p>;
-  } else if (originLoading) {
-    return <p>Loading origins...</p>;
-  }
 
   return (
     <div className={css.container}>
@@ -75,10 +96,14 @@ export function EditProductDetails() {
         categories={categories}
         origins={origins}
         selectedFile={selectedFile}
-        setCategoryId={setCategoryId}
         setEan={setEan}
+        setCategory={setCategory}
         setOrigin={setOrigin}
         setTitle={setTitle}
+        ean={ean}
+        category={category}
+        origin={origin}
+        title={title}
         id={id}
       />
       <div className={css.bgImg}>
