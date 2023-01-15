@@ -25,10 +25,13 @@ public class Opinion {
     @NonNull
     private StarReview starReview;
 
+    @Column(length = 1000)
     private String opinionContent;
 
+    @Column(length = 500)
     private String opinionPros;
 
+    @Column(length = 500)
     private String opinionCons;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

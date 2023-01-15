@@ -58,7 +58,7 @@ export const EditProductForm = ({
 
     <label>EAN</label>
     <TextField onChange={(e) => setEan(e.target.value)} />
-
+    <br />
     <Button
       sx={{ width: '40' }}
       variant="contained"
