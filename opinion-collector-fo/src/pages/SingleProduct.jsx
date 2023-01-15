@@ -21,10 +21,12 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow, TextField, Rating
+  TableRow, TextField, Rating, DialogActions
 } from "@mui/material"
 import {SuggestionTable} from "../modules/suggestions/SuggestionTable";
 import Product from '../common/components/ProductTile/Product';
+import {Button} from "../common/components/Button/Button";
+import Typography from "@mui/material/Typography";
 
 function SingleProduct() {
   const { id } = useParams();
@@ -94,7 +96,9 @@ function SingleProduct() {
     if (indexOfOpinionToEdit !== -1){
       setOpinions(opinionToUpdate);
     }
-    navigate(`/opinions/edit/${opinionId}/${product.id}`);
+    if (opinionToUpdate[indexOfOpinionToEdit].clientUsername === client.username.username){
+      navigate(`/opinions/edit/${opinionId}/${product.id}`);
+    }
   }
 
   const handleOpinionDelete = async (id) => {
