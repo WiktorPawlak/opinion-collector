@@ -3,7 +3,14 @@ import css from './Product.module.scss';
 import { Link } from 'react-router-dom';
 import { useClient } from '../../../hooks/useUser';
 
-const Product = ({ title, description, image, id, handleProductHide }) => {
+const Product = ({
+  title,
+  description,
+  image,
+  id,
+  handleProductHide,
+  handleProductEdit
+}) => {
   const { clientRole } = useClient();
   return (
     <div className={css.product}>
@@ -22,11 +29,15 @@ const Product = ({ title, description, image, id, handleProductHide }) => {
               Hide
             </button>
           )}
+          {clientRole === 'ADMIN' && (
+            <button className={css.btn} onClick={handleProductEdit}>
+              Edit
+            </button>
+          )}
+
           {clientRole === 'STANDARD' && (
             <Link to={`/suggestions/add/${id}`}>
-            <button className={css.btn}>
-              Suggest changes
-            </button>
+              <button className={css.btn}>Suggest changes</button>
             </Link>
           )}
         </div>

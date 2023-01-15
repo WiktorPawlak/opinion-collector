@@ -9,7 +9,7 @@ export const EditOpinionForm = ({
                                    setContent,
                                    setPros,
                                    setCons,
-                                   id, content,pros,cons
+                                   id,
                                }) => (
     <form className="form-container">
         Edit Your Opinion:
@@ -26,17 +26,17 @@ export const EditOpinionForm = ({
         />
         <label>Content</label>
         <TextField
-            defaultValue={content}
+            defaultValue={''}
             onChange={(e) =>
             setContent(e.target.value)} />
         <label>Pros</label>
         <TextField
-            defaultValue={pros}
+            defaultValue={''}
             onChange={(e) =>
             setPros(e.target.value)} />
         <label>Cons</label>
         <TextField
-            defaultValue={cons}
+            defaultValue={''}
             onChange={(e) =>
             setCons(e.target.value)} />
         <Button

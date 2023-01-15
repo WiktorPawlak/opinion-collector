@@ -18,8 +18,6 @@ export function AddOpinion() {
     const [ cons, setCons ] = useState('')
     const now = new Date();
 
-    //console.log(useClient().getSelf());
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData();
@@ -31,7 +29,6 @@ export function AddOpinion() {
         formData.append('clientUsername', client.username.username);
         navigate(`/products/${id}`);
         await postOpinion(Object.fromEntries(formData));
-        //console.log(new Date().toLocaleString());
 
     };
 

@@ -61,6 +61,7 @@ public class ProductFacadeImpl implements ProductFacade {
         var product = Product.builder()
             .categoryId(productDto.getCategoryId())
             .title(productDto.getTitle())
+            .visibility(true)
             .origin(productDto.getOrigin())
             .ean(productDto.getEan())
             .image("/assets/images/" + image.getFilename())
@@ -75,6 +76,27 @@ public class ProductFacadeImpl implements ProductFacade {
         productHide.setVisibility(!productHide.isVisibility());
         productRepository.save(productHide);
     }
+
+    @Override
+    @Transactional
+    public Product edit(ProductImageDto productDto) throws IOException{
+        final Resource image = productDto.getImage().getResource();
+        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
+        try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+            fos.write(productDto.getImage().getBytes());
+        }
+
+        var product = Product.builder()
+            .categoryId(productDto.getCategoryId())
+            .title(productDto.getTitle())
+            .visibility(true)
+            .origin(productDto.getOrigin())
+            .ean(productDto.getEan())
+            .image("/assets/images/" + image.getFilename())
+            .build();
+        return productRepository.save(product);
+    }
+
 
     @Override
     @Transactional

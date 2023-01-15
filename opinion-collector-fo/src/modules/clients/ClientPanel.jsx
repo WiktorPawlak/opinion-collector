@@ -181,61 +181,55 @@ export function ClientPanel() {
           Change password
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-        <br />
-        <br /> Twoje opinie:
-        <Paper
-          sx={{
-            width: '100%',
-            overflow: 'hidden'
-          }}
-        >
-          <TableContainer sx={{ maxHeight: 750 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead></TableHead>
-              <TableBody>
-                {opinions &&
-                  opinions.slice(page * 10, page * 10 + 10).map((opinion) => {
-                    return (
-                      <Box>
-                        <Opinion
-                          key={opinion.id}
-                          opinionId={opinion.opinionId}
-                          handleOpinionHide={() =>
-                            SingleProduct.handleOpinionHide(opinion.opinionId)
-                          }
-                          handleOpinionEdit={() =>
-                            SingleProduct.handleOpinionEdit(opinion.opinionId)
-                          }
-                          handleOpinionDelete={() =>
-                            handleOpinionDelete(opinion.opinionId)
-                          }
-                          creationDate={opinion.creationDate}
-                          modificationDate={opinion.modificationDate}
-                          clientUsername={opinion.clientUsername}
-                          starReview={opinion.starReview}
-                          opinionContent={opinion.opinionContent}
-                          opinionCons={opinion.opinionCons}
-                          opinionPros={opinion.opinionPros}
-                          hidden={opinion.hidden}
-                          productId={opinion.productId}
-                        />
-                      </Box>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={10}
-            component="div"
-            count={opinions.length}
-            rowsPerPage={10}
-            page={page}
-            onPageChange={handleChangePage}
-          />
-        </Paper>
-      </Box>
+        { clientRole === 'STANDARD' &&
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+            <br /><br /> Twoje opinie:
+            <Paper
+                sx={{
+                    width: '100%',
+                    overflow: 'hidden'
+                }}
+            >
+                <TableContainer sx={{ maxHeight: 750 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                        </TableHead>
+                        <TableBody>
+                            {opinions &&
+                            opinions.slice(page * 10, page * 10 + 10).map((opinion) => {
+                                return (
+                                    <Box>
+                                        <Opinion
+                                            key={opinion.id}
+                                            opinionId={opinion.opinionId}
+                                            handleOpinionHide={() => SingleProduct.handleOpinionHide(opinion.opinionId)}
+                                            handleOpinionEdit={() => SingleProduct.handleOpinionEdit(opinion.opinionId)}
+                                            handleOpinionDelete={() => handleOpinionDelete(opinion.opinionId)}
+                                            creationDate={opinion.creationDate}
+                                            modificationDate={opinion.modificationDate}
+                                            clientUsername={opinion.clientUsername}
+                                            starReview={opinion.starReview}
+                                            opinionContent={opinion.opinionContent}
+                                            opinionCons={opinion.opinionCons}
+                                            opinionPros={opinion.opinionPros}
+                                            hidden={opinion.hidden}
+                                            productId={opinion.productId}
+                                        /></Box>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={10}
+                    component="div"
+                    count={opinions.length}
+                    rowsPerPage={10}
+                    page={page}
+                    onPageChange={handleChangePage}
+                />
+            </Paper>
+        </Box>}
     </Box>
   );
 }

@@ -22,7 +22,6 @@ export async function get(stringUrl, params) {
   }
 }
 
-
 export async function getNoResponse(stringUrl, params) {
   const url = new URL(stringUrl, BASE_URL);
   if (params) {
@@ -38,7 +37,7 @@ export async function getNoResponse(stringUrl, params) {
     method: 'GET'
   });
 
-  return response.status
+  return response.status;
 }
 
 const defaultHeaders = {
@@ -100,7 +99,19 @@ export async function putWithBody(url, body, headers = defaultHeaders) {
   });
 
   return response.status;
+}
 
+export async function putWithBodyS(stringUrl, body) {
+  const url = new URL(stringUrl, BASE_URL);
+
+  const response = await fetch(url, {
+    headers: defaultHeaders,
+    credentials: 'include',
+    method: 'PUT',
+    body
+  });
+
+  return [await response.text(), response.status];
 }
 
 export async function put(stringUrl, params) {
@@ -108,7 +119,6 @@ export async function put(stringUrl, params) {
   if (params) {
     url.search = new URLSearchParams(params).toString();
   }
-
 
   const response = await fetch(url, {
     // headers: {
@@ -126,6 +136,20 @@ export async function postMultipart(url, body) {
   const response = await fetch(`${BASE_URL}${url}`, {
     credentials: 'include',
     method: 'POST',
+    body
+  });
+
+  if (response.ok) {
+    return [await response.json(), response.status];
+  } else {
+    return [await response.text(), response.status];
+  }
+}
+
+export async function putMultipart(url, body) {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    credentials: 'include',
+    method: 'PUT',
     body
   });
 

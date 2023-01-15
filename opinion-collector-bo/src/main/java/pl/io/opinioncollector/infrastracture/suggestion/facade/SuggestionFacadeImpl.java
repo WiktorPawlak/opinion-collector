@@ -1,5 +1,7 @@
 package pl.io.opinioncollector.infrastracture.suggestion.facade;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -7,11 +9,13 @@ import java.util.Optional;
 import javax.naming.AuthenticationException;
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import pl.io.opinioncollector.application.dto.SuggestionDto;
 import pl.io.opinioncollector.domain.client.ClientFacade;
 import pl.io.opinioncollector.domain.client.model.Client;
@@ -52,7 +56,15 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     }
 
     @Override
-    public Suggestion createSuggestion(ClientUsername clientUsername, long productId, SuggestionProduct suggestionProduct) {
+    public Suggestion createSuggestion(ClientUsername clientUsername, long productId, MultipartFile file, SuggestionProduct suggestionProduct) {
+        final Resource image = file.getResource();
+        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
+        try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+            fos.write(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        suggestionProduct.setImage(imagePath);
         Product product = getProductForSuggestion(productId);
         Suggestion suggestion = Suggestion.builder()
             .product(product)

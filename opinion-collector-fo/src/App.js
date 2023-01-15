@@ -15,10 +15,10 @@ import { ClientsPanel } from './modules/clients/ClientsPanel';
 import { ClientPanel } from './modules/clients/ClientPanel';
 import { AllSuggestions } from './modules/suggestions/AllSuggestions';
 import { MySuggestions } from './modules/suggestions/MySuggestions';
-import { AddOpinion } from "./pages/AddOpinion";
-import { EditOpinion } from "./pages/EditOpinion";
-import { AddSuggestion } from "./modules/suggestions/AddSuggestion"
-
+import { AddOpinion } from './pages/AddOpinion';
+import { EditOpinion } from './pages/EditOpinion';
+import { AddSuggestion } from './modules/suggestions/AddSuggestion';
+import { EditProductDetails } from './pages/EditProductDetails';
 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
         <Route path="/products" element={<AllProducts />} />
         <Route path="/products/:id" element={<SingleProduct />} />
         <Route path="/products/add" element={<ProductDetails />} />
+        <Route path="/products/edit/:id" element={<EditProductDetails />} />
         <Route path="/log-in" element={<LogIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/clients" element={<ClientsPanel />} />
@@ -37,7 +38,7 @@ function App() {
         <Route path="/suggestions/add/:id" element={<AddSuggestion />} />
         <Route path="/all_suggestions" element={<AllSuggestions />} />
         <Route path="/my_suggestions" element={<MySuggestions />} />
-        <Route path="/categories"  element={<CategoriesPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/categories/add" element={<AddCategory />} />
         <Route path="/categories/edit/:id" element={<EditCategory />} />
         <Route path="/opinions/add/:id" element={<AddOpinion />} />

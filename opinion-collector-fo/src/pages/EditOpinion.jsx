@@ -23,7 +23,7 @@ export function EditOpinion() {
         let response;
         response = await getOpinion(opinionId);
         if (response[1] === 200) {
-            setOpinionById(response[0])
+            setOpinionById(response[0]);
         } else {
             console.log('Nie ma takiej opinii');
         }
@@ -61,9 +61,6 @@ export function EditOpinion() {
                 setPros={setPros}
                 setCons={setCons}
                 id={opinionId}
-                content={opinionById}
-                pros={pros}
-                cons={cons}
             />
         </div>
     );
