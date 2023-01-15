@@ -49,7 +49,6 @@ function AllProducts() {
   };
 
   const handleProductHide = async (id) => {
-    console.log(id);
     const productsToUpdate = [...products];
     const indexOfProductToHide = productsToUpdate.findIndex(
       (product) => product.productId === id

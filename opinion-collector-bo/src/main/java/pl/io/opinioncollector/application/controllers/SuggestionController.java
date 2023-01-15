@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 import pl.io.opinioncollector.application.dto.SuggestionDto;
 import pl.io.opinioncollector.domain.client.model.ClientUsername;
 import pl.io.opinioncollector.domain.product.model.Product;
@@ -43,10 +44,10 @@ public class SuggestionController {
         return suggestionFacade.getById(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     @PreAuthorize("hasAuthority('STANDARD')")
-    public Suggestion createSuggestion(Principal principal, @RequestParam long productId, @RequestBody SuggestionProduct suggestionProduct) {
-        return suggestionFacade.createSuggestion(new ClientUsername(principal.getName()), productId, suggestionProduct);
+    public Suggestion createSuggestion(Principal principal, @RequestParam long productId, @RequestParam("image") MultipartFile file, @RequestBody SuggestionProduct suggestionProduct) {
+        return suggestionFacade.createSuggestion(new ClientUsername(principal.getName()), productId, file, suggestionProduct);
     }
 
     @PostMapping("/{id}/accept")

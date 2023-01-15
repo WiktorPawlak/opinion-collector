@@ -165,6 +165,7 @@ export function ClientPanel() {
           Change password
         </Button>
       </Box>
+        { clientRole === 'STANDARD' &&
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             <br /><br /> Twoje opinie:
             <Paper
@@ -212,7 +213,7 @@ export function ClientPanel() {
                     onPageChange={handleChangePage}
                 />
             </Paper>
-        </Box>
+        </Box>}
     </Box>
   );
 }

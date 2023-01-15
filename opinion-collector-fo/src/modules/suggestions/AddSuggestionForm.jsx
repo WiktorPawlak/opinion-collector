@@ -39,11 +39,11 @@ export const AddSuggestionForm = ({
         sx={{ width: 345, backgroundColor: 'rgb(255,0,0,0.03)' }}
       >
         <CardMedia
-          sx={{ height: 140 }}
-          image="D:\Repositories\io_2022_01\opinion-collector-fo\src\common\images\monster.jpg"
-          title="current product photo"
+          component="img"
+          height="194"
+          image="https://media.licdn.com/dms/image/C560BAQHMnA03XDdf3w/company-logo_200_200/0/1519855918965?e=2147483647&v=beta&t=J3kUMZwIphc90TFKH5oOO9Sa9K59fimgJf-s_okU3zs"
+          alt="Paella dish"
         />
-
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {product.title}
