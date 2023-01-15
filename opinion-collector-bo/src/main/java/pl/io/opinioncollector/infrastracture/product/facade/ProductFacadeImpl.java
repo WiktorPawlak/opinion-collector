@@ -53,8 +53,7 @@ public class ProductFacadeImpl implements ProductFacade {
     public Product add(ProductImageDto productDto) throws IOException {
 
         final Resource image = productDto.getImage().getResource();
-        final String workingDir = System.getProperty("user.dir");
-        final String imagePath = workingDir + "/opinion-collector-fo/public/assets/images/" + image.getFilename();
+        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
         try (FileOutputStream fos = new FileOutputStream(imagePath)) {
             fos.write(productDto.getImage().getBytes());
         }

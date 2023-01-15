@@ -58,8 +58,7 @@ public class SuggestionFacadeImpl implements SuggestionFacade {
     @Override
     public Suggestion createSuggestion(ClientUsername clientUsername, long productId, MultipartFile file, SuggestionProduct suggestionProduct) {
         final Resource image = file.getResource();
-        final String workingDir = System.getProperty("user.dir");
-        final String imagePath = workingDir + "/opinion-collector-fo/public/assets/images/" + image.getFilename();
+        final String imagePath = "../opinion-collector-fo/public/assets/images/" + image.getFilename();
         try (FileOutputStream fos = new FileOutputStream(imagePath)) {
             fos.write(file.getBytes());
         } catch (IOException e) {
