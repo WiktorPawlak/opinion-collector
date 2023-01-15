@@ -12,7 +12,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function AllProducts() {
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
   const { clientRole } = useClient();
   const navigate = useNavigate();
@@ -36,20 +35,7 @@ function AllProducts() {
 
   useEffect(() => {
     findProducts();
-    
-  }, [findProducts, query]);
-
-  const updateSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const getSearch = (e) => {
-    e.preventDefault();
-    setQuery(search);
-    setSearch('');
-    console.log(products)
-
-  };
+  }, [findProducts]);
 
   const handleProductHide = async (id) => {
     const productsToUpdate = [...products];
@@ -82,7 +68,7 @@ function AllProducts() {
   return (
     <div className="products">
       <div className={css.productsNavs}>
-        <form onSubmit={getSearch} className={css.searchForm}>
+        <form className={css.searchForm}>
           {clientRole === 'ADMIN' && (
             <Link style={{ marginRight: '10vw' }} to="/products/add">
               <button className={css.addProductButton}>Add product</button>
@@ -91,28 +77,35 @@ function AllProducts() {
           <input
             className={css.searchBar}
             type="text"
-            value={search}
-            onChange={updateSearch}
+            onChange={(e) => setQuery(e.target.value)}
           />
-          <button className={css.searchButton} type="submit">
-            Search
-          </button>
+          <button className={css.searchButton}>Search</button>
         </form>
       </div>
 
       <div className={css.products}>
-        {products.map((product) => (
-          <Product
-            key={product.id}
-            handleProductHide={() => handleProductHide(product.id)}
-            handleProductEdit={() => handleProductEdit(product.id)}
-            title={product.title}
-            image={product.image}
-            description={product.title}
-            id={product.id}
-            visibility={product.visibility}
-          />
-        ))}
+        {products
+          .filter((products) => {
+            if (query == '') {
+              return products;
+            } else if (
+              products.title.toLowerCase().includes(query.toLowerCase())
+            ) {
+              return products;
+            }
+          })
+          .map((product) => (
+            <Product
+              key={product.id}
+              handleProductHide={() => handleProductHide(product.id)}
+              handleProductEdit={() => handleProductEdit(product.id)}
+              title={product.title}
+              image={product.image}
+              description={product.title}
+              id={product.id}
+              visibility={product.visibility}
+            />
+          ))}
       </div>
       <Footer />
     </div>

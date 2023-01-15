@@ -14,6 +14,7 @@ export const AddOpinionForm = ({
     <form className="form-container">
         Add Your Opinion:
         <Rating
+            size={"large"}
             name="simple-controlled"
             onChange={(event, newValue) => {
                 if(newValue===1) setStarReview('ONE')
@@ -25,15 +26,42 @@ export const AddOpinionForm = ({
             precision={1.0}
         />
         <label>Content</label>
-        <TextField onChange={(e) =>
-            setContent(e.target.value)} />
+        <TextField
+            sx={{
+                width: { sm: 500, md: 500 },
+                "& .MuiInputBase-root": {
+                    height: 300,
+                    },
+                "& .MuiInputBase-input": {
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"
+                }
+                }}
+                multiline
+                rows={10}
+                onChange={(e) =>
+                setContent(e.target.value)} />
         <label>Pros</label>
-        <TextField onChange={(e) =>
+        <TextField
+            sx={{
+                width: { sm: 500, md: 500 },
+                "& .MuiInputBase-root": {
+                    height: 50}
+            }}
+            onChange={(e) =>
             setPros(e.target.value)} />
         <label>Cons</label>
-        <TextField onChange={(e) =>
+        <TextField
+            sx={{
+                width: { sm: 500, md: 500 },
+                "& .MuiInputBase-root": {
+                    height: 50}
+            }}
+            onChange={(e) =>
             setCons(e.target.value)} />
+        <br />
         <Button
+            color="success"
             sx={{ width: '40' }}
             variant="contained"
             onClick={handleSubmit}
