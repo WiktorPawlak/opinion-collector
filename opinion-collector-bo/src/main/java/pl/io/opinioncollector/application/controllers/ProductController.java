@@ -96,8 +96,8 @@ public class ProductController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/hide")
-    public void hideProduct(@RequestParam long id) {
+    @PutMapping("/hide/{id}")
+    public void hideProduct(@PathVariable long id) {
         productFacade.hide(id);
     }
 

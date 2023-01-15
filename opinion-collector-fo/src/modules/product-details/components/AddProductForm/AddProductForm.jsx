@@ -1,4 +1,5 @@
 import { Autocomplete, Button, TextField } from '@mui/material';
+import './AddProductForm.module.css';
 
 export const AddProductForm = ({
   handleSubmit,
@@ -12,7 +13,7 @@ export const AddProductForm = ({
   setTitle,
   handleFileChange
 }) => (
-  <form className="form-container">
+  <form className="form-container forms">
     <label>Category</label>
     <Autocomplete
       isOptionEqualToValue={(option, value) =>

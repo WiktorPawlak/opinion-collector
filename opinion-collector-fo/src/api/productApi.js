@@ -29,5 +29,5 @@ export async function getVisibleOpinionsForProductId(id) {
 }
 
 export function putProductHidden(id) {
-  return put(`/products/${id}`);
+  return put(`/hide/${id}`);
 }
