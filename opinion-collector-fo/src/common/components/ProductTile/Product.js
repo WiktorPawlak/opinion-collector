@@ -9,7 +9,8 @@ const Product = ({
   image,
   id,
   handleProductHide,
-  handleProductEdit
+  handleProductEdit,
+  visibility
 }) => {
   const { clientRole } = useClient();
   return (
@@ -29,6 +30,7 @@ const Product = ({
               Hide
             </button>
           )}
+
           {clientRole === 'ADMIN' && (
             <button className={css.btn} onClick={handleProductEdit}>
               Edit
@@ -39,6 +41,16 @@ const Product = ({
             <Link to={`/suggestions/add/${id}`}>
               <button className={css.btn}>Suggest changes</button>
             </Link>
+          )}
+          {clientRole === 'ADMIN' && visibility === true && (
+            <p>
+              State: <span>visible</span>
+            </p>
+          )}
+          {clientRole === 'ADMIN' && visibility === false && (
+            <p>
+              State: <span>hidden</span>
+            </p>
           )}
         </div>
       </div>
