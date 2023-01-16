@@ -12,9 +12,11 @@ export const AddProductForm = ({
   setOrigin,
   setTitle,
   handleFileChange,
-   isTitleError,
-   isOriginError,
-   isEanError,
+  isTitleError,
+  isOriginError,
+  isEanError,
+  isImageError,
+  isCategoryError
 }) => (
   <form className="form-container forms">
     <label>Category</label>
@@ -28,7 +30,12 @@ export const AddProductForm = ({
         setCategoryId(value.categoryId);
       }}
       sx={{ width: '80%' }}
-      renderInput={(params) => <TextField {...params} label="Kategoria" />}
+      renderInput={(params) =>
+        <TextField
+          error={isCategoryError}
+          helperText={isCategoryError ? 'Category is required' : ' '}
+          {...params}
+          label="Kategoria" />}
     />
     <label>Title</label>
     <TextField

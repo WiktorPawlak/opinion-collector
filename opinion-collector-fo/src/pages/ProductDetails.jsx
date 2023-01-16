@@ -7,7 +7,7 @@ import css from './ProductDetails.module.scss';
 import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
 import BgAsset from '../common/images/bg_asset.png';
 import { useNavigate } from 'react-router-dom';
-import { validateEan, validateOrigin, validateTitle } from '../validators/product/productValidators';
+import { validateEan, validateNull, validateOrigin, validateTitle } from '../validators/product/productValidators';
 
 export function ProductDetails() {
   const { categories, categoryLoading } = useCategory();
@@ -25,17 +25,23 @@ export function ProductDetails() {
   const [isTitleError, setIsTitleError] = useState(false);
   const [isOriginError, setIsOriginError] = useState(false);
   const [isEanError, setIsEanError] = useState(false);
+  const [isCategoryError, setIsCategoryError] = useState(false);
+  const [isImageError, setIsImageError] = useState(false);
 
   function validateForm() {
     let titleVal = !validateTitle(title);
     let originVal = !validateOrigin(origin);
     let eanVal = !validateEan(ean);
+    let imageVal = !validateNull(selectedFile);
+    let categoryVal = !validateNull(categoryId);
 
     setIsTitleError(titleVal);
     setIsOriginError(originVal);
     setIsEanError(eanVal);
+    setIsImageError(imageVal);
+    setIsCategoryError(categoryVal);
 
-    return !titleVal && !originVal && !eanVal;
+    return !titleVal && !originVal && !eanVal && !imageVal && !categoryVal;
   }
 
   const handleFileChange = (event) => {
@@ -84,6 +90,8 @@ export function ProductDetails() {
         isTitleError={isTitleError}
         isOriginError={isOriginError}
         isEanError={isEanError}
+        isImageError={isImageError}
+        isCategoryError={isCategoryError}
       />
       <div className={css.bgImg}>
         <img src={BgAsset} className={css.bgAsset} alt='Fajne zdjęcie' />

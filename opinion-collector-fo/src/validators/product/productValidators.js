@@ -16,3 +16,7 @@ export function validateEan(ean) {
   );
   return re.test(ean);
 }
+
+export function validateNull(obj) {
+  return obj;
+}

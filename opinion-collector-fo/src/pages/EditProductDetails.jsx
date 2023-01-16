@@ -11,7 +11,7 @@ import { PageLoad } from './PageLoad';
 import { getCategory } from '../api/categoryApi';
 import { useClient } from '../hooks/useUser';
 import { validateEmail, validatePassword, validateUsername } from '../validators/client/clientValidators';
-import { validateEan, validateOrigin, validateTitle } from '../validators/product/productValidators';
+import { validateEan, validateNull, validateOrigin, validateTitle } from '../validators/product/productValidators';
 
 export function EditProductDetails() {
   const navigate = useNavigate();
@@ -32,6 +32,7 @@ export function EditProductDetails() {
   const [isTitleError, setIsTitleError] = useState(false);
   const [isOriginError, setIsOriginError] = useState(false);
   const [isEanError, setIsEanError] = useState(false);
+  const [isCategoryError, setIsCategoryError] = useState(false);
 
   const fetchProductData = useCallback(async () => {
     const response = await getWholeProductById(id);
@@ -76,10 +77,12 @@ export function EditProductDetails() {
     let titleVal = !validateTitle(title);
     let originVal = !validateOrigin(origin);
     let eanVal = !validateEan(ean);
+    let categoryVal = !validateNull(category);
 
     setIsTitleError(titleVal);
     setIsOriginError(originVal);
     setIsEanError(eanVal);
+    setIsCategoryError(categoryVal);
 
     return !titleVal && !originVal && !eanVal;
   }
@@ -132,6 +135,7 @@ export function EditProductDetails() {
         isTitleError={isTitleError}
         isOriginError={isOriginError}
         isEanError={isEanError}
+        isCategoryError={isCategoryError}
       />
       <div className={css.bgImg}>
         <img src={BgAsset} className={css.bgAsset} alt='Fajne zdjęcie' />

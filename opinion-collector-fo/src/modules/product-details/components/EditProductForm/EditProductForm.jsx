@@ -19,6 +19,7 @@ export const EditProductForm = ({
   isTitleError,
   isOriginError,
   isEanError,
+  isCategoryError,
   id
 }) => (
   <form className="form-container forms">
@@ -34,7 +35,12 @@ export const EditProductForm = ({
         setCategory(value);
       }}
       sx={{ width: '80%' }}
-      renderInput={(params) => <TextField {...params} label="Kategoria" />}
+      renderInput={(params) =>
+        <TextField
+          error={isCategoryError}
+          helperText={isCategoryError ? 'Category is required' : ' '}
+          {...params}
+          label="Kategoria" />}
     />
     <label>Title</label>
     <TextField
