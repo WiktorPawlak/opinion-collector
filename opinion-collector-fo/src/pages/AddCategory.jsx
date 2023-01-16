@@ -3,39 +3,53 @@ import { useState } from 'react';
 import { postCategory } from '../api/categoryApi';
 import { AddCategoryForm } from '../modules/categories/components/AddCategory/AddCategoryForm';
 import { useNavigate } from 'react-router-dom';
+import { validateCategoryName } from '../validators/category/categoryValidators';
 
 export function AddCategory() {
-    const { categories, categoryLoading } = useCategory();
+  const { categories, categoryLoading } = useCategory();
 
-    const [ categoryId, setCategoryId ] = useState('');
-    const [ parentId, setParentId ] = useState('');
-    const [ categoryName, setCategoryName ] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [parentId, setParentId] = useState('');
+  const [categoryName, setCategoryName] = useState('');
 
-    const navigate = useNavigate();
+  const [isCategoryNameError, setIsCategoryNameError] = useState(false);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+  const navigate = useNavigate();
 
-        const formData = new FormData();
-        formData.append('categoryId', categoryId);
-        formData.append('parentId', parentId);
-        formData.append('categoryName', categoryName);
-        await postCategory(Object.fromEntries(formData));
-        navigate('/categories');
-      };
+  function validateForm() {
+    let categoryNameVal = !validateCategoryName(categoryName);
 
-      if (categoryLoading) {
-        return <p>Loading categories...</p>;
-      }
+    setIsCategoryNameError(categoryNameVal);
 
-      return (
-        <div className="container flex center-column">
-          <AddCategoryForm
-            handleSubmit={handleSubmit}
-            categories={categories}
-            setParentId={setParentId}
-            setCategoryName={setCategoryName}
-          />
-        </div>
-      );
+    return !categoryNameVal;
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (validateForm()) {
+      const formData = new FormData();
+      formData.append('categoryId', categoryId);
+      formData.append('parentId', parentId);
+      formData.append('categoryName', categoryName);
+      await postCategory(Object.fromEntries(formData));
+      navigate('/categories');
+    }
+  };
+
+  if (categoryLoading) {
+    return <p>Loading categories...</p>;
+  }
+
+  return (
+    <div className='container flex center-column'>
+      <AddCategoryForm
+        handleSubmit={handleSubmit}
+        categories={categories}
+        setParentId={setParentId}
+        setCategoryName={setCategoryName}
+        isCategoryNameError={isCategoryNameError}
+      />
+    </div>
+  );
 }

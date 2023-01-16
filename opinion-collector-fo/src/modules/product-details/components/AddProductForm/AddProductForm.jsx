@@ -48,7 +48,11 @@ export const AddProductForm = ({
       onChange={(e) => setTitle(e.target.value)}
     />
     <label>Image</label>
-      <ImageUploaderWrapper onChange={handleFileChange} onDrop={handleDropChange}/>
+      <ImageUploaderWrapper
+        error={isImageError}
+        helperText={isImageError ? 'Image is required' : ' '}
+        onChange={handleFileChange}
+        onDrop={handleDropChange} />
     <Autocomplete
       options={origins}
       onChange={(_, value) => {
