@@ -41,6 +41,7 @@ public class Product {
 
     private boolean visibility = true;
 
+    @Column(name="ean", unique=true)
     private String ean;
 
   /*  @OneToMany(cascade = CascadeType.REMOVE)
