@@ -54,6 +54,11 @@ export function AddSuggestion() {
     return <p>loading categories...</p>;
   }
 
+  const handleDropChange = (file) => {
+    setSelectedFile(file);
+    setIsFilePicked(true);
+  }
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
 
@@ -80,6 +85,7 @@ export function AddSuggestion() {
       <AddSuggestionForm
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
+        handleDropChange={handleDropChange}
         isFilePicked={isFilePicked}
         categories={categories}
         origins={origins}

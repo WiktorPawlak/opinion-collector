@@ -1,5 +1,6 @@
 import { Autocomplete, Button, TextField } from '@mui/material';
 import './AddProductForm.module.css';
+import ImageUploaderWrapper from "../../../../common/components/FileUpload/ImageUploader";
 
 export const AddProductForm = ({
   handleSubmit,
@@ -12,6 +13,7 @@ export const AddProductForm = ({
   setOrigin,
   setTitle,
   handleFileChange,
+  handleDropChange,
   isTitleError,
   isOriginError,
   isEanError,
@@ -46,16 +48,7 @@ export const AddProductForm = ({
       onChange={(e) => setTitle(e.target.value)}
     />
     <label>Image</label>
-    <input required type="file" name="file" onChange={handleFileChange} />
-    {isFilePicked ? (
-      <div>
-        <p>Filename: {selectedFile.name}</p>
-        <p>Filetype: {selectedFile.type}</p>
-        <p>Size in bytes: {selectedFile.size}</p>
-      </div>
-    ) : (
-      <p>Select a file to show details</p>
-    )}
+      <ImageUploaderWrapper onChange={handleFileChange} onDrop={handleDropChange}/>
     <Autocomplete
       options={origins}
       onChange={(_, value) => {

@@ -9,6 +9,7 @@ import {
   Typography,
   Autocomplete
 } from '@mui/material';
+import ImageUploaderWrapper from "../../common/components/FileUpload/ImageUploader";
 
 export const AddSuggestionForm = ({
   handleSubmit,
@@ -21,6 +22,7 @@ export const AddSuggestionForm = ({
   setOrigin,
   setTitle,
   handleFileChange,
+  handleDropChange,
   product,
   id
 }) => (
@@ -66,11 +68,11 @@ export const AddSuggestionForm = ({
       >
         <CardMedia
           sx={{ height: 140 }}
-          
+
           title="Suggested product photo"
         />
         <CardContent>
-          <input required type="file" name="file" onChange={handleFileChange}  />
+          <ImageUploaderWrapper onChange={handleFileChange} onDrop={handleDropChange}/>
           <TextField
             variant="filled"
             margin="none"

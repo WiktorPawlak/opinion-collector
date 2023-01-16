@@ -22,6 +22,7 @@ import { useClient } from '../../hooks/useUser';
 import { useProductOrigins } from '../../hooks/useProductOrigins';
 import { useCategory } from '../../hooks/useCategory';
 import Typography from '@mui/material/Typography';
+import ImageUploaderWrapper from "../../common/components/FileUpload/ImageUploader";
 
 export function SuggestionAction({ suggestionInfo }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -33,7 +34,7 @@ export function SuggestionAction({ suggestionInfo }) {
   const { clientRole } = useClient();
   const { origins, loading } = useProductOrigins();
   const { categories, loadingCat } = useCategory();
-  
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -47,6 +48,11 @@ export function SuggestionAction({ suggestionInfo }) {
 
   function handleDeleteModalClose() {
     setIsDeleteModalOpen(false);
+  }
+
+  const handleDropChange = (file) => {
+    setSelectedFile(file);
+    setIsFilePicked(true);
   }
 
   const handleFileChange = (event) => {
@@ -234,7 +240,7 @@ export function SuggestionAction({ suggestionInfo }) {
             />
 
             <CardContent>
-              
+
               <Typography gutterBottom variant="h5" component="div">
                 {suggestionInfo?.product?.title}
               </Typography>
@@ -260,7 +266,7 @@ export function SuggestionAction({ suggestionInfo }) {
               title="Suggested product photo"
             />
             <CardContent>
-            <input required type="file" name="file" onChange={handleFileChange} />
+              <ImageUploaderWrapper onChange={handleFileChange} onDrop={handleDropChange}/>
 
               <TextField
                 variant="filled"
@@ -316,8 +322,8 @@ export function SuggestionAction({ suggestionInfo }) {
               formData.append('title', title);
               formData.append('origin', origin);
               formData.append('ean', ean);
-              
-              
+
+
               editSuggestion(suggestionInfo.suggestionId, formData);
             }}
             size="small"

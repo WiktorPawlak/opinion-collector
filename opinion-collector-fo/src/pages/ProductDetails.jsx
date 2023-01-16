@@ -22,6 +22,11 @@ export function ProductDetails() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
 
+  const handleDropChange = (file) => {
+    setSelectedFile(file);
+    setIsFilePicked(true);
+  }
+
   const [isTitleError, setIsTitleError] = useState(false);
   const [isOriginError, setIsOriginError] = useState(false);
   const [isEanError, setIsEanError] = useState(false);
@@ -79,6 +84,7 @@ export function ProductDetails() {
         className={css.productForm}
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
+        handleDropChange={handleDropChange}
         isFilePicked={isFilePicked}
         categories={categories}
         origins={origins}

@@ -54,10 +54,10 @@ function SingleProduct() {
 
   const findOpinionsForProduct = useCallback(async () => {
     let response;
-    if (clientRole === 'STANDARD') {
-      response = await getVisibleOpinionsForProductId(id);
-    } else {
+    if (clientRole === 'ADMIN') {
       response = await getProductOpinions(id);
+    } else {
+      response = await getVisibleOpinionsForProductId(id);
     }
     if (response[1] === 200) {
       setOpinions(response[0]);

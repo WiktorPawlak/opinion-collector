@@ -87,6 +87,11 @@ export function EditProductDetails() {
     return !titleVal && !originVal && !eanVal;
   }
 
+  const handleDropChange = (file) => {
+    setSelectedFile(file);
+    setIsFilePicked(true);
+  }
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
     setIsFilePicked(true);
@@ -119,6 +124,7 @@ export function EditProductDetails() {
         className={css.productForm}
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
+        handleDropChange={handleDropChange}
         isFilePicked={isFilePicked}
         categories={categories}
         origins={origins}
