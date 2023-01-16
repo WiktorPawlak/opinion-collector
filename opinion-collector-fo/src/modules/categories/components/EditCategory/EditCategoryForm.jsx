@@ -6,13 +6,17 @@ export function EditCategoryForm ({
   setCategoryName,
   parent,
   categoryName,
-  categories
+  categories,
+  isCategoryNameError
 }) {
   return (
   <form className="form-container">
 
     <label>Category Name</label>
-    <TextField defaultValue={categoryName}
+    <TextField
+      error={isCategoryNameError}
+      helperText={isCategoryNameError ? 'Category name needs to be capital letter word' : ' '}
+      defaultValue={categoryName}
       onChange={(e) => {setCategoryName(e.target.value);
         console.log(`e.target.value: ${e.target.value}`)}}
     />

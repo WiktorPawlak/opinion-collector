@@ -4,14 +4,19 @@ export const AddCategoryForm = ({
   handleSubmit,
   setParentId,
   setCategoryName,
-  categories
+  categories,
+  isCategoryNameError
 }) => (
   <form className="form-container">
     {/* <label>CategoryId</label>
     <TextField onChange={(e) => setCategoryId(e.target.value)} /> */}
 
     <label>Category Name</label>
-    <TextField onChange={(e) => {setCategoryName(e.target.value); console.log(`e.target.value: ${e.target.value}`)}} />
+    <TextField
+      error={isCategoryNameError}
+      helperText={isCategoryNameError ? 'Category name needs to be capital letter word' : ' '}
+      onChange={(e) => {setCategoryName(e.target.value);
+        console.log(`e.target.value: ${e.target.value}`)}} />
     <label>ParentId</label>
     {/* <TextField onChange={(e) => setParentId(e.target.value)} /> */}
     <Autocomplete
