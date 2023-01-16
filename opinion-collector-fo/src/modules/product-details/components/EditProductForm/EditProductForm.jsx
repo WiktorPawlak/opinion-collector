@@ -16,6 +16,9 @@ export const EditProductForm = ({
   origin,
   title,
   handleFileChange,
+  isTitleError,
+  isOriginError,
+  isEanError,
   id
 }) => (
   <form className="form-container forms">
@@ -35,6 +38,8 @@ export const EditProductForm = ({
     />
     <label>Title</label>
     <TextField
+      error={isTitleError}
+      helperText={isTitleError ? 'Title needs to be capital letter word' : ' '}
       defaultValue={title}
       sx={{ width: '80%' }}
       required
@@ -59,12 +64,18 @@ export const EditProductForm = ({
       }}
       sx={{ width: '80%' }}
       renderInput={(params) => (
-        <TextField {...params} label="Kraj pochodzenia" />
+        <TextField
+          error={isOriginError}
+          helperText={isOriginError ? 'Origin is required' : ' '}
+          {...params}
+          label="Kraj pochodzenia" />
       )}
     />
 
     <label>EAN</label>
     <TextField
+      error={isEanError}
+      helperText={isEanError ? 'Only digits are allowed' : ' '}
       defaultValue={ean}
       onChange={(e) => setEan(e.target.value)} />
 

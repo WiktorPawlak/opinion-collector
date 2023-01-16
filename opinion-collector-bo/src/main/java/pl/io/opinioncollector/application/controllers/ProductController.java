@@ -129,8 +129,6 @@ public class ProductController {
          productFacade.edit(productImageDto);
     }
 
-
-
     @GetMapping("/opinions/{id}")
     public List<Opinion> getOpinionsForProductId(@PathVariable long id) {
         return opinionFacade.getFor(id);

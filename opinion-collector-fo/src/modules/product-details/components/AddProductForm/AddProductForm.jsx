@@ -11,7 +11,10 @@ export const AddProductForm = ({
   setEan,
   setOrigin,
   setTitle,
-  handleFileChange
+  handleFileChange,
+   isTitleError,
+   isOriginError,
+   isEanError,
 }) => (
   <form className="form-container forms">
     <label>Category</label>
@@ -29,6 +32,8 @@ export const AddProductForm = ({
     />
     <label>Title</label>
     <TextField
+      error={isTitleError}
+      helperText={isTitleError ? 'Title needs to be capital letter word' : ' '}
       sx={{ width: '80%' }}
       required
       onChange={(e) => setTitle(e.target.value)}
@@ -51,12 +56,19 @@ export const AddProductForm = ({
       }}
       sx={{ width: '80%' }}
       renderInput={(params) => (
-        <TextField {...params} label="Kraj pochodzenia" />
+        <TextField
+          error={isOriginError}
+          helperText={isOriginError ? 'Origin is required' : ' '}
+          {...params}
+          label="Kraj pochodzenia" />
       )}
     />
 
     <label>EAN</label>
-    <TextField onChange={(e) => setEan(e.target.value)} />
+    <TextField
+      error={isEanError}
+      helperText={isEanError ? 'Only digits are allowed' : ' '}
+      onChange={(e) => setEan(e.target.value)} />
 
     <Button
       sx={{ width: '40' }}

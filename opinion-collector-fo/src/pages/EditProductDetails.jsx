@@ -10,6 +10,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PageLoad } from './PageLoad';
 import { getCategory } from '../api/categoryApi';
 import { useClient } from '../hooks/useUser';
+import { validateEmail, validatePassword, validateUsername } from '../validators/client/clientValidators';
+import { validateEan, validateOrigin, validateTitle } from '../validators/product/productValidators';
 
 export function EditProductDetails() {
   const navigate = useNavigate();
@@ -27,14 +29,18 @@ export function EditProductDetails() {
   const [origin, setOrigin] = useState('');
   const [ean, setEan] = useState('');
 
+  const [isTitleError, setIsTitleError] = useState(false);
+  const [isOriginError, setIsOriginError] = useState(false);
+  const [isEanError, setIsEanError] = useState(false);
+
   const fetchProductData = useCallback(async () => {
     const response = await getWholeProductById(id);
     setProduct(response[0]);
   }, [id]);
 
-  const categoryData = useCallback( async (categoryId) => {
-     const response = await getCategory(categoryId);
-     setCategory(response[0]);
+  const categoryData = useCallback(async (categoryId) => {
+    const response = await getCategory(categoryId);
+    setCategory(response[0]);
   }, []);
 
   useEffect(() => {
@@ -45,7 +51,7 @@ export function EditProductDetails() {
     if (product) {
       categoryData(product.categoryId);
     }
-  }, [categoryData, product])
+  }, [categoryData, product]);
 
   useEffect(() => {
     if (product !== null) {
@@ -66,6 +72,18 @@ export function EditProductDetails() {
     return <p>loading categories...</p>;
   }
 
+  function validateForm() {
+    let titleVal = !validateTitle(title);
+    let originVal = !validateOrigin(origin);
+    let eanVal = !validateEan(ean);
+
+    setIsTitleError(titleVal);
+    setIsOriginError(originVal);
+    setIsEanError(eanVal);
+
+    return !titleVal && !originVal && !eanVal;
+  }
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
     setIsFilePicked(true);
@@ -74,18 +92,19 @@ export function EditProductDetails() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    if (selectedFile) {
-      formData.append('image', selectedFile);
+    if (validateForm()) {
+      const formData = new FormData();
+      if (selectedFile) {
+        formData.append('image', selectedFile);
+      }
+      formData.append('categoryId', category.categoryId);
+      formData.append('id', id);
+      formData.append('title', title);
+      formData.append('origin', origin);
+      formData.append('ean', ean);
+      navigate('/products');
+      await putProduct(formData);
     }
-    formData.append('categoryId', category.categoryId);
-    formData.append('id', id);
-    formData.append('title', title);
-    formData.append('origin', origin);
-    formData.append('ean', ean);
-    navigate('/products');
-    console.log(Object.fromEntries(formData));
-    await putProduct(formData);
   };
 
   return (
@@ -110,9 +129,12 @@ export function EditProductDetails() {
         origin={origin}
         title={title}
         id={id}
+        isTitleError={isTitleError}
+        isOriginError={isOriginError}
+        isEanError={isEanError}
       />
       <div className={css.bgImg}>
-        <img src={BgAsset} className={css.bgAsset} alt="Fajne zdjęcie" />
+        <img src={BgAsset} className={css.bgAsset} alt='Fajne zdjęcie' />
       </div>
       <CopyrightFooter />
     </div>

@@ -7,6 +7,7 @@ import css from './ProductDetails.module.scss';
 import CopyrightFooter from '../common/layouts/components/CopyrightFooter/CopyrightFooter';
 import BgAsset from '../common/images/bg_asset.png';
 import { useNavigate } from 'react-router-dom';
+import { validateEan, validateOrigin, validateTitle } from '../validators/product/productValidators';
 
 export function ProductDetails() {
   const { categories, categoryLoading } = useCategory();
@@ -21,6 +22,22 @@ export function ProductDetails() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
 
+  const [isTitleError, setIsTitleError] = useState(false);
+  const [isOriginError, setIsOriginError] = useState(false);
+  const [isEanError, setIsEanError] = useState(false);
+
+  function validateForm() {
+    let titleVal = !validateTitle(title);
+    let originVal = !validateOrigin(origin);
+    let eanVal = !validateEan(ean);
+
+    setIsTitleError(titleVal);
+    setIsOriginError(originVal);
+    setIsEanError(eanVal);
+
+    return !titleVal && !originVal && !eanVal;
+  }
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
     setIsFilePicked(true);
@@ -29,14 +46,16 @@ export function ProductDetails() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append('image', selectedFile);
-    formData.append('categoryId', categoryId);
-    formData.append('title', title);
-    formData.append('origin', origin);
-    formData.append('ean', ean);
-    navigate(`/products`);
-    await postProduct(formData);
+    if (validateForm()) {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      formData.append('categoryId', categoryId);
+      formData.append('title', title);
+      formData.append('origin', origin);
+      formData.append('ean', ean);
+      navigate(`/products`);
+      await postProduct(formData);
+    }
   };
 
   if (categoryLoading) {
@@ -62,9 +81,12 @@ export function ProductDetails() {
         setEan={setEan}
         setOrigin={setOrigin}
         setTitle={setTitle}
+        isTitleError={isTitleError}
+        isOriginError={isOriginError}
+        isEanError={isEanError}
       />
       <div className={css.bgImg}>
-        <img src={BgAsset} className={css.bgAsset} alt="Fajne zdjęcie" />
+        <img src={BgAsset} className={css.bgAsset} alt='Fajne zdjęcie' />
       </div>
       <CopyrightFooter />
     </div>
