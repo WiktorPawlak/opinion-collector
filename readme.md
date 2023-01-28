@@ -25,7 +25,7 @@ Celem tego projektu jest dostarczenie serwisu, który ułatwi jego użytkownikom
 - dodawanie, edytowanie, ukrywanie kategorii,
 - ukrywanie opinii
 
-## Wymagania fukcjonalności
+## Wymagania funkcjonalne
 
 ## Tworzenie opinii
 
@@ -93,20 +93,20 @@ Techniczne:
    - Wsparcie zespołów deweloperskich
    - Dokumentacja końcowa
 
-1. Kliencki (Radosław Moskal, Jakub Kucharski, Mateusz Strzelecki)
+1. Klienci (Radosław Moskal, Jakub Kucharski, Mateusz Strzelecki)
 
    - rejestrowanie
    - logowanie (Spring Security)
    - edycja danych personalnych użytkownika (email)
    - nadawanie uprawnień (Spring Security)
 
-1. Opinii (Piotr Skonieczny, Szymon Zakrzewski)
+1. Opinie (Piotr Skonieczny, Szymon Zakrzewski)
 
    - dodawanie opinii
    - edytowanie opinii
    - usuwanie opinii
 
-1. Sugestii (Szymon Ziemecki, Jakub Wardyn)
+1. Sugestie (Szymon Ziemecki, Jakub Wardyn)
 
    - dodawanie sugestii
    - pobieranie sugestii
@@ -115,14 +115,14 @@ Techniczne:
    - zapisywanie historii zmian
    - limit sugestii dla użytkownika
 
-1. Produktów (Weronika Tutkaj, Michał Glapiński)
+1. Produkty (Weronika Tutkaj, Michał Glapiński)
 
    - dodawanie produktu
    - edycja produktu
    - ukrywanie produktu
    - wyszukiwanie i filtrowanie (tu jednak backend)
 
-1. Kategorii (Jakub Glegoła)
+1. Kategorie (Jakub Glegoła)
 
    - dodawanie kategorii
    - edycja kategorii
